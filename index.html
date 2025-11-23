@@ -9,6 +9,7 @@
 </head>
 
 <body>
+    <!-- Credits Bar -->
     <div class="credits-bar">
         <div class="credits-info">
             <span class="credit-icon">💎</span>
@@ -17,6 +18,7 @@
         <button class="upgrade-btn" id="upgradeBtn">⭐ Premium</button>
     </div>
 
+    <!-- Main Screen -->
     <div id="mainScreen" class="screen active">
         <div class="stars"></div>
         <div class="container">
@@ -74,7 +76,130 @@
         </div>
     </div>
 
-    <script src="demo.js"></script>
+    <!-- Tarot Screen -->
+    <div id="tarotScreen" class="screen">
+        <div class="stars"></div>
+        <div class="container">
+            <button class="back-btn" onclick="showScreen('mainScreen')">← Back</button>
+
+            <div class="service-header">
+                <div class="service-icon">🎴</div>
+                <h1>Tarot Cards</h1>
+                <p>Draw 3 cards to see your past, present, and future</p>
+            </div>
+
+            <div class="tarot-container">
+                <div class="card-deck">
+                    <div class="deck-card" onclick="drawTarotCards()">
+                        <div class="card-back">🎴</div>
+                        <p>Click to draw 3 cards</p>
+                    </div>
+                </div>
+
+                <div id="tarotResult" class="tarot-result hidden">
+                    <div class="drawn-cards">
+                        <div class="tarot-card">
+                            <div class="card-emoji" id="card1Emoji"></div>
+                            <h3 id="card1Name"></h3>
+                            <p class="card-meaning" id="card1Meaning"></p>
+                            <p class="card-description" id="card1Description"></p>
+                        </div>
+                        <div class="tarot-card">
+                            <div class="card-emoji" id="card2Emoji"></div>
+                            <h3 id="card2Name"></h3>
+                            <p class="card-meaning" id="card2Meaning"></p>
+                            <p class="card-description" id="card2Description"></p>
+                        </div>
+                        <div class="tarot-card">
+                            <div class="card-emoji" id="card3Emoji"></div>
+                            <h3 id="card3Name"></h3>
+                            <p class="card-meaning" id="card3Meaning"></p>
+                            <p class="card-description" id="card3Description"></p>
+                        </div>
+                    </div>
+                    <button class="primary-btn" onclick="drawTarotCards()">Draw Again</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simple tarot functionality
+        const tarotCards = [
+            { name: 'The Fool', emoji: '🃏', meaning: 'New Beginning', description: 'Start your journey with pure heart and freedom.' },
+            { name: 'The Magician', emoji: '🎩', meaning: 'Creation & Will', description: 'Believe in your abilities and move forward.' },
+            { name: 'The High Priestess', emoji: '🌙', meaning: 'Intuition & Mystery', description: 'Listen to your inner voice.' },
+            { name: 'The Empress', emoji: '👑', meaning: 'Abundance & Creation', description: 'A time full of abundance and love.' },
+            { name: 'The Emperor', emoji: '⚜️', meaning: 'Authority & Stability', description: 'Show leadership and establish order.' },
+            { name: 'The Lovers', emoji: '💕', meaning: 'Love & Choice', description: 'An important moment of choice. Follow your heart.' },
+            { name: 'The Chariot', emoji: '🏇', meaning: 'Victory & Will', description: 'You will achieve your goals with strong will.' },
+            { name: 'Strength', emoji: '🦁', meaning: 'Courage & Patience', description: 'Overcome difficulties with inner strength.' },
+            { name: 'The Hermit', emoji: '🕯️', meaning: 'Reflection & Solitude', description: 'Gain enlightenment through time alone.' },
+            { name: 'Wheel of Fortune', emoji: '☸️', meaning: 'Change & Destiny', description: 'A turning point in life is approaching.' },
+            { name: 'Justice', emoji: '⚖️', meaning: 'Fairness & Balance', description: 'A time that requires fair judgment and balance.' },
+            { name: 'The Star', emoji: '⭐', meaning: 'Hope & Inspiration', description: 'Move forward with hope towards your dreams.' },
+            { name: 'The Sun', emoji: '☀️', meaning: 'Success & Joy', description: 'A bright future and success await you.' },
+            { name: 'The World', emoji: '🌍', meaning: 'Completion & Achievement', description: 'Achieve your goals and enjoy the joy of completion.' }
+        ];
+
+        let userCredits = 3;
+
+        function showScreen(screenId) {
+            const screens = document.querySelectorAll('.screen');
+            screens.forEach(screen => screen.classList.remove('active'));
+            document.getElementById(screenId).classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function updateCreditsDisplay() {
+            document.getElementById('userCredits').textContent = userCredits;
+        }
+
+        function drawTarotCards() {
+            if (userCredits < 1) {
+                alert('Not enough credits! You need 1 credit to draw tarot cards.');
+                return;
+            }
+
+            userCredits--;
+            updateCreditsDisplay();
+
+            const shuffled = [...tarotCards].sort(() => Math.random() - 0.5);
+            const drawn = shuffled.slice(0, 3);
+
+            document.getElementById('card1Emoji').textContent = drawn[0].emoji;
+            document.getElementById('card1Name').textContent = drawn[0].name;
+            document.getElementById('card1Meaning').textContent = drawn[0].meaning;
+            document.getElementById('card1Description').textContent = drawn[0].description;
+
+            document.getElementById('card2Emoji').textContent = drawn[1].emoji;
+            document.getElementById('card2Name').textContent = drawn[1].name;
+            document.getElementById('card2Meaning').textContent = drawn[1].meaning;
+            document.getElementById('card2Description').textContent = drawn[1].description;
+
+            document.getElementById('card3Emoji').textContent = drawn[2].emoji;
+            document.getElementById('card3Name').textContent = drawn[2].name;
+            document.getElementById('card3Meaning').textContent = drawn[2].meaning;
+            document.getElementById('card3Description').textContent = drawn[2].description;
+
+            document.getElementById('tarotResult').classList.remove('hidden');
+        }
+
+        // Service card click handlers
+        document.addEventListener('DOMContentLoaded', () => {
+            const serviceCards = document.querySelectorAll('.service-card');
+            serviceCards.forEach(card => {
+                card.addEventListener('click', function () {
+                    const service = this.getAttribute('data-service');
+                    if (service === 'tarot') {
+                        showScreen('tarotScreen');
+                    } else {
+                        alert(`${this.querySelector('h2').textContent} - Coming soon!`);
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 
 </html>
