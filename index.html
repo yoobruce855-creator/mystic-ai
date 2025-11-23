@@ -6,16 +6,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mystic AI - AI Tarot & Fortune</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        .hidden {
+            display: none !important;
+        }
+
+        .back-btn {
+            background: var(--card-bg);
+            border: 2px solid var(--border-glow);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 12px;
+            cursor: pointer;
+            margin-bottom: 2rem;
+        }
+
+        .back-btn:hover {
+            background: var(--primary-purple);
+        }
+    </style>
 </head>
 
 <body>
-    <!-- Credits Bar -->
     <div class="credits-bar">
         <div class="credits-info">
             <span class="credit-icon">💎</span>
             <span id="userCredits">3</span> Credits
         </div>
-        <button class="upgrade-btn" id="upgradeBtn">⭐ Premium</button>
+        <button class="upgrade-btn">⭐ Premium</button>
     </div>
 
     <!-- Main Screen -->
@@ -37,35 +55,30 @@
                     <p>22 Major Arcana predict your future</p>
                     <div class="card-glow"></div>
                 </div>
-
                 <div class="service-card" data-service="saju">
                     <div class="card-icon">📿</div>
                     <h2>Saju Reading</h2>
                     <p>Traditional fortune analysis</p>
                     <div class="card-glow"></div>
                 </div>
-
                 <div class="service-card" data-service="dream">
                     <div class="card-icon">🌙</div>
                     <h2>Dream Analysis</h2>
                     <p>5,000+ dream interpretations</p>
                     <div class="card-glow"></div>
                 </div>
-
                 <div class="service-card" data-service="compatibility">
                     <div class="card-icon">💕</div>
                     <h2>Compatibility</h2>
                     <p>Love, marriage, business match</p>
                     <div class="card-glow"></div>
                 </div>
-
                 <div class="service-card" data-service="naming">
                     <div class="card-icon">✍️</div>
                     <h2>Name Analysis</h2>
                     <p>Name meaning and recommendations</p>
                     <div class="card-glow"></div>
                 </div>
-
                 <div class="service-card" data-service="today">
                     <div class="card-icon">📅</div>
                     <h2>Daily Fortune</h2>
@@ -88,118 +101,135 @@
                 <p>Draw 3 cards to see your past, present, and future</p>
             </div>
 
-            <div class="tarot-container">
-                <div class="card-deck">
-                    <div class="deck-card" onclick="drawTarotCards()">
+            <div class="tarot-cards">
+                <div class="cards-container">
+                    <div class="tarot-card" onclick="drawTarotCards()" style="cursor: pointer;">
                         <div class="card-back">🎴</div>
-                        <p>Click to draw 3 cards</p>
                     </div>
                 </div>
+                <p style="text-align: center; margin-top: 2rem; color: var(--text-secondary);">Click the card to draw 3
+                    cards (1 credit)</p>
 
-                <div id="tarotResult" class="tarot-result hidden">
-                    <div class="drawn-cards">
-                        <div class="tarot-card">
-                            <div class="card-emoji" id="card1Emoji"></div>
-                            <h3 id="card1Name"></h3>
-                            <p class="card-meaning" id="card1Meaning"></p>
-                            <p class="card-description" id="card1Description"></p>
+                <div id="tarotResult" class="hidden" style="margin-top: 3rem;">
+                    <div class="cards-container" style="gap: 2rem;">
+                        <div
+                            style="background: var(--card-bg); padding: 2rem; border-radius: 20px; border: 2px solid var(--border-glow); text-align: center; min-width: 250px;">
+                            <div id="card1Emoji" style="font-size: 4rem; margin-bottom: 1rem;"></div>
+                            <h3 id="card1Name" style="color: var(--accent-gold); margin-bottom: 0.5rem;"></h3>
+                            <p id="card1Meaning"
+                                style="color: var(--primary-purple-light); font-weight: 600; margin-bottom: 0.5rem;">
+                            </p>
+                            <p id="card1Description" style="color: var(--text-secondary);"></p>
                         </div>
-                        <div class="tarot-card">
-                            <div class="card-emoji" id="card2Emoji"></div>
-                            <h3 id="card2Name"></h3>
-                            <p class="card-meaning" id="card2Meaning"></p>
-                            <p class="card-description" id="card2Description"></p>
+                        <div
+                            style="background: var(--card-bg); padding: 2rem; border-radius: 20px; border: 2px solid var(--border-glow); text-align: center; min-width: 250px;">
+                            <div id="card2Emoji" style="font-size: 4rem; margin-bottom: 1rem;"></div>
+                            <h3 id="card2Name" style="color: var(--accent-gold); margin-bottom: 0.5rem;"></h3>
+                            <p id="card2Meaning"
+                                style="color: var(--primary-purple-light); font-weight: 600; margin-bottom: 0.5rem;">
+                            </p>
+                            <p id="card2Description" style="color: var(--text-secondary);"></p>
                         </div>
-                        <div class="tarot-card">
-                            <div class="card-emoji" id="card3Emoji"></div>
-                            <h3 id="card3Name"></h3>
-                            <p class="card-meaning" id="card3Meaning"></p>
-                            <p class="card-description" id="card3Description"></p>
+                        <div
+                            style="background: var(--card-bg); padding: 2rem; border-radius: 20px; border: 2px solid var(--border-glow); text-align: center; min-width: 250px;">
+                            <div id="card3Emoji" style="font-size: 4rem; margin-bottom: 1rem;"></div>
+                            <h3 id="card3Name" style="color: var(--accent-gold); margin-bottom: 0.5rem;"></h3>
+                            <p id="card3Meaning"
+                                style="color: var(--primary-purple-light); font-weight: 600; margin-bottom: 0.5rem;">
+                            </p>
+                            <p id="card3Description" style="color: var(--text-secondary);"></p>
                         </div>
                     </div>
-                    <button class="primary-btn" onclick="drawTarotCards()">Draw Again</button>
+                    <button class="primary-button" onclick="drawTarotCards()"
+                        style="max-width: 400px; margin: 2rem auto; display: block;">Draw Again</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <script>
-        // Simple tarot functionality
-        const tarotCards = [
-            { name: 'The Fool', emoji: '🃏', meaning: 'New Beginning', description: 'Start your journey with pure heart and freedom.' },
-            { name: 'The Magician', emoji: '🎩', meaning: 'Creation & Will', description: 'Believe in your abilities and move forward.' },
-            { name: 'The High Priestess', emoji: '🌙', meaning: 'Intuition & Mystery', description: 'Listen to your inner voice.' },
-            { name: 'The Empress', emoji: '👑', meaning: 'Abundance & Creation', description: 'A time full of abundance and love.' },
-            { name: 'The Emperor', emoji: '⚜️', meaning: 'Authority & Stability', description: 'Show leadership and establish order.' },
-            { name: 'The Lovers', emoji: '💕', meaning: 'Love & Choice', description: 'An important moment of choice. Follow your heart.' },
-            { name: 'The Chariot', emoji: '🏇', meaning: 'Victory & Will', description: 'You will achieve your goals with strong will.' },
-            { name: 'Strength', emoji: '🦁', meaning: 'Courage & Patience', description: 'Overcome difficulties with inner strength.' },
-            { name: 'The Hermit', emoji: '🕯️', meaning: 'Reflection & Solitude', description: 'Gain enlightenment through time alone.' },
-            { name: 'Wheel of Fortune', emoji: '☸️', meaning: 'Change & Destiny', description: 'A turning point in life is approaching.' },
-            { name: 'Justice', emoji: '⚖️', meaning: 'Fairness & Balance', description: 'A time that requires fair judgment and balance.' },
-            { name: 'The Star', emoji: '⭐', meaning: 'Hope & Inspiration', description: 'Move forward with hope towards your dreams.' },
-            { name: 'The Sun', emoji: '☀️', meaning: 'Success & Joy', description: 'A bright future and success await you.' },
-            { name: 'The World', emoji: '🌍', meaning: 'Completion & Achievement', description: 'Achieve your goals and enjoy the joy of completion.' }
-        ];
+    <!-- Dream Analysis Screen -->
+    <div id="dreamScreen" class="screen">
+        <div class="stars"></div>
+        <div class="container">
+            <button class="back-btn" onclick="showScreen('mainScreen')">← Back</button>
 
-        let userCredits = 3;
+            <div class="service-header">
+                <div class="service-icon">🌙</div>
+                <h1>Dream Analysis</h1>
+                <p>Tell us your dream and discover its meaning</p>
+            </div>
 
-        function showScreen(screenId) {
-            const screens = document.querySelectorAll('.screen');
-            screens.forEach(screen => screen.classList.remove('active'));
-            document.getElementById(screenId).classList.add('active');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
+            <div class="input-section">
+                <h3>Describe Your Dream</h3>
+                <div class="input-group">
+                    <textarea id="dreamInput" placeholder="I dreamed about..."></textarea>
+                </div>
+                <button class="primary-button" onclick="analyzeDream()">Analyze Dream (1 credit)</button>
+            </div>
 
-        function updateCreditsDisplay() {
-            document.getElementById('userCredits').textContent = userCredits;
-        }
+            <div id="dreamResult" class="hidden" style="margin-top: 3rem;">
+                <div
+                    style="background: var(--card-bg); padding: 2rem; border-radius: 20px; border: 2px solid var(--border-glow);">
+                    <div style="text-align: center; font-size: 4rem; margin-bottom: 1rem;" id="dreamSymbol"></div>
+                    <h2 style="color: var(--accent-gold); text-align: center; margin-bottom: 1rem;" id="dreamMeaning">
+                    </h2>
+                    <p style="color: var(--text-secondary); text-align: center; line-height: 1.8;"
+                        id="dreamInterpretation"></p>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        function drawTarotCards() {
-            if (userCredits < 1) {
-                alert('Not enough credits! You need 1 credit to draw tarot cards.');
-                return;
-            }
+    <!-- Compatibility Screen -->
+    <div id="compatibilityScreen" class="screen">
+        <div class="stars"></div>
+        <div class="container">
+            <button class="back-btn" onclick="showScreen('mainScreen')">← Back</button>
 
-            userCredits--;
-            updateCreditsDisplay();
+            <div style="font-size: 4rem; color: var(--secondary-pink); font-weight: bold; margin: 2rem 0;"
+                id="compatScore"></div>
+            <p style="color: var(--text-secondary); font-size: 1.2rem; line-height: 1.8;" id="compatDescription"></p>
+        </div>
+    </div>
+    </div>
+    </div>
 
-            const shuffled = [...tarotCards].sort(() => Math.random() - 0.5);
-            const drawn = shuffled.slice(0, 3);
+    <!-- Daily Fortune Screen -->
+    <div id="todayScreen" class="screen">
+        <div class="stars"></div>
+        <div class="container">
+            <button class="back-btn" onclick="showScreen('mainScreen')">← Back</button>
 
-            document.getElementById('card1Emoji').textContent = drawn[0].emoji;
-            document.getElementById('card1Name').textContent = drawn[0].name;
-            document.getElementById('card1Meaning').textContent = drawn[0].meaning;
-            document.getElementById('card1Description').textContent = drawn[0].description;
+            <div class="service-header">
+                <div class="service-icon">📅</div>
+                <h1>Daily Fortune</h1>
+                <p>Your personalized fortune for today</p>
+            </div>
 
-            document.getElementById('card2Emoji').textContent = drawn[1].emoji;
-            document.getElementById('card2Name').textContent = drawn[1].name;
-            document.getElementById('card2Meaning').textContent = drawn[1].meaning;
-            document.getElementById('card2Description').textContent = drawn[1].description;
+            <div style="text-align: center; margin: 3rem 0;">
+                <button class="primary-button" onclick="getDailyFortune()" style="max-width: 400px; margin: 0 auto;">Get
+                    Today's Fortune (Free!)</button>
+            </div>
 
-            document.getElementById('card3Emoji').textContent = drawn[2].emoji;
-            document.getElementById('card3Name').textContent = drawn[2].name;
-            document.getElementById('card3Meaning').textContent = drawn[2].meaning;
-            document.getElementById('card3Description').textContent = drawn[2].description;
+            <div id="todayResult" class="hidden" style="margin-top: 3rem;">
+                <div
+                    style="background: var(--card-bg); padding: 3rem; border-radius: 20px; border: 2px solid var(--border-glow);">
+                    <div style="text-align: center; font-size: 4rem; margin-bottom: 1rem;" id="fortuneEmoji"></div>
+                    <h2 style="color: var(--accent-gold); text-align: center; margin-bottom: 1rem;" id="fortuneTitle">
+                    </h2>
+                    <p style="color: var(--text-secondary); text-align: center; font-size: 1.2rem; line-height: 1.8; margin-bottom: 2rem;"
+                        id="fortuneMessage"></p>
+                    <div
+                        style="background: hsla(45, 100%, 60%, 0.1); padding: 1.5rem; border-radius: 15px; text-align: center;">
+                        <p style="color: var(--accent-gold); font-weight: 600;">Lucky Numbers</p>
+                        <p style="font-size: 1.5rem; color: white; margin-top: 0.5rem;" id="luckyNumbers"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-            document.getElementById('tarotResult').classList.remove('hidden');
-        }
-
-        // Service card click handlers
-        document.addEventListener('DOMContentLoaded', () => {
-            const serviceCards = document.querySelectorAll('.service-card');
-            serviceCards.forEach(card => {
-                card.addEventListener('click', function () {
-                    const service = this.getAttribute('data-service');
-                    if (service === 'tarot') {
-                        showScreen('tarotScreen');
-                    } else {
-                        alert(`${this.querySelector('h2').textContent} - Coming soon!`);
-                    }
-                });
-            });
-        });
-    </script>
+    <script src="app.js"></script>
 </body>
 
 </html>
