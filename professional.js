@@ -46,13 +46,27 @@ const fortuneMessages = [
     { emoji: '✨', title: 'Magical Synchronicities', message: 'Pay attention to signs. The universe communicates with you.', advice: 'Trust your intuition. Notice patterns and signs.' }
 ];
 
+// Tojeongbigyeol (Saju) Database - Simplified 144 Hexagrams
+const sajuHexagrams = [
+    { id: 111, title: 'The Sky (Geon)', total: 'Great fortune aligns with your path. Like a dragon ascending to the heavens, your ambitions will be realized.', monthly: 'Spring brings new opportunities, Summer requires patience, Autumn yields harvest, Winter offers rest.', advice: 'Be bold in your endeavors but humble in your success.' },
+    { id: 112, title: 'The Lake (Tae)', total: 'Joy and satisfaction fill your year. Relationships flourish and financial stability is within reach.', monthly: 'Early year favors networking. Mid-year brings financial gain. Late year focuses on family.', advice: 'Share your joy with others to multiply your blessings.' },
+    { id: 113, title: 'The Fire (Ri)', total: 'Passion and clarity guide you. Your intellectual pursuits will shine, but beware of burnout.', monthly: 'Focus on learning in the first quarter. Take action in the second. Reflect in the third.', advice: 'Channel your energy wisely. Balance passion with rest.' },
+    { id: 114, title: 'The Thunder (Jin)', total: 'Sudden changes bring growth. Like thunder awakening the earth, you will be shaken but strengthened.', monthly: 'Unexpected news in Spring. Adaptation in Summer. Stability returns in Autumn.', advice: 'Embrace change as a catalyst for personal evolution.' },
+    { id: 115, title: 'The Wind (Son)', total: 'Gentle progress and influence. Your flexibility will be your greatest asset this year.', monthly: 'Travel or movement is favorable. Communication opens doors. Trust the flow.', advice: 'Be like the wind - adaptable, persistent, and far-reaching.' },
+    { id: 116, title: 'The Water (Gam)', total: 'Deep wisdom and resilience. You may face challenges, but you have the depth to overcome them.', monthly: 'Navigate obstacles with patience. Emotional healing in mid-year. Clarity arrives by year-end.', advice: 'Trust your inner wisdom. Flow around obstacles rather than forcing through.' },
+    { id: 117, title: 'The Mountain (Gan)', total: 'Stability and stillness. A year for building foundations and inner cultivation.', monthly: 'Slow start. Steady progress in Summer. Solid achievements in Autumn.', advice: 'Patience is key. Build your castle one stone at a time.' },
+    { id: 118, title: 'The Earth (Gon)', total: 'Receptivity and support. You will find strength in service and supporting others.', monthly: 'Nurture relationships early on. Harvest fruits of labor in Autumn. Rest in Winter.', advice: 'Stay grounded. Your strength lies in your ability to endure and nurture.' },
+    // Fallback
+    { id: 999, title: 'The Harmony', total: 'Balance is restored. A year of equilibrium where effort matches reward.', monthly: 'Steady progress throughout the seasons. No major disruptions expected.', advice: 'Maintain your current path with diligence and integrity.' }
+];
+
 let userCredits = 3;
 
 document.addEventListener('DOMContentLoaded', function () {
     document.querySelectorAll('.service-card').forEach(card => {
         card.addEventListener('click', function () {
             const service = this.getAttribute('data-service');
-            if (service === 'saju' || service === 'naming') {
+            if (service === 'naming') {
                 alert('Coming soon! This feature is under development.');
             } else {
                 showScreen(service + 'Screen');
@@ -61,6 +75,63 @@ document.addEventListener('DOMContentLoaded', function () {
     });
     updateCreditsDisplay();
 });
+
+// Saju Analysis Function
+function analyzeSaju() {
+    const name = document.getElementById('sajuName').value.trim();
+    const date = document.getElementById('sajuDate').value;
+    const time = document.getElementById('sajuTime').value;
+    const gender = document.getElementById('sajuGender').value;
+
+    if (!name || !date) {
+        alert('Please enter your name and birth date!');
+        return;
+    }
+
+    if (userCredits < 2) {
+        alert('Not enough credits! You need 2 credits.');
+        return;
+    }
+
+    userCredits -= 2;
+    updateCreditsDisplay();
+
+    // Calculate Hexagram based on Tojeongbigyeol principles (Simplified)
+    const birthDate = new Date(date);
+    const year = birthDate.getFullYear();
+    const month = birthDate.getMonth() + 1;
+    const day = birthDate.getDate();
+
+    // Upper Trigram (Sang-Gwae): Based on Year
+    const upper = (year % 8) + 1;
+
+    // Middle Trigram (Jung-Gwae): Based on Month
+    const middle = (month % 8) + 1;
+
+    // Lower Trigram (Ha-Gwae): Based on Day
+    const lower = (day % 8) + 1;
+
+    // Construct Hexagram ID (e.g., 111, 112...)
+    // For simplicity, we map to our database IDs
+    // In real Tojeongbigyeol, calculation is more complex involving lunar calendar
+    const hexId = parseInt(`11${(upper + middle + lower) % 8 + 1}`);
+
+    // Find result or fallback
+    let result = sajuHexagrams.find(h => h.id === hexId);
+    if (!result) {
+        // Deterministic fallback based on date hash
+        const hash = (year + month + day) % sajuHexagrams.length;
+        result = sajuHexagrams[hash];
+    }
+
+    document.getElementById('sajuTitle').textContent = `${result.title} (Hexagram ${upper}-${middle}-${lower})`;
+    document.getElementById('sajuHexagram').textContent = `Upper: ${upper} | Middle: ${middle} | Lower: ${lower}`;
+    document.getElementById('sajuTotal').textContent = result.total;
+    document.getElementById('sajuMonthly').textContent = result.monthly;
+    document.getElementById('sajuAdvice').textContent = result.advice;
+
+    document.getElementById('sajuResult').classList.remove('hidden');
+}
 
 function showScreen(screenId) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
