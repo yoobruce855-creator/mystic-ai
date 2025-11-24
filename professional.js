@@ -1,5 +1,6 @@
-// ===== PROFESSIONAL MYSTIC AI - MONETIZATION READY =====
+// ===== PROFESSIONAL MYSTIC AI - STABLE VERSION =====
 
+// 1. TAROT DATA
 const tarotCards = [
     { name: 'The Fool', emoji: '🃏', meaning: 'New Beginning', description: 'New beginnings, spontaneity, and a free spirit. Embrace new journeys with optimism.' },
     { name: 'The Magician', emoji: '🎩', meaning: 'Manifestation', description: 'You have all the tools needed to succeed. Channel your willpower and focus.' },
@@ -25,6 +26,7 @@ const tarotCards = [
     { name: 'The World', emoji: '🌍', meaning: 'Completion', description: 'You have achieved your goals. Celebrate your success and fulfillment.' }
 ];
 
+// 2. FORTUNE MESSAGES
 const fortuneMessages = [
     { emoji: '⭐', title: 'Exceptional Day', message: 'Extraordinary opportunities await. The universe aligns in your favor.', advice: 'Take bold action. Your confidence will attract success.' },
     { emoji: '🌟', title: 'Abundant Blessings', message: 'Pleasant surprises and positive energy fill your day.', advice: 'Express gratitude and share your good fortune.' },
@@ -33,9 +35,7 @@ const fortuneMessages = [
     { emoji: '✨', title: 'Magical Synchronicities', message: 'Pay attention to signs. The universe communicates with you.', advice: 'Trust your intuition. Notice patterns and signs.' }
 ];
 
-// ===== ADVANCED FORTUNE ENGINES =====
-
-// 1. TOJEONGBIGYEOL (SAJU) ENGINE - 144 COMBINATIONS
+// 3. SAJU DATA
 const sajuElements = {
     upper: ['Sky (Geon)', 'Lake (Tae)', 'Fire (Ri)', 'Thunder (Jin)', 'Wind (Son)', 'Water (Gam)', 'Mountain (Gan)', 'Earth (Gon)'],
     middle: ['Prosperity', 'Conflict', 'Harmony', 'Change', 'Stagnation', 'Growth'],
@@ -53,10 +53,97 @@ const sajuInterpretations = {
     earth: { nature: 'Receptive, Yielding, Supportive', advice: 'Support others and stay grounded.' }
 };
 
+// ===== CORE FUNCTIONS =====
+
+let userCredits = 3;
+
+// Initialize
+document.addEventListener('DOMContentLoaded', function () {
+    updateCreditsDisplay();
+    console.log("Mystic AI Professional Engine Loaded");
+});
+
+function updateCreditsDisplay() {
+    const el = document.getElementById('userCredits');
+    if (el) el.textContent = userCredits;
+}
+
+function showScreen(screenId) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    const screen = document.getElementById(screenId);
+    if (screen) {
+        screen.classList.add('active');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+        console.error("Screen not found: " + screenId);
+    }
+}
+
+function showLoading(callback) {
+    const overlay = document.getElementById('loadingOverlay');
+    const textElement = document.getElementById('loadingText');
+    const messages = [
+        "Consulting the Stars...",
+        "Reading Ancient Patterns...",
+        "Aligning Cosmic Energies...",
+        "Decoding Your Destiny...",
+        "Whispering to the Spirits...",
+        "Analyzing Celestial Maps..."
+    ];
+
+    if (overlay) overlay.classList.add('active');
+
+    let msgIndex = 0;
+    const interval = setInterval(() => {
+        if (textElement) textElement.textContent = messages[Math.floor(Math.random() * messages.length)];
+    }, 800);
+
+    setTimeout(() => {
+        clearInterval(interval);
+        if (overlay) overlay.classList.remove('active');
+        if (callback) callback();
+    }, 2500);
+}
+
+// --- SERVICE FUNCTIONS ---
+
+function drawTarotCards() {
+    if (userCredits < 1) {
+        alert('Not enough credits! You need 1 credit.');
+        return;
+    }
+
+    showLoading(() => {
+        userCredits--;
+        updateCreditsDisplay();
+
+        const shuffled = [...tarotCards].sort(() => Math.random() - 0.5);
+        const drawn = shuffled.slice(0, 3);
+
+        for (let i = 0; i < 3; i++) {
+            const emojiEl = document.getElementById(`card${i + 1}Emoji`);
+            const nameEl = document.getElementById(`card${i + 1}Name`);
+            const meaningEl = document.getElementById(`card${i + 1}Meaning`);
+            const descEl = document.getElementById(`card${i + 1}Description`);
+
+            if (emojiEl) emojiEl.textContent = drawn[i].emoji;
+            if (nameEl) nameEl.textContent = drawn[i].name;
+            if (meaningEl) meaningEl.textContent = drawn[i].meaning;
+            if (descEl) descEl.textContent = drawn[i].description;
+        }
+
+        const resultDiv = document.getElementById('tarotResult');
+        if (resultDiv) {
+            resultDiv.classList.remove('hidden');
+            resultDiv.scrollIntoView({ behavior: 'smooth' });
+        }
+    });
+}
+
 function generateSajuResult(year, month, day) {
-    const upperIdx = (year % 8); // 0-7
-    const middleIdx = (month % 6); // 0-5
-    const lowerIdx = (day % 3); // 0-2
+    const upperIdx = (year % 8);
+    const middleIdx = (month % 6);
+    const lowerIdx = (day % 3);
 
     const hexagramCode = `${upperIdx + 1}${middleIdx + 1}${lowerIdx + 1}`;
     const upperName = sajuElements.upper[upperIdx];
@@ -90,86 +177,6 @@ function generateSajuResult(year, month, day) {
     };
 }
 
-let userCredits = 3;
-
-document.addEventListener('DOMContentLoaded', function () {
-    document.querySelectorAll('.service-card').forEach(card => {
-        card.addEventListener('click', function () {
-            const service = this.getAttribute('data-service');
-            if (service === 'naming') {
-                alert('Coming soon! This feature is under development.');
-            } else {
-                showScreen(service + 'Screen');
-            }
-        });
-    });
-    updateCreditsDisplay();
-});
-
-function showScreen(screenId) {
-    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-    const screen = document.getElementById(screenId);
-    if (screen) {
-        screen.classList.add('active');
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-}
-
-function updateCreditsDisplay() {
-    document.getElementById('userCredits').textContent = userCredits;
-}
-
-// Loading Logic
-function showLoading(callback) {
-    const overlay = document.getElementById('loadingOverlay');
-    const textElement = document.getElementById('loadingText');
-    const messages = [
-        "Consulting the Stars...",
-        "Reading Ancient Patterns...",
-        "Aligning Cosmic Energies...",
-        "Decoding Your Destiny...",
-        "Whispering to the Spirits...",
-        "Analyzing Celestial Maps..."
-    ];
-
-    overlay.classList.add('active');
-
-    let msgIndex = 0;
-    const interval = setInterval(() => {
-        textElement.textContent = messages[Math.floor(Math.random() * messages.length)];
-    }, 800);
-
-    setTimeout(() => {
-        clearInterval(interval);
-        overlay.classList.remove('active');
-        callback();
-    }, 2500); // 2.5 seconds delay
-}
-
-function drawTarotCards() {
-    if (userCredits < 1) {
-        alert('Not enough credits! You need 1 credit.');
-        return;
-    }
-
-    showLoading(() => {
-        userCredits--;
-        updateCreditsDisplay();
-
-        const shuffled = [...tarotCards].sort(() => Math.random() - 0.5);
-        const drawn = shuffled.slice(0, 3);
-
-        for (let i = 0; i < 3; i++) {
-            document.getElementById(`card${i + 1}Emoji`).textContent = drawn[i].emoji;
-            document.getElementById(`card${i + 1}Name`).textContent = drawn[i].name;
-            document.getElementById(`card${i + 1}Meaning`).textContent = drawn[i].meaning;
-            document.getElementById(`card${i + 1}Description`).textContent = drawn[i].description;
-        }
-        document.getElementById('tarotResult').classList.remove('hidden');
-        document.getElementById('tarotResult').scrollIntoView({ behavior: 'smooth' });
-    });
-}
-
 function analyzeSaju() {
     const name = document.getElementById('sajuName').value.trim();
     const date = document.getElementById('sajuDate').value;
@@ -193,7 +200,6 @@ function analyzeSaju() {
         const month = birthDate.getMonth() + 1;
         const day = birthDate.getDate();
 
-        // Use the new Advanced Engine
         const result = generateSajuResult(year, month, day);
 
         document.getElementById('sajuTitle').textContent = result.title;
@@ -202,8 +208,9 @@ function analyzeSaju() {
         document.getElementById('sajuMonthly').textContent = result.monthly;
         document.getElementById('sajuAdvice').textContent = result.advice;
 
-        document.getElementById('sajuResult').classList.remove('hidden');
-        document.getElementById('sajuResult').scrollIntoView({ behavior: 'smooth' });
+        const resultDiv = document.getElementById('sajuResult');
+        resultDiv.classList.remove('hidden');
+        resultDiv.scrollIntoView({ behavior: 'smooth' });
     });
 }
 
@@ -218,7 +225,6 @@ function analyzeDream() {
         return;
     }
 
-    // Check if database is loaded
     if (typeof analyzeDreamWithDatabase !== 'function') {
         console.error("Dream database not loaded!");
         alert("System error: Dream database missing. Please refresh.");
@@ -229,17 +235,16 @@ function analyzeDream() {
         userCredits--;
         updateCreditsDisplay();
 
-        // Use the new External Database Engine
         const result = analyzeDreamWithDatabase(dreamText);
 
         document.getElementById('dreamSymbol').textContent = result.symbol;
         document.getElementById('dreamMeaning').textContent = result.meaning;
-        // Use innerHTML because the new engine returns HTML (line breaks, bold tags)
         document.getElementById('dreamInterpretation').innerHTML = result.interpretation;
         document.getElementById('dreamAdvice').textContent = result.advice;
 
-        document.getElementById('dreamResult').classList.remove('hidden');
-        document.getElementById('dreamResult').scrollIntoView({ behavior: 'smooth' });
+        const resultDiv = document.getElementById('dreamResult');
+        resultDiv.classList.remove('hidden');
+        resultDiv.scrollIntoView({ behavior: 'smooth' });
     });
 }
 
@@ -353,8 +358,10 @@ function checkCompatibility() {
 
         document.getElementById('compatDescription').textContent = description;
         document.getElementById('compatAdvice').textContent = advice;
-        document.getElementById('compatibilityResult').classList.remove('hidden');
-        document.getElementById('compatibilityResult').scrollIntoView({ behavior: 'smooth' });
+
+        const resultDiv = document.getElementById('compatibilityResult');
+        resultDiv.classList.remove('hidden');
+        resultDiv.scrollIntoView({ behavior: 'smooth' });
     });
 }
 
@@ -375,7 +382,9 @@ function getDailyFortune() {
         document.getElementById('fortuneMessage').textContent = fortune.message;
         document.getElementById('luckyNumbers').textContent = luckyNums.join(', ');
         document.getElementById('todayAdvice').textContent = fortune.advice;
-        document.getElementById('todayResult').classList.remove('hidden');
-        document.getElementById('todayResult').scrollIntoView({ behavior: 'smooth' });
+
+        const resultDiv = document.getElementById('todayResult');
+        resultDiv.classList.remove('hidden');
+        resultDiv.scrollIntoView({ behavior: 'smooth' });
     });
 }
