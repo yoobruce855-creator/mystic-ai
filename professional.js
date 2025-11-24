@@ -35,6 +35,24 @@ const fortuneMessages = [
     { emoji: '✨', title: 'Magical Synchronicities', message: 'Pay attention to signs. The universe communicates with you.', advice: 'Trust your intuition. Notice patterns and signs.' }
 ];
 
+// 3. SAJU DATA
+const sajuElements = {
+    upper: ['Sky (Geon)', 'Lake (Tae)', 'Fire (Ri)', 'Thunder (Jin)', 'Wind (Son)', 'Water (Gam)', 'Mountain (Gan)', 'Earth (Gon)'],
+    middle: ['Prosperity', 'Conflict', 'Harmony', 'Change', 'Stagnation', 'Growth'],
+    lower: ['Foundation', 'People', 'Self']
+};
+
+const sajuInterpretations = {
+    sky: { nature: 'Active, Creative, Strong', advice: 'Take initiative and lead.' },
+    lake: { nature: 'Joyful, Expressive, Open', advice: 'Communicate and share with others.' },
+    fire: { nature: 'Passionate, Clear, Visible', advice: 'Show your talents but avoid burnout.' },
+    thunder: { nature: 'Arousing, Shocking, Moving', advice: 'Embrace sudden changes bravely.' },
+    wind: { nature: 'Gentle, Penetrating, Flexible', advice: 'Adapt to circumstances smoothly.' },
+    water: { nature: 'Deep, Dangerous, Flowing', advice: 'Be cautious and seek wisdom.' },
+    mountain: { nature: 'Still, Stable, Resting', advice: 'Pause and consolidate your gains.' },
+    earth: { nature: 'Receptive, Yielding, Supportive', advice: 'Support others and stay grounded.' }
+};
+
 // ===== CORE FUNCTIONS =====
 
 let userCredits = 3;
@@ -48,15 +66,6 @@ document.addEventListener('DOMContentLoaded', function () {
 function updateCreditsDisplay() {
     const el = document.getElementById('userCredits');
     if (el) el.textContent = userCredits;
-}
-
-function showCreditWarning() {
-    alert('Not enough credits! Please upgrade to Premium.');
-}
-
-function deductCredits(amount) {
-    userCredits -= amount;
-    updateCreditsDisplay();
 }
 
 function showScreen(screenId) {
@@ -96,22 +105,17 @@ function showLoading(callback) {
     }, 2500);
 }
 
-function hideLoading() {
-    const overlay = document.getElementById('loadingOverlay');
-    if (overlay) overlay.classList.remove('active');
-}
-
 // --- SERVICE FUNCTIONS ---
 
 function drawTarotCards() {
     if (userCredits < 1) {
-        showCreditWarning();
+        alert('Not enough credits! You need 1 credit.');
         return;
     }
 
     showLoading(() => {
-        deductCredits(1);
-        hideLoading();
+        userCredits--;
+        updateCreditsDisplay();
 
         const shuffled = [...tarotCards].sort(() => Math.random() - 0.5);
         const drawn = shuffled.slice(0, 3);
@@ -136,71 +140,78 @@ function drawTarotCards() {
     });
 }
 
-// ===== Saju (Four Pillars) Analysis =====
+function generateSajuResult(year, month, day) {
+    const upperIdx = (year % 8);
+    const middleIdx = (month % 6);
+    const lowerIdx = (day % 3);
+
+    const hexagramCode = `${upperIdx + 1}${middleIdx + 1}${lowerIdx + 1}`;
+    const upperName = sajuElements.upper[upperIdx];
+    const upperKey = upperName.split(' ')[0].toLowerCase();
+    const interp = sajuInterpretations[upperKey];
+
+    const titles = [
+        `The Destiny of ${upperName}`,
+        `Hexagram ${hexagramCode}: ${upperName} over ${sajuElements.middle[middleIdx]}`,
+        `The Path of ${interp.nature}`
+    ];
+
+    const totals = [
+        `This year, the energy of the ${upperName} dominates your life. It is a time of ${interp.nature.toLowerCase()} energy. Combined with the influence of ${sajuElements.middle[middleIdx]}, you will experience significant shifts in your personal growth.`,
+        `Like the ${upperName}, your fortune is vast and powerful. The ${sajuElements.middle[middleIdx]} aspect suggests that you must pay attention to your environment. ${interp.advice}`,
+        `A year of ${sajuElements.middle[middleIdx]} defined by the ${upperName}. Your foundation in ${sajuElements.lower[lowerIdx]} will be tested, but the outcome looks promising if you remain true to yourself.`
+    ];
+
+    const monthlies = [
+        `Spring brings new beginnings in ${sajuElements.lower[lowerIdx]}. Summer requires patience as the ${upperName} energy peaks. Autumn is the time for harvest, and Winter for reflection.`,
+        `Early year is favorable for ${sajuElements.lower[lowerIdx]}. Mid-year might bring challenges related to ${sajuElements.middle[middleIdx]}. The end of the year promises stability.`,
+        `Focus on ${sajuElements.lower[lowerIdx]} in the first half. The second half will be dominated by the ${upperName}'s influence, bringing ${interp.nature.toLowerCase()} outcomes.`
+    ];
+
+    return {
+        title: titles[year % 3],
+        hexagram: `Upper: ${upperName} | Middle: ${sajuElements.middle[middleIdx]} | Lower: ${sajuElements.lower[lowerIdx]}`,
+        total: totals[(year + month) % 3],
+        monthly: monthlies[(month + day) % 3],
+        advice: `${interp.advice} Focus on improving your ${sajuElements.lower[lowerIdx]} to maximize good fortune.`
+    };
+}
+
 function analyzeSaju() {
-    const name = document.getElementById('sajuName').value;
+    const name = document.getElementById('sajuName').value.trim();
     const date = document.getElementById('sajuDate').value;
-    const time = document.getElementById('sajuTime').value;
-    const gender = document.getElementById('sajuGender').value;
 
     if (!name || !date) {
-        alert('Please enter your name and birth date.');
+        alert('Please enter your name and birth date!');
         return;
     }
 
     if (userCredits < 2) {
-        showCreditWarning();
+        alert('Not enough credits! You need 2 credits.');
         return;
     }
 
-    deductCredits(2);
-    showLoading();
+    showLoading(() => {
+        userCredits -= 2;
+        updateCreditsDisplay();
 
-    setTimeout(() => {
-        hideLoading();
+        const birthDate = new Date(date);
+        const year = birthDate.getFullYear();
+        const month = birthDate.getMonth() + 1;
+        const day = birthDate.getDate();
+
+        const result = generateSajuResult(year, month, day);
+
+        document.getElementById('sajuTitle').textContent = result.title;
+        document.getElementById('sajuHexagram').textContent = result.hexagram;
+        document.getElementById('sajuTotal').textContent = result.total;
+        document.getElementById('sajuMonthly').textContent = result.monthly;
+        document.getElementById('sajuAdvice').textContent = result.advice;
+
         const resultDiv = document.getElementById('sajuResult');
         resultDiv.classList.remove('hidden');
-
-        // Use the new SajuEngine
-        const report = SajuEngine.generateReport(name, gender, date);
-
-        // Update UI
-        // Inject the detailed report. 
-        const container = resultDiv.querySelector('div'); // The inner card div
-
-        const detailsHtml = `
-            <div style="text-align: center; margin-bottom: 2rem;">
-                <h2 style="color: var(--accent-gold); margin-bottom: 0.5rem;">${report.title}</h2>
-                <p style="color: var(--text-secondary); white-space: pre-line;">${report.summary}</p>
-            </div>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
-                <div style="background: hsla(270, 70%, 30%, 0.3); padding: 1.5rem; border-radius: 15px;">
-                    <h4 style="color: var(--secondary-pink); margin-bottom: 0.5rem;">🧠 Personality & Character</h4>
-                    <p style="color: var(--text-primary); line-height: 1.6;">${report.personality}</p>
-                </div>
-                <div style="background: hsla(270, 70%, 30%, 0.3); padding: 1.5rem; border-radius: 15px;">
-                    <h4 style="color: var(--accent-gold); margin-bottom: 0.5rem;">💰 Wealth & Success</h4>
-                    <p style="color: var(--text-primary); line-height: 1.6;">${report.wealth}</p>
-                </div>
-                <div style="background: hsla(270, 70%, 30%, 0.3); padding: 1.5rem; border-radius: 15px;">
-                    <h4 style="color: var(--accent-green); margin-bottom: 0.5rem;">💼 Career Path</h4>
-                    <p style="color: var(--text-primary); line-height: 1.6;">${report.career}</p>
-                </div>
-                <div style="background: hsla(270, 70%, 30%, 0.3); padding: 1.5rem; border-radius: 15px;">
-                    <h4 style="color: #ff6b6b; margin-bottom: 0.5rem;">❤️ Love & Relationships</h4>
-                    <p style="color: var(--text-primary); line-height: 1.6;">${report.love}</p>
-                </div>
-            </div>
-            <div style="background: hsla(45, 100%, 60%, 0.1); padding: 2rem; border-radius: 15px; border-left: 4px solid var(--accent-gold);">
-                <h4 style="color: var(--accent-gold); margin-bottom: 1rem;">💡 Expert Advice</h4>
-                <p style="color: var(--text-secondary); line-height: 1.8;">${report.advice}</p>
-            </div>
-        `;
-
-        container.innerHTML = detailsHtml;
         resultDiv.scrollIntoView({ behavior: 'smooth' });
-
-    }, 2000);
+    });
 }
 
 function analyzeDream() {
@@ -210,7 +221,7 @@ function analyzeDream() {
         return;
     }
     if (userCredits < 1) {
-        showCreditWarning();
+        alert('Not enough credits! You need 1 credit.');
         return;
     }
 
@@ -221,8 +232,8 @@ function analyzeDream() {
     }
 
     showLoading(() => {
-        deductCredits(1);
-        hideLoading();
+        userCredits--;
+        updateCreditsDisplay();
 
         const result = analyzeDreamWithDatabase(dreamText);
 
@@ -252,13 +263,13 @@ function checkCompatibility() {
         return;
     }
     if (userCredits < 2) {
-        showCreditWarning();
+        alert('Not enough credits! You need 2 credits.');
         return;
     }
 
     showLoading(() => {
-        deductCredits(2);
-        hideLoading();
+        userCredits -= 2;
+        updateCreditsDisplay();
 
         const createHash = (str) => {
             let hash = 0;
@@ -356,7 +367,6 @@ function checkCompatibility() {
 
 function getDailyFortune() {
     showLoading(() => {
-        hideLoading();
         const today = new Date();
         const seed = today.getDate() + today.getMonth() * 31;
         const fortuneIndex = seed % fortuneMessages.length;
@@ -379,66 +389,63 @@ function getDailyFortune() {
     });
 }
 
-// ===== AI Naming Center =====
-function generateName() {
-    const surname = document.getElementById('namingSurname').value.trim();
-    const date = document.getElementById('namingDate').value;
-    const time = document.getElementById('namingTime').value;
-    const gender = document.getElementById('namingGender').value;
+function analyzeName() {
+    const nameInput = document.getElementById('namingInput');
+    const name = nameInput.value.trim();
 
-    if (!surname || !date) {
-        alert('Please enter your surname and birth date.');
+    if (!name) {
+        alert('Please enter a name to analyze!');
         return;
     }
 
-    // Check for Hangul surname
-    if (!/[가-힣]/.test(surname)) {
-        alert('Please enter a Korean surname (Hangul) for accurate analysis.');
+    // Check for Hangul
+    const hasHangul = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/.test(name);
+    if (!hasHangul) {
+        alert('For accurate Seongmyeonghak analysis, please enter a Korean name (Hangul). English names will be analyzed using basic Numerology.');
+    }
+
+    if (userCredits < 1) {
+        alert('Not enough credits! You need 1 credit.');
         return;
     }
 
-    if (userCredits < 3) {
-        showCreditWarning();
+    if (typeof analyzeNameLogic !== 'function') {
+        console.error("Naming database not loaded!");
+        alert("System error: Naming database missing. Please refresh.");
         return;
     }
 
-    deductCredits(3);
-    showLoading();
+    showLoading(() => {
+        userCredits--;
+        updateCreditsDisplay();
 
-    setTimeout(() => {
-        hideLoading();
+        const result = analyzeNameLogic(name);
+
+        document.getElementById('nameScore').textContent = result.score;
+        document.getElementById('nameSpiritTitle').textContent = result.spirit.title;
+        document.getElementById('nameSpiritType').textContent = result.spirit.type;
+        document.getElementById('nameSpiritType').className = result.spirit.type.includes('Gil') ? 'good-fortune' : 'bad-fortune';
+        document.getElementById('nameSpiritDesc').textContent = result.spirit.desc;
+
+        const flowContainer = document.getElementById('nameSoundFlow');
+        flowContainer.innerHTML = '';
+        result.soundFlow.forEach((elem, index) => {
+            const span = document.createElement('span');
+            span.className = `element-tag element-${elem.toLowerCase()}`;
+            span.textContent = elem;
+            flowContainer.appendChild(span);
+            if (index < result.soundFlow.length - 1) {
+                const arrow = document.createElement('span');
+                arrow.textContent = ' → ';
+                arrow.style.color = 'var(--text-secondary)';
+                flowContainer.appendChild(arrow);
+            }
+        });
+
+        document.getElementById('nameHarmonyDesc').textContent = result.harmonyDesc;
+
         const resultDiv = document.getElementById('namingResult');
         resultDiv.classList.remove('hidden');
-
-        // Use NamingEngine to generate names
-        const result = NamingEngine.generateNames(surname, date, time, gender);
-
-        // Update Summary
-        document.getElementById('namingSummary').innerText = result.sajuSummary;
-
-        // Generate List HTML
-        const listContainer = document.getElementById('namingList');
-        listContainer.innerHTML = result.recommendations.map(item => `
-            <div style="background: hsla(270, 70%, 30%, 0.3); padding: 1.5rem; border-radius: 15px; border: 1px solid var(--border-glow); transition: transform 0.3s ease;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                    <div>
-                        <h3 style="color: var(--accent-gold); margin: 0; font-size: 1.8rem;">${item.fullName}</h3>
-                        <span style="color: var(--text-secondary); font-size: 0.9rem;">${item.hanja}</span>
-                    </div>
-                    <div style="text-align: right;">
-                        <span style="font-size: 2rem; font-weight: bold; color: ${item.score >= 90 ? 'var(--accent-green)' : 'var(--secondary-pink)'};">${item.score}</span>
-                        <span style="display: block; font-size: 0.8rem; color: var(--text-secondary);">Score</span>
-                    </div>
-                </div>
-                <div style="background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 10px; margin-bottom: 1rem;">
-                    <p style="color: var(--text-primary); margin-bottom: 0.5rem;"><strong>Meaning:</strong> ${item.meaning}</p>
-                    <p style="color: var(--primary-purple-light); font-size: 0.9rem;">${item.reason}</p>
-                </div>
-                <button class="primary-button" style="width: 100%; padding: 0.5rem; font-size: 0.9rem;" onclick="alert('Name saved to favorites!')">❤️ Save Name</button>
-            </div>
-        `).join('');
-
         resultDiv.scrollIntoView({ behavior: 'smooth' });
-
-    }, 2500);
+    });
 }
