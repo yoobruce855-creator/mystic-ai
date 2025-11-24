@@ -1222,6 +1222,7 @@ body {
         font-size: 0.85rem;
     }
 }
+
 /* ===== Input Icon Fix ===== */
 input[type='date']::-webkit-calendar-picker-indicator,
 input[type='time']::-webkit-calendar-picker-indicator {
@@ -1230,8 +1231,62 @@ input[type='time']::-webkit-calendar-picker-indicator {
     opacity: 0.8;
 }
 
-input[type='date']::-webkit-calendar-picker-indicator:hover,
 input[type='time']::-webkit-calendar-picker-indicator:hover {
     opacity: 1;
 }
 
+/* Naming Analysis Styles */
+.element-tag {
+    padding: 0.3rem 0.8rem;
+    border-radius: 15px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    display: inline-block;
+    margin: 0 0.2rem;
+}
+
+.element-wood {
+    background: rgba(76, 175, 80, 0.2);
+    color: #81c784;
+    border: 1px solid #81c784;
+}
+
+.element-fire {
+    background: rgba(244, 67, 54, 0.2);
+    color: #e57373;
+    border: 1px solid #e57373;
+}
+
+.element-earth {
+    background: rgba(255, 193, 7, 0.2);
+    color: #ffd54f;
+    border: 1px solid #ffd54f;
+}
+
+.element-metal {
+    background: rgba(158, 158, 158, 0.2);
+    color: #e0e0e0;
+    border: 1px solid #e0e0e0;
+}
+
+.element-water {
+    background: rgba(33, 150, 243, 0.2);
+    color: #64b5f6;
+    border: 1px solid #64b5f6;
+}
+
+.element-mixed {
+    background: rgba(156, 39, 176, 0.2);
+    color: #ba68c8;
+    border: 1px solid #ba68c8;
+}
+
+.good-fortune {
+    color: #81c784;
+    font-weight: bold;
+}
+
+.bad-fortune {
+    color: #e57373;
+    font-weight: bold;
+}

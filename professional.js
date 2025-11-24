@@ -388,3 +388,64 @@ function getDailyFortune() {
         resultDiv.scrollIntoView({ behavior: 'smooth' });
     });
 }
+
+function analyzeName() {
+    const nameInput = document.getElementById('namingInput');
+    const name = nameInput.value.trim();
+
+    if (!name) {
+        alert('Please enter a name to analyze!');
+        return;
+    }
+
+    // Check for Hangul
+    const hasHangul = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/.test(name);
+    if (!hasHangul) {
+        alert('For accurate Seongmyeonghak analysis, please enter a Korean name (Hangul). English names will be analyzed using basic Numerology.');
+    }
+
+    if (userCredits < 1) {
+        alert('Not enough credits! You need 1 credit.');
+        return;
+    }
+
+    if (typeof analyzeNameLogic !== 'function') {
+        console.error("Naming database not loaded!");
+        alert("System error: Naming database missing. Please refresh.");
+        return;
+    }
+
+    showLoading(() => {
+        userCredits--;
+        updateCreditsDisplay();
+
+        const result = analyzeNameLogic(name);
+
+        document.getElementById('nameScore').textContent = result.score;
+        document.getElementById('nameSpiritTitle').textContent = result.spirit.title;
+        document.getElementById('nameSpiritType').textContent = result.spirit.type;
+        document.getElementById('nameSpiritType').className = result.spirit.type.includes('Gil') ? 'good-fortune' : 'bad-fortune';
+        document.getElementById('nameSpiritDesc').textContent = result.spirit.desc;
+
+        const flowContainer = document.getElementById('nameSoundFlow');
+        flowContainer.innerHTML = '';
+        result.soundFlow.forEach((elem, index) => {
+            const span = document.createElement('span');
+            span.className = `element-tag element-${elem.toLowerCase()}`;
+            span.textContent = elem;
+            flowContainer.appendChild(span);
+            if (index < result.soundFlow.length - 1) {
+                const arrow = document.createElement('span');
+                arrow.textContent = ' → ';
+                arrow.style.color = 'var(--text-secondary)';
+                flowContainer.appendChild(arrow);
+            }
+        });
+
+        document.getElementById('nameHarmonyDesc').textContent = result.harmonyDesc;
+
+        const resultDiv = document.getElementById('namingResult');
+        resultDiv.classList.remove('hidden');
+        resultDiv.scrollIntoView({ behavior: 'smooth' });
+    });
+}

@@ -69,21 +69,6 @@
                     <h2>Dream Analysis</h2>
                     <p>100+ symbols with detailed interpretations</p>
                 </div>
-                <div class="service-card" onclick="showScreen('compatibilityScreen')">
-                    <div class="card-icon">💕</div>
-                    <h2>Compatibility</h2>
-                    <p>Detailed analysis based on birth information</p>
-                </div>
-                <div class="service-card" onclick="alert('Coming soon! This feature is under development.')">
-                    <div class="card-icon">✍️</div>
-                    <h2>Name Analysis</h2>
-                    <p>Numerology and meaning analysis</p>
-                </div>
-                <div class="service-card" onclick="showScreen('todayScreen')">
-                    <div class="card-icon">📅</div>
-                    <h2>Daily Fortune</h2>
-                    <p>Personalized daily guidance</p>
-                </div>
             </div>
         </div>
     </div>
@@ -356,59 +341,52 @@
                     <div
                         style="background: hsla(45, 100%, 60%, 0.1); padding: 2rem; border-radius: 15px; margin-top: 2rem;">
                         <h4 style="color: var(--accent-gold); margin-bottom: 1rem;">Relationship Advice</h4>
-                        <p id="compatAdvice" style="color: var(--text-secondary); line-height: 1.8;"></p>
+                        <div class="service-icon">📅</div>
+                        <h1>Daily Fortune</h1>
+                        <p>Your personalized guidance for today</p>
+                    </div>
+                    <div style="text-align: center; margin: 3rem 0;">
+                        <button class="primary-button" onclick="getDailyFortune()"
+                            style="max-width: 400px; margin: 0 auto;">Get
+                            Today's Fortune (Free!)</button>
+                    </div>
+                    <div id="todayResult" class="hidden" style="margin-top: 3rem;">
+                        <div
+                            style="background: var(--card-bg); padding: 3rem; border-radius: 20px; border: 2px solid var(--border-glow);">
+                            <div style="text-align: center; font-size: 5rem; margin-bottom: 1rem;" id="fortuneEmoji">
+                            </div>
+                            <h2 style="color: var(--accent-gold); text-align: center; margin-bottom: 1rem;"
+                                id="fortuneTitle">
+                            </h2>
+                            <p style="color: var(--text-secondary); text-align: center; font-size: 1.2rem; line-height: 1.8; margin-bottom: 2rem;"
+                                id="fortuneMessage"></p>
+                            <div
+                                style="background: hsla(45, 100%, 60%, 0.1); padding: 2rem; border-radius: 15px; text-align: center;">
+                                <p style="color: var(--accent-gold); font-weight: 600; margin-bottom: 1rem;">Lucky
+                                    Numbers
+                                </p>
+                                <p style="font-size: 2rem; color: white;" id="luckyNumbers"></p>
+                            </div>
+                            <div
+                                style="margin-top: 2rem; padding: 2rem; background: hsla(270, 70%, 30%, 0.3); border-radius: 15px;">
+                                <h4 style="color: var(--primary-purple-light); margin-bottom: 1rem;">Today's Guidance
+                                </h4>
+                                <p id="todayAdvice" style="color: var(--text-secondary); line-height: 1.8;"></p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
 
-    <!-- Daily Fortune Screen -->
-    <div id="todayScreen" class="screen">
-        <div class="stars"></div>
-        <div class="container">
-            <button class="back-btn" onclick="showScreen('mainScreen')">← Back</button>
-            <div class="service-header">
-                <div class="service-icon">📅</div>
-                <h1>Daily Fortune</h1>
-                <p>Your personalized guidance for today</p>
+            <!-- Loading Overlay -->
+            <div id="loadingOverlay" class="loading-overlay">
+                <div class="crystal-ball"></div>
+                <div class="loading-text" id="loadingText">Consulting the Stars...</div>
             </div>
-            <div style="text-align: center; margin: 3rem 0;">
-                <button class="primary-button" onclick="getDailyFortune()" style="max-width: 400px; margin: 0 auto;">Get
-                    Today's Fortune (Free!)</button>
-            </div>
-            <div id="todayResult" class="hidden" style="margin-top: 3rem;">
-                <div
-                    style="background: var(--card-bg); padding: 3rem; border-radius: 20px; border: 2px solid var(--border-glow);">
-                    <div style="text-align: center; font-size: 5rem; margin-bottom: 1rem;" id="fortuneEmoji"></div>
-                    <h2 style="color: var(--accent-gold); text-align: center; margin-bottom: 1rem;" id="fortuneTitle">
-                    </h2>
-                    <p style="color: var(--text-secondary); text-align: center; font-size: 1.2rem; line-height: 1.8; margin-bottom: 2rem;"
-                        id="fortuneMessage"></p>
-                    <div
-                        style="background: hsla(45, 100%, 60%, 0.1); padding: 2rem; border-radius: 15px; text-align: center;">
-                        <p style="color: var(--accent-gold); font-weight: 600; margin-bottom: 1rem;">Lucky Numbers
-                        </p>
-                        <p style="font-size: 2rem; color: white;" id="luckyNumbers"></p>
-                    </div>
-                    <div
-                        style="margin-top: 2rem; padding: 2rem; background: hsla(270, 70%, 30%, 0.3); border-radius: 15px;">
-                        <h4 style="color: var(--primary-purple-light); margin-bottom: 1rem;">Today's Guidance</h4>
-                        <p id="todayAdvice" style="color: var(--text-secondary); line-height: 1.8;"></p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <!-- Loading Overlay -->
-    <div id="loadingOverlay" class="loading-overlay">
-        <div class="crystal-ball"></div>
-        <div class="loading-text" id="loadingText">Consulting the Stars...</div>
-    </div>
-
-    <script src="dream_data.js"></script>
-    <script src="professional.js?v=5"></script>
+            <script src="naming_data.js"></script>
+            <script src="dream_data.js"></script>
+            <script src="professional.js?v=5"></script>
 </body>
 
 </html>
