@@ -90,105 +90,6 @@ function generateSajuResult(year, month, day) {
     };
 }
 
-// 2. DREAM ANALYSIS ENGINE - KEYWORD & SENTIMENT MATCHING
-const dreamKeywords = {
-    // Animals
-    'snake': { meaning: 'Transformation & Healing', advice: 'Shed your old self and embrace growth.' },
-    'cat': { meaning: 'Intuition & Independence', advice: 'Trust your gut feelings over logic today.' },
-    'dog': { meaning: 'Loyalty & Protection', advice: 'Check in on your closest friends.' },
-    'bird': { meaning: 'Freedom & Perspective', advice: 'Look at your problems from a higher view.' },
-    'spider': { meaning: 'Creativity & Patience', advice: 'Weave your plans carefully and wait.' },
-    'fish': { meaning: 'Unconscious Emotions', advice: 'Pay attention to feelings you are ignoring.' },
-    'wolf': { meaning: 'Instinct & Survival', advice: 'Trust your survival instincts.' },
-    'bear': { meaning: 'Strength & Solitude', advice: 'Take time to be alone and recharge.' },
-
-    // Elements
-    'water': { meaning: 'Emotional State', advice: 'Go with the flow rather than resisting.' },
-    'fire': { meaning: 'Passion & Anger', advice: 'Channel your energy constructively.' },
-    'rain': { meaning: 'Cleansing & Sadness', advice: 'Let yourself cry if you need to; it cleanses the soul.' },
-    'ocean': { meaning: 'Vast Potential', advice: 'You have untapped potential waiting to be explored.' },
-    'storm': { meaning: 'Inner Conflict', advice: 'This turbulence will pass; stay grounded.' },
-
-    // Actions
-    'flying': { meaning: 'Liberation & Success', advice: 'You are rising above your obstacles.' },
-    'falling': { meaning: 'Insecurity & Loss of Control', advice: 'Let go of the need to control everything.' },
-    'running': { meaning: 'Avoidance or Pursuit', advice: 'Are you chasing something or running away?' },
-    'fighting': { meaning: 'Internal Conflict', advice: 'Resolve the conflict within yourself first.' },
-    'dying': { meaning: 'New Beginnings', advice: 'An old chapter is closing so a new one can open.' },
-    'crying': { meaning: 'Release of Tension', advice: 'You are healing emotional wounds.' },
-
-    // Objects/Places
-    'money': { meaning: 'Self-Worth & Value', advice: 'Value yourself more than your possessions.' },
-    'house': { meaning: 'The Self & Psyche', advice: 'Explore the neglected rooms of your mind.' },
-    'car': { meaning: 'Life Path & Control', advice: 'Are you in the driver\'s seat of your life?' },
-    'teeth': { meaning: 'Confidence & Power', advice: 'Speak your truth with confidence.' },
-    'door': { meaning: 'Opportunity', advice: 'Walk through the new door opening for you.' },
-    'mirror': { meaning: 'Self-Reflection', advice: 'Look at who you really are, not who you pretend to be.' }
-};
-
-function analyzeDreamLogic(text) {
-    text = text.toLowerCase();
-    let foundKeywords = [];
-
-    // Find all matching keywords
-    for (const [key, data] of Object.entries(dreamKeywords)) {
-        if (text.includes(key)) {
-            foundKeywords.push({ word: key, ...data });
-        }
-    }
-
-    // If no keywords found, use "Cold Reading" based on text length and common words
-    if (foundKeywords.length === 0) {
-        if (text.length < 20) {
-            return {
-                symbol: '🌫️',
-                meaning: 'Vague Impressions',
-                interpretation: 'Your dream is fleeting, suggesting a distracted mind. You may be overlooking small but important details in your waking life.',
-                advice: 'Try to recall more details upon waking. Keep a dream journal.'
-            };
-        } else if (text.includes('scared') || text.includes('fear') || text.includes('nightmare')) {
-            return {
-                symbol: '🌑',
-                meaning: 'Hidden Anxieties',
-                interpretation: 'This dream reflects underlying stress or fears you haven\'t addressed. Your subconscious is trying to alert you to a problem.',
-                advice: 'Face your fears directly. They are often smaller than they appear in the dark.'
-            };
-        } else if (text.includes('happy') || text.includes('joy') || text.includes('love')) {
-            return {
-                symbol: '✨',
-                meaning: 'Wish Fulfillment',
-                interpretation: 'A positive omen reflecting your desires for happiness and connection. You are in a good place mentally.',
-                advice: 'Carry this positive energy with you throughout the day.'
-            };
-        } else {
-            return {
-                symbol: '🌀',
-                meaning: 'Subconscious Processing',
-                interpretation: 'Your mind is sorting through the day\'s events. This dream represents the integration of new experiences.',
-                advice: 'Pay attention to your mood today; it holds the key to this dream.'
-            };
-        }
-    }
-
-    // If keywords found, combine them
-    const primary = foundKeywords[0];
-    const secondary = foundKeywords.length > 1 ? foundKeywords[1] : null;
-
-    let interpretation = `The presence of **${primary.word}** suggests a focus on ${primary.meaning.toLowerCase()}. `;
-    if (secondary) {
-        interpretation += `Combined with **${secondary.word}**, this indicates a complex interplay between ${primary.meaning.toLowerCase()} and ${secondary.meaning.toLowerCase()}.`;
-    } else {
-        interpretation += `This is a strong signal from your subconscious regarding this aspect of your life.`;
-    }
-
-    return {
-        symbol: '🔮',
-        meaning: `${primary.meaning} ${secondary ? '& ' + secondary.meaning : ''}`,
-        interpretation: interpretation,
-        advice: primary.advice
-    };
-}
-
 let userCredits = 3;
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -317,16 +218,24 @@ function analyzeDream() {
         return;
     }
 
+    // Check if database is loaded
+    if (typeof analyzeDreamWithDatabase !== 'function') {
+        console.error("Dream database not loaded!");
+        alert("System error: Dream database missing. Please refresh.");
+        return;
+    }
+
     showLoading(() => {
         userCredits--;
         updateCreditsDisplay();
 
-        // Use the new Advanced Engine
-        const result = analyzeDreamLogic(dreamText);
+        // Use the new External Database Engine
+        const result = analyzeDreamWithDatabase(dreamText);
 
         document.getElementById('dreamSymbol').textContent = result.symbol;
         document.getElementById('dreamMeaning').textContent = result.meaning;
-        document.getElementById('dreamInterpretation').textContent = result.interpretation;
+        // Use innerHTML because the new engine returns HTML (line breaks, bold tags)
+        document.getElementById('dreamInterpretation').innerHTML = result.interpretation;
         document.getElementById('dreamAdvice').textContent = result.advice;
 
         document.getElementById('dreamResult').classList.remove('hidden');
