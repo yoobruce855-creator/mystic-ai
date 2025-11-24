@@ -146,24 +146,101 @@ function updateCreditsDisplay() {
     document.getElementById('userCredits').textContent = userCredits;
 }
 
+// Loading Logic
+function showLoading(callback) {
+    const overlay = document.getElementById('loadingOverlay');
+    const textElement = document.getElementById('loadingText');
+    const messages = [
+        "Consulting the Stars...",
+        "Reading Ancient Patterns...",
+        "Aligning Cosmic Energies...",
+        "Decoding Your Destiny...",
+        "Whispering to the Spirits...",
+        "Analyzing Celestial Maps..."
+    ];
+
+    overlay.classList.add('active');
+
+    let msgIndex = 0;
+    const interval = setInterval(() => {
+        textElement.textContent = messages[Math.floor(Math.random() * messages.length)];
+    }, 800);
+
+    setTimeout(() => {
+        clearInterval(interval);
+        overlay.classList.remove('active');
+        callback();
+    }, 2500); // 2.5 seconds delay
+}
+
 function drawTarotCards() {
     if (userCredits < 1) {
         alert('Not enough credits! You need 1 credit.');
         return;
     }
-    userCredits--;
-    updateCreditsDisplay();
 
-    const shuffled = [...tarotCards].sort(() => Math.random() - 0.5);
-    const drawn = shuffled.slice(0, 3);
+    showLoading(() => {
+        userCredits--;
+        updateCreditsDisplay();
 
-    for (let i = 0; i < 3; i++) {
-        document.getElementById(`card${i + 1}Emoji`).textContent = drawn[i].emoji;
-        document.getElementById(`card${i + 1}Name`).textContent = drawn[i].name;
-        document.getElementById(`card${i + 1}Meaning`).textContent = drawn[i].meaning;
-        document.getElementById(`card${i + 1}Description`).textContent = drawn[i].description;
+        const shuffled = [...tarotCards].sort(() => Math.random() - 0.5);
+        const drawn = shuffled.slice(0, 3);
+
+        for (let i = 0; i < 3; i++) {
+            document.getElementById(`card${i + 1}Emoji`).textContent = drawn[i].emoji;
+            document.getElementById(`card${i + 1}Name`).textContent = drawn[i].name;
+            document.getElementById(`card${i + 1}Meaning`).textContent = drawn[i].meaning;
+            document.getElementById(`card${i + 1}Description`).textContent = drawn[i].description;
+        }
+        document.getElementById('tarotResult').classList.remove('hidden');
+        // Scroll to result
+        document.getElementById('tarotResult').scrollIntoView({ behavior: 'smooth' });
+    });
+}
+
+function analyzeSaju() {
+    const name = document.getElementById('sajuName').value.trim();
+    const date = document.getElementById('sajuDate').value;
+
+    if (!name || !date) {
+        alert('Please enter your name and birth date!');
+        return;
     }
-    document.getElementById('tarotResult').classList.remove('hidden');
+
+    if (userCredits < 2) {
+        alert('Not enough credits! You need 2 credits.');
+        return;
+    }
+
+    showLoading(() => {
+        userCredits -= 2;
+        updateCreditsDisplay();
+
+        const birthDate = new Date(date);
+        const year = birthDate.getFullYear();
+        const month = birthDate.getMonth() + 1;
+        const day = birthDate.getDate();
+
+        const upper = (year % 8) + 1;
+        const middle = (month % 8) + 1;
+        const lower = (day % 8) + 1;
+        const hexId = parseInt(`11${(upper + middle + lower) % 8 + 1}`);
+
+        let result = sajuHexagrams.find(h => h.id === hexId);
+        if (!result) {
+            const hash = (year + month + day) % sajuHexagrams.length;
+            result = sajuHexagrams[hash];
+        }
+
+        document.getElementById('sajuTitle').textContent = `${result.title} (Hexagram ${upper}-${middle}-${lower})`;
+        document.getElementById('sajuHexagram').textContent = `Upper: ${upper} | Middle: ${middle} | Lower: ${lower}`;
+        document.getElementById('sajuTotal').textContent = result.total;
+        document.getElementById('sajuMonthly').textContent = result.monthly;
+        document.getElementById('sajuAdvice').textContent = result.advice;
+
+        document.getElementById('sajuResult').classList.remove('hidden');
+        document.getElementById('sajuResult').scrollIntoView({ behavior: 'smooth' });
+    });
 }
 
 function analyzeDream() {
@@ -176,39 +253,43 @@ function analyzeDream() {
         alert('Not enough credits! You need 1 credit.');
         return;
     }
-    userCredits--;
-    updateCreditsDisplay();
 
-    let matchedSymbol = null;
-    for (const [key, value] of Object.entries(dreamSymbols)) {
-        if (dreamText.includes(key)) {
-            matchedSymbol = value;
-            break;
+    showLoading(() => {
+        userCredits--;
+        updateCreditsDisplay();
+
+        let matchedSymbol = null;
+        for (const [key, value] of Object.entries(dreamSymbols)) {
+            if (dreamText.includes(key)) {
+                matchedSymbol = value;
+                break;
+            }
         }
-    }
-    if (!matchedSymbol) {
-        matchedSymbol = {
-            symbol: '🌟',
-            meaning: 'Unique Dream',
-            interpretation: 'Your dream is deeply personal and reflects your subconscious processing of recent events and emotions.',
-            advice: 'Journal about your dream and the emotions it evoked. Consider connections to your waking life.'
-        };
-    }
+        if (!matchedSymbol) {
+            matchedSymbol = {
+                symbol: '🌟',
+                meaning: 'Unique Dream',
+                interpretation: 'Your dream is deeply personal and reflects your subconscious processing of recent events and emotions.',
+                advice: 'Journal about your dream and the emotions it evoked. Consider connections to your waking life.'
+            };
+        }
 
-    document.getElementById('dreamSymbol').textContent = matchedSymbol.symbol;
-    document.getElementById('dreamMeaning').textContent = matchedSymbol.meaning;
-    document.getElementById('dreamInterpretation').textContent = matchedSymbol.interpretation;
-    document.getElementById('dreamAdvice').textContent = matchedSymbol.advice;
-    document.getElementById('dreamResult').classList.remove('hidden');
+        document.getElementById('dreamSymbol').textContent = matchedSymbol.symbol;
+        document.getElementById('dreamMeaning').textContent = matchedSymbol.meaning;
+        document.getElementById('dreamInterpretation').textContent = matchedSymbol.interpretation;
+        document.getElementById('dreamAdvice').textContent = matchedSymbol.advice;
+        document.getElementById('dreamResult').classList.remove('hidden');
+        document.getElementById('dreamResult').scrollIntoView({ behavior: 'smooth' });
+    });
 }
 
 function checkCompatibility() {
     const name1 = document.getElementById('person1Name').value.trim();
     const date1 = document.getElementById('person1Date').value;
-    const time1 = document.getElementById('person1Time').value || '12:00';
-    const gender1 = document.getElementById('person1Gender').value;
     const name2 = document.getElementById('person2Name').value.trim();
     const date2 = document.getElementById('person2Date').value;
+    const time1 = document.getElementById('person1Time').value || '12:00';
+    const gender1 = document.getElementById('person1Gender').value;
     const time2 = document.getElementById('person2Time').value || '12:00';
     const gender2 = document.getElementById('person2Gender').value;
 
@@ -220,120 +301,121 @@ function checkCompatibility() {
         alert('Not enough credits! You need 2 credits.');
         return;
     }
-    userCredits -= 2;
-    updateCreditsDisplay();
 
-    // UNIQUE HASH ALGORITHM - ensures different inputs = different results
-    const createHash = (str) => {
-        let hash = 0;
-        for (let i = 0; i < str.length; i++) {
-            const char = str.charCodeAt(i);
-            hash = ((hash << 5) - hash) + char;
-            hash = hash & hash;
+    showLoading(() => {
+        userCredits -= 2;
+        updateCreditsDisplay();
+
+        const createHash = (str) => {
+            let hash = 0;
+            for (let i = 0; i < str.length; i++) {
+                const char = str.charCodeAt(i);
+                hash = ((hash << 5) - hash) + char;
+                hash = hash & hash;
+            }
+            return Math.abs(hash);
+        };
+
+        const person1Data = `${name1}|${date1}|${time1}|${gender1}`.toLowerCase();
+        const person2Data = `${name2}|${date2}|${time2}|${gender2}`.toLowerCase();
+        const combinedData = person1Data + person2Data;
+
+        const hash1 = createHash(person1Data);
+        const hash2 = createHash(person2Data);
+        const combinedHash = createHash(combinedData);
+
+        const birth1 = new Date(date1 + 'T' + time1);
+        const birth2 = new Date(date2 + 'T' + time2);
+
+        const getNameValue = (name) => {
+            let value = 0;
+            for (let i = 0; i < name.length; i++) {
+                value += name.charCodeAt(i) * (i + 1);
+            }
+            return value;
+        };
+
+        const name1Value = getNameValue(name1.toLowerCase());
+        const name2Value = getNameValue(name2.toLowerCase());
+        const nameInteraction = (name1Value * name2Value) % 10000;
+
+        const totalMinutes1 = birth1.getHours() * 60 + birth1.getMinutes();
+        const totalMinutes2 = birth2.getHours() * 60 + birth2.getMinutes();
+        const timeFactor = Math.abs(totalMinutes1 - totalMinutes2);
+
+        const dayOfYear1 = Math.floor((birth1 - new Date(birth1.getFullYear(), 0, 0)) / 86400000);
+        const dayOfYear2 = Math.floor((birth2 - new Date(birth2.getFullYear(), 0, 0)) / 86400000);
+        const seasonalHarmony = 100 - Math.abs(dayOfYear1 - dayOfYear2) / 3.65;
+
+        const genderBonus = (gender1 !== gender2) ? 8 : 5;
+
+        const loveRaw = (hash1 % 40) + (hash2 % 40) + (nameInteraction % 30) + (birth1.getDate() + birth2.getDate()) / 2 + genderBonus;
+        const loveScore = Math.min(100, Math.max(35, Math.round(loveRaw)));
+
+        const commRaw = (combinedHash % 50) + (50 - timeFactor / 10) + ((12 - Math.abs(birth1.getMonth() - birth2.getMonth())) * 3) + (name1.length + name2.length);
+        const commScore = Math.min(100, Math.max(30, Math.round(commRaw)));
+
+        const yearSum = birth1.getFullYear() + birth2.getFullYear();
+        const trustRaw = (yearSum % 45) + seasonalHarmony * 0.4 + ((365 - Math.abs(dayOfYear1 - dayOfYear2)) / 10) + (hash1 % 20);
+        const trustScore = Math.min(100, Math.max(35, Math.round(trustRaw)));
+
+        const baseOverall = (loveScore * 0.4) + (commScore * 0.3) + (trustScore * 0.3);
+        const uniqueAdjustment = (combinedHash % 15) - 7;
+        const overallScore = Math.min(100, Math.max(30, Math.round(baseOverall + uniqueAdjustment)));
+
+        document.getElementById('compatScore').textContent = overallScore + '%';
+        document.getElementById('loveScore').textContent = loveScore + '%';
+        document.getElementById('commScore').textContent = commScore + '%';
+        document.getElementById('trustScore').textContent = trustScore + '%';
+
+        let description, advice;
+        if (overallScore >= 85) {
+            const strengths = ['deep emotional connection', 'natural understanding', 'shared values', 'complementary energies'];
+            const strength = strengths[combinedHash % strengths.length];
+            description = `${name1} and ${name2} share an exceptional ${strength}! Your compatibility score of ${overallScore}% indicates outstanding potential. The stars align beautifully for this relationship.`;
+            advice = 'This rare connection deserves nurturing. Continue building on your strong foundation through open communication and mutual support.';
+        } else if (overallScore >= 70) {
+            const aspects = ['communication style', 'life goals', 'emotional wavelength', 'core values'];
+            const aspect = aspects[combinedHash % aspects.length];
+            description = `${name1} and ${name2} have strong compatibility (${overallScore}%), particularly in ${aspect}. While some challenges may arise, your solid foundation provides excellent potential.`;
+            advice = 'Focus on your natural strengths as a couple. Address differences with patience and understanding.';
+        } else if (overallScore >= 55) {
+            const areas = ['mutual respect', 'shared interests', 'emotional support', 'life balance'];
+            const area = areas[combinedHash % areas.length];
+            description = `${name1} and ${name2} show moderate compatibility at ${overallScore}%. Success will come through ${area} and conscious effort.`;
+            advice = 'Embrace differences as opportunities for growth. Communication and compromise are key.';
+        } else {
+            const challenges = ['different life rhythms', 'contrasting communication styles', 'varied priorities', 'distinct emotional needs'];
+            const challenge = challenges[combinedHash % challenges.length];
+            description = `${name1} and ${name2} have ${overallScore}% compatibility, indicating ${challenge}. This requires extra understanding and effort.`;
+            advice = 'Success requires conscious effort and clear communication. Focus on building strong foundations through shared experiences.';
         }
-        return Math.abs(hash);
-    };
 
-    const person1Data = `${name1}|${date1}|${time1}|${gender1}`.toLowerCase();
-    const person2Data = `${name2}|${date2}|${time2}|${gender2}`.toLowerCase();
-    const combinedData = person1Data + person2Data;
-
-    const hash1 = createHash(person1Data);
-    const hash2 = createHash(person2Data);
-    const combinedHash = createHash(combinedData);
-
-    const birth1 = new Date(date1 + 'T' + time1);
-    const birth2 = new Date(date2 + 'T' + time2);
-
-    // Detailed name analysis
-    const getNameValue = (name) => {
-        let value = 0;
-        for (let i = 0; i < name.length; i++) {
-            value += name.charCodeAt(i) * (i + 1);
-        }
-        return value;
-    };
-
-    const name1Value = getNameValue(name1.toLowerCase());
-    const name2Value = getNameValue(name2.toLowerCase());
-    const nameInteraction = (name1Value * name2Value) % 10000;
-
-    const totalMinutes1 = birth1.getHours() * 60 + birth1.getMinutes();
-    const totalMinutes2 = birth2.getHours() * 60 + birth2.getMinutes();
-    const timeFactor = Math.abs(totalMinutes1 - totalMinutes2);
-
-    const dayOfYear1 = Math.floor((birth1 - new Date(birth1.getFullYear(), 0, 0)) / 86400000);
-    const dayOfYear2 = Math.floor((birth2 - new Date(birth2.getFullYear(), 0, 0)) / 86400000);
-    const seasonalHarmony = 100 - Math.abs(dayOfYear1 - dayOfYear2) / 3.65;
-
-    const genderBonus = (gender1 !== gender2) ? 8 : 5;
-
-    // LOVE SCORE
-    const loveRaw = (hash1 % 40) + (hash2 % 40) + (nameInteraction % 30) + (birth1.getDate() + birth2.getDate()) / 2 + genderBonus;
-    const loveScore = Math.min(100, Math.max(35, Math.round(loveRaw)));
-
-    // COMMUNICATION SCORE
-    const commRaw = (combinedHash % 50) + (50 - timeFactor / 10) + ((12 - Math.abs(birth1.getMonth() - birth2.getMonth())) * 3) + (name1.length + name2.length);
-    const commScore = Math.min(100, Math.max(30, Math.round(commRaw)));
-
-    // TRUST SCORE
-    const yearSum = birth1.getFullYear() + birth2.getFullYear();
-    const trustRaw = (yearSum % 45) + seasonalHarmony * 0.4 + ((365 - Math.abs(dayOfYear1 - dayOfYear2)) / 10) + (hash1 % 20);
-    const trustScore = Math.min(100, Math.max(35, Math.round(trustRaw)));
-
-    // OVERALL SCORE
-    const baseOverall = (loveScore * 0.4) + (commScore * 0.3) + (trustScore * 0.3);
-    const uniqueAdjustment = (combinedHash % 15) - 7;
-    const overallScore = Math.min(100, Math.max(30, Math.round(baseOverall + uniqueAdjustment)));
-
-    document.getElementById('compatScore').textContent = overallScore + '%';
-    document.getElementById('loveScore').textContent = loveScore + '%';
-    document.getElementById('commScore').textContent = commScore + '%';
-    document.getElementById('trustScore').textContent = trustScore + '%';
-
-    let description, advice;
-    if (overallScore >= 85) {
-        const strengths = ['deep emotional connection', 'natural understanding', 'shared values', 'complementary energies'];
-        const strength = strengths[combinedHash % strengths.length];
-        description = `${name1} and ${name2} share an exceptional ${strength}! Your compatibility score of ${overallScore}% indicates outstanding potential. The stars align beautifully for this relationship.`;
-        advice = 'This rare connection deserves nurturing. Continue building on your strong foundation through open communication and mutual support.';
-    } else if (overallScore >= 70) {
-        const aspects = ['communication style', 'life goals', 'emotional wavelength', 'core values'];
-        const aspect = aspects[combinedHash % aspects.length];
-        description = `${name1} and ${name2} have strong compatibility (${overallScore}%), particularly in ${aspect}. While some challenges may arise, your solid foundation provides excellent potential.`;
-        advice = 'Focus on your natural strengths as a couple. Address differences with patience and understanding.';
-    } else if (overallScore >= 55) {
-        const areas = ['mutual respect', 'shared interests', 'emotional support', 'life balance'];
-        const area = areas[combinedHash % areas.length];
-        description = `${name1} and ${name2} show moderate compatibility at ${overallScore}%. Success will come through ${area} and conscious effort.`;
-        advice = 'Embrace differences as opportunities for growth. Communication and compromise are key.';
-    } else {
-        const challenges = ['different life rhythms', 'contrasting communication styles', 'varied priorities', 'distinct emotional needs'];
-        const challenge = challenges[combinedHash % challenges.length];
-        description = `${name1} and ${name2} have ${overallScore}% compatibility, indicating ${challenge}. This requires extra understanding and effort.`;
-        advice = 'Success requires conscious effort and clear communication. Focus on building strong foundations through shared experiences.';
-    }
-
-    document.getElementById('compatDescription').textContent = description;
-    document.getElementById('compatAdvice').textContent = advice;
-    document.getElementById('compatibilityResult').classList.remove('hidden');
+        document.getElementById('compatDescription').textContent = description;
+        document.getElementById('compatAdvice').textContent = advice;
+        document.getElementById('compatibilityResult').classList.remove('hidden');
+        document.getElementById('compatibilityResult').scrollIntoView({ behavior: 'smooth' });
+    });
 }
 
 function getDailyFortune() {
-    const today = new Date();
-    const seed = today.getDate() + today.getMonth() * 31;
-    const fortuneIndex = seed % fortuneMessages.length;
-    const fortune = fortuneMessages[fortuneIndex];
+    showLoading(() => {
+        const today = new Date();
+        const seed = today.getDate() + today.getMonth() * 31;
+        const fortuneIndex = seed % fortuneMessages.length;
+        const fortune = fortuneMessages[fortuneIndex];
 
-    const luckyNums = [];
-    for (let i = 0; i < 6; i++) {
-        luckyNums.push(((seed * (i + 1) * 7) % 45) + 1);
-    }
+        const luckyNums = [];
+        for (let i = 0; i < 6; i++) {
+            luckyNums.push(((seed * (i + 1) * 7) % 45) + 1);
+        }
 
-    document.getElementById('fortuneEmoji').textContent = fortune.emoji;
-    document.getElementById('fortuneTitle').textContent = fortune.title;
-    document.getElementById('fortuneMessage').textContent = fortune.message;
-    document.getElementById('luckyNumbers').textContent = luckyNums.join(', ');
-    document.getElementById('todayAdvice').textContent = fortune.advice;
-    document.getElementById('todayResult').classList.remove('hidden');
+        document.getElementById('fortuneEmoji').textContent = fortune.emoji;
+        document.getElementById('fortuneTitle').textContent = fortune.title;
+        document.getElementById('fortuneMessage').textContent = fortune.message;
+        document.getElementById('luckyNumbers').textContent = luckyNums.join(', ');
+        document.getElementById('todayAdvice').textContent = fortune.advice;
+        document.getElementById('todayResult').classList.remove('hidden');
+        document.getElementById('todayResult').scrollIntoView({ behavior: 'smooth' });
+    });
 }
