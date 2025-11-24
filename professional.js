@@ -25,19 +25,6 @@ const tarotCards = [
     { name: 'The World', emoji: '🌍', meaning: 'Completion', description: 'You have achieved your goals. Celebrate your success and fulfillment.' }
 ];
 
-const dreamSymbols = {
-    'snake': { symbol: '🐍', meaning: 'Transformation', interpretation: 'Snakes represent transformation, healing, and rebirth. A snake shedding its skin symbolizes personal growth and renewal.', advice: 'Embrace change and trust your healing journey.' },
-    'water': { symbol: '💧', meaning: 'Emotions', interpretation: 'Water represents your emotional state. Clear water indicates peace; turbulent water suggests emotional turmoil.', advice: 'Reflect on your emotional well-being and address unresolved feelings.' },
-    'fire': { symbol: '🔥', meaning: 'Passion', interpretation: 'Fire symbolizes passion and transformation. Controlled fire represents creative energy; wildfire suggests emotions out of control.', advice: 'Channel your passion productively.' },
-    'flying': { symbol: '🦅', meaning: 'Freedom', interpretation: 'Flying represents freedom and rising above problems. Effortless flying indicates confidence and success.', advice: 'You have the power to rise above challenges.' },
-    'falling': { symbol: '💫', meaning: 'Loss of Control', interpretation: 'Falling indicates feelings of losing control or anxiety. It may reflect fear of failure.', advice: 'Identify areas where you feel out of control and regain stability.' },
-    'death': { symbol: '💀', meaning: 'Endings', interpretation: 'Death symbolizes endings and new beginnings. Something in your life is ending to make way for something new.', advice: 'Embrace endings as opportunities for growth.' },
-    'money': { symbol: '💰', meaning: 'Self-Worth', interpretation: 'Money represents value and self-worth. Finding money suggests discovering talents; losing it may indicate low self-esteem.', advice: 'Recognize your inherent value.' },
-    'house': { symbol: '🏠', meaning: 'Self', interpretation: 'Houses represent your sense of self and security. Different rooms symbolize different aspects of your psyche.', advice: 'Explore different aspects of yourself.' },
-    'cat': { symbol: '🐱', meaning: 'Independence', interpretation: 'Cats symbolize independence and intuition. A friendly cat suggests comfort with independence.', advice: 'Trust your intuition and embrace independence.' },
-    'dog': { symbol: '🐕', meaning: 'Loyalty', interpretation: 'Dogs represent loyalty and protection. A friendly dog indicates trustworthy relationships.', advice: 'Value your loyal relationships.' }
-};
-
 const fortuneMessages = [
     { emoji: '⭐', title: 'Exceptional Day', message: 'Extraordinary opportunities await. The universe aligns in your favor.', advice: 'Take bold action. Your confidence will attract success.' },
     { emoji: '🌟', title: 'Abundant Blessings', message: 'Pleasant surprises and positive energy fill your day.', advice: 'Express gratitude and share your good fortune.' },
@@ -46,19 +33,161 @@ const fortuneMessages = [
     { emoji: '✨', title: 'Magical Synchronicities', message: 'Pay attention to signs. The universe communicates with you.', advice: 'Trust your intuition. Notice patterns and signs.' }
 ];
 
-// Tojeongbigyeol (Saju) Database - Simplified 144 Hexagrams
-const sajuHexagrams = [
-    { id: 111, title: 'The Sky (Geon)', total: 'Great fortune aligns with your path. Like a dragon ascending to the heavens, your ambitions will be realized.', monthly: 'Spring brings new opportunities, Summer requires patience, Autumn yields harvest, Winter offers rest.', advice: 'Be bold in your endeavors but humble in your success.' },
-    { id: 112, title: 'The Lake (Tae)', total: 'Joy and satisfaction fill your year. Relationships flourish and financial stability is within reach.', monthly: 'Early year favors networking. Mid-year brings financial gain. Late year focuses on family.', advice: 'Share your joy with others to multiply your blessings.' },
-    { id: 113, title: 'The Fire (Ri)', total: 'Passion and clarity guide you. Your intellectual pursuits will shine, but beware of burnout.', monthly: 'Focus on learning in the first quarter. Take action in the second. Reflect in the third.', advice: 'Channel your energy wisely. Balance passion with rest.' },
-    { id: 114, title: 'The Thunder (Jin)', total: 'Sudden changes bring growth. Like thunder awakening the earth, you will be shaken but strengthened.', monthly: 'Unexpected news in Spring. Adaptation in Summer. Stability returns in Autumn.', advice: 'Embrace change as a catalyst for personal evolution.' },
-    { id: 115, title: 'The Wind (Son)', total: 'Gentle progress and influence. Your flexibility will be your greatest asset this year.', monthly: 'Travel or movement is favorable. Communication opens doors. Trust the flow.', advice: 'Be like the wind - adaptable, persistent, and far-reaching.' },
-    { id: 116, title: 'The Water (Gam)', total: 'Deep wisdom and resilience. You may face challenges, but you have the depth to overcome them.', monthly: 'Navigate obstacles with patience. Emotional healing in mid-year. Clarity arrives by year-end.', advice: 'Trust your inner wisdom. Flow around obstacles rather than forcing through.' },
-    { id: 117, title: 'The Mountain (Gan)', total: 'Stability and stillness. A year for building foundations and inner cultivation.', monthly: 'Slow start. Steady progress in Summer. Solid achievements in Autumn.', advice: 'Patience is key. Build your castle one stone at a time.' },
-    { id: 118, title: 'The Earth (Gon)', total: 'Receptivity and support. You will find strength in service and supporting others.', monthly: 'Nurture relationships early on. Harvest fruits of labor in Autumn. Rest in Winter.', advice: 'Stay grounded. Your strength lies in your ability to endure and nurture.' },
-    // Fallback
-    { id: 999, title: 'The Harmony', total: 'Balance is restored. A year of equilibrium where effort matches reward.', monthly: 'Steady progress throughout the seasons. No major disruptions expected.', advice: 'Maintain your current path with diligence and integrity.' }
-];
+// ===== ADVANCED FORTUNE ENGINES =====
+
+// 1. TOJEONGBIGYEOL (SAJU) ENGINE - 144 COMBINATIONS
+const sajuElements = {
+    upper: ['Sky (Geon)', 'Lake (Tae)', 'Fire (Ri)', 'Thunder (Jin)', 'Wind (Son)', 'Water (Gam)', 'Mountain (Gan)', 'Earth (Gon)'],
+    middle: ['Prosperity', 'Conflict', 'Harmony', 'Change', 'Stagnation', 'Growth'],
+    lower: ['Foundation', 'People', 'Self']
+};
+
+const sajuInterpretations = {
+    sky: { nature: 'Active, Creative, Strong', advice: 'Take initiative and lead.' },
+    lake: { nature: 'Joyful, Expressive, Open', advice: 'Communicate and share with others.' },
+    fire: { nature: 'Passionate, Clear, Visible', advice: 'Show your talents but avoid burnout.' },
+    thunder: { nature: 'Arousing, Shocking, Moving', advice: 'Embrace sudden changes bravely.' },
+    wind: { nature: 'Gentle, Penetrating, Flexible', advice: 'Adapt to circumstances smoothly.' },
+    water: { nature: 'Deep, Dangerous, Flowing', advice: 'Be cautious and seek wisdom.' },
+    mountain: { nature: 'Still, Stable, Resting', advice: 'Pause and consolidate your gains.' },
+    earth: { nature: 'Receptive, Yielding, Supportive', advice: 'Support others and stay grounded.' }
+};
+
+function generateSajuResult(year, month, day) {
+    const upperIdx = (year % 8); // 0-7
+    const middleIdx = (month % 6); // 0-5
+    const lowerIdx = (day % 3); // 0-2
+
+    const hexagramCode = `${upperIdx + 1}${middleIdx + 1}${lowerIdx + 1}`;
+    const upperName = sajuElements.upper[upperIdx];
+    const upperKey = upperName.split(' ')[0].toLowerCase();
+    const interp = sajuInterpretations[upperKey];
+
+    const titles = [
+        `The Destiny of ${upperName}`,
+        `Hexagram ${hexagramCode}: ${upperName} over ${sajuElements.middle[middleIdx]}`,
+        `The Path of ${interp.nature}`
+    ];
+
+    const totals = [
+        `This year, the energy of the ${upperName} dominates your life. It is a time of ${interp.nature.toLowerCase()} energy. Combined with the influence of ${sajuElements.middle[middleIdx]}, you will experience significant shifts in your personal growth.`,
+        `Like the ${upperName}, your fortune is vast and powerful. The ${sajuElements.middle[middleIdx]} aspect suggests that you must pay attention to your environment. ${interp.advice}`,
+        `A year of ${sajuElements.middle[middleIdx]} defined by the ${upperName}. Your foundation in ${sajuElements.lower[lowerIdx]} will be tested, but the outcome looks promising if you remain true to yourself.`
+    ];
+
+    const monthlies = [
+        `Spring brings new beginnings in ${sajuElements.lower[lowerIdx]}. Summer requires patience as the ${upperName} energy peaks. Autumn is the time for harvest, and Winter for reflection.`,
+        `Early year is favorable for ${sajuElements.lower[lowerIdx]}. Mid-year might bring challenges related to ${sajuElements.middle[middleIdx]}. The end of the year promises stability.`,
+        `Focus on ${sajuElements.lower[lowerIdx]} in the first half. The second half will be dominated by the ${upperName}'s influence, bringing ${interp.nature.toLowerCase()} outcomes.`
+    ];
+
+    return {
+        title: titles[year % 3],
+        hexagram: `Upper: ${upperName} | Middle: ${sajuElements.middle[middleIdx]} | Lower: ${sajuElements.lower[lowerIdx]}`,
+        total: totals[(year + month) % 3],
+        monthly: monthlies[(month + day) % 3],
+        advice: `${interp.advice} Focus on improving your ${sajuElements.lower[lowerIdx]} to maximize good fortune.`
+    };
+}
+
+// 2. DREAM ANALYSIS ENGINE - KEYWORD & SENTIMENT MATCHING
+const dreamKeywords = {
+    // Animals
+    'snake': { meaning: 'Transformation & Healing', advice: 'Shed your old self and embrace growth.' },
+    'cat': { meaning: 'Intuition & Independence', advice: 'Trust your gut feelings over logic today.' },
+    'dog': { meaning: 'Loyalty & Protection', advice: 'Check in on your closest friends.' },
+    'bird': { meaning: 'Freedom & Perspective', advice: 'Look at your problems from a higher view.' },
+    'spider': { meaning: 'Creativity & Patience', advice: 'Weave your plans carefully and wait.' },
+    'fish': { meaning: 'Unconscious Emotions', advice: 'Pay attention to feelings you are ignoring.' },
+    'wolf': { meaning: 'Instinct & Survival', advice: 'Trust your survival instincts.' },
+    'bear': { meaning: 'Strength & Solitude', advice: 'Take time to be alone and recharge.' },
+
+    // Elements
+    'water': { meaning: 'Emotional State', advice: 'Go with the flow rather than resisting.' },
+    'fire': { meaning: 'Passion & Anger', advice: 'Channel your energy constructively.' },
+    'rain': { meaning: 'Cleansing & Sadness', advice: 'Let yourself cry if you need to; it cleanses the soul.' },
+    'ocean': { meaning: 'Vast Potential', advice: 'You have untapped potential waiting to be explored.' },
+    'storm': { meaning: 'Inner Conflict', advice: 'This turbulence will pass; stay grounded.' },
+
+    // Actions
+    'flying': { meaning: 'Liberation & Success', advice: 'You are rising above your obstacles.' },
+    'falling': { meaning: 'Insecurity & Loss of Control', advice: 'Let go of the need to control everything.' },
+    'running': { meaning: 'Avoidance or Pursuit', advice: 'Are you chasing something or running away?' },
+    'fighting': { meaning: 'Internal Conflict', advice: 'Resolve the conflict within yourself first.' },
+    'dying': { meaning: 'New Beginnings', advice: 'An old chapter is closing so a new one can open.' },
+    'crying': { meaning: 'Release of Tension', advice: 'You are healing emotional wounds.' },
+
+    // Objects/Places
+    'money': { meaning: 'Self-Worth & Value', advice: 'Value yourself more than your possessions.' },
+    'house': { meaning: 'The Self & Psyche', advice: 'Explore the neglected rooms of your mind.' },
+    'car': { meaning: 'Life Path & Control', advice: 'Are you in the driver\'s seat of your life?' },
+    'teeth': { meaning: 'Confidence & Power', advice: 'Speak your truth with confidence.' },
+    'door': { meaning: 'Opportunity', advice: 'Walk through the new door opening for you.' },
+    'mirror': { meaning: 'Self-Reflection', advice: 'Look at who you really are, not who you pretend to be.' }
+};
+
+function analyzeDreamLogic(text) {
+    text = text.toLowerCase();
+    let foundKeywords = [];
+
+    // Find all matching keywords
+    for (const [key, data] of Object.entries(dreamKeywords)) {
+        if (text.includes(key)) {
+            foundKeywords.push({ word: key, ...data });
+        }
+    }
+
+    // If no keywords found, use "Cold Reading" based on text length and common words
+    if (foundKeywords.length === 0) {
+        if (text.length < 20) {
+            return {
+                symbol: '🌫️',
+                meaning: 'Vague Impressions',
+                interpretation: 'Your dream is fleeting, suggesting a distracted mind. You may be overlooking small but important details in your waking life.',
+                advice: 'Try to recall more details upon waking. Keep a dream journal.'
+            };
+        } else if (text.includes('scared') || text.includes('fear') || text.includes('nightmare')) {
+            return {
+                symbol: '🌑',
+                meaning: 'Hidden Anxieties',
+                interpretation: 'This dream reflects underlying stress or fears you haven\'t addressed. Your subconscious is trying to alert you to a problem.',
+                advice: 'Face your fears directly. They are often smaller than they appear in the dark.'
+            };
+        } else if (text.includes('happy') || text.includes('joy') || text.includes('love')) {
+            return {
+                symbol: '✨',
+                meaning: 'Wish Fulfillment',
+                interpretation: 'A positive omen reflecting your desires for happiness and connection. You are in a good place mentally.',
+                advice: 'Carry this positive energy with you throughout the day.'
+            };
+        } else {
+            return {
+                symbol: '🌀',
+                meaning: 'Subconscious Processing',
+                interpretation: 'Your mind is sorting through the day\'s events. This dream represents the integration of new experiences.',
+                advice: 'Pay attention to your mood today; it holds the key to this dream.'
+            };
+        }
+    }
+
+    // If keywords found, combine them
+    const primary = foundKeywords[0];
+    const secondary = foundKeywords.length > 1 ? foundKeywords[1] : null;
+
+    let interpretation = `The presence of **${primary.word}** suggests a focus on ${primary.meaning.toLowerCase()}. `;
+    if (secondary) {
+        interpretation += `Combined with **${secondary.word}**, this indicates a complex interplay between ${primary.meaning.toLowerCase()} and ${secondary.meaning.toLowerCase()}.`;
+    } else {
+        interpretation += `This is a strong signal from your subconscious regarding this aspect of your life.`;
+    }
+
+    return {
+        symbol: '🔮',
+        meaning: `${primary.meaning} ${secondary ? '& ' + secondary.meaning : ''}`,
+        interpretation: interpretation,
+        advice: primary.advice
+    };
+}
 
 let userCredits = 3;
 
@@ -75,63 +204,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
     updateCreditsDisplay();
 });
-
-// Saju Analysis Function
-function analyzeSaju() {
-    const name = document.getElementById('sajuName').value.trim();
-    const date = document.getElementById('sajuDate').value;
-    const time = document.getElementById('sajuTime').value;
-    const gender = document.getElementById('sajuGender').value;
-
-    if (!name || !date) {
-        alert('Please enter your name and birth date!');
-        return;
-    }
-
-    if (userCredits < 2) {
-        alert('Not enough credits! You need 2 credits.');
-        return;
-    }
-
-    userCredits -= 2;
-    updateCreditsDisplay();
-
-    // Calculate Hexagram based on Tojeongbigyeol principles (Simplified)
-    const birthDate = new Date(date);
-    const year = birthDate.getFullYear();
-    const month = birthDate.getMonth() + 1;
-    const day = birthDate.getDate();
-
-    // Upper Trigram (Sang-Gwae): Based on Year
-    const upper = (year % 8) + 1;
-
-    // Middle Trigram (Jung-Gwae): Based on Month
-    const middle = (month % 8) + 1;
-
-    // Lower Trigram (Ha-Gwae): Based on Day
-    const lower = (day % 8) + 1;
-
-    // Construct Hexagram ID (e.g., 111, 112...)
-    // For simplicity, we map to our database IDs
-    // In real Tojeongbigyeol, calculation is more complex involving lunar calendar
-    const hexId = parseInt(`11${(upper + middle + lower) % 8 + 1}`);
-
-    // Find result or fallback
-    let result = sajuHexagrams.find(h => h.id === hexId);
-    if (!result) {
-        // Deterministic fallback based on date hash
-        const hash = (year + month + day) % sajuHexagrams.length;
-        result = sajuHexagrams[hash];
-    }
-
-    document.getElementById('sajuTitle').textContent = `${result.title} (Hexagram ${upper}-${middle}-${lower})`;
-    document.getElementById('sajuHexagram').textContent = `Upper: ${upper} | Middle: ${middle} | Lower: ${lower}`;
-    document.getElementById('sajuTotal').textContent = result.total;
-    document.getElementById('sajuMonthly').textContent = result.monthly;
-    document.getElementById('sajuAdvice').textContent = result.advice;
-
-    document.getElementById('sajuResult').classList.remove('hidden');
-}
 
 function showScreen(screenId) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
@@ -193,7 +265,6 @@ function drawTarotCards() {
             document.getElementById(`card${i + 1}Description`).textContent = drawn[i].description;
         }
         document.getElementById('tarotResult').classList.remove('hidden');
-        // Scroll to result
         document.getElementById('tarotResult').scrollIntoView({ behavior: 'smooth' });
     });
 }
@@ -221,19 +292,11 @@ function analyzeSaju() {
         const month = birthDate.getMonth() + 1;
         const day = birthDate.getDate();
 
-        const upper = (year % 8) + 1;
-        const middle = (month % 8) + 1;
-        const lower = (day % 8) + 1;
-        const hexId = parseInt(`11${(upper + middle + lower) % 8 + 1}`);
+        // Use the new Advanced Engine
+        const result = generateSajuResult(year, month, day);
 
-        let result = sajuHexagrams.find(h => h.id === hexId);
-        if (!result) {
-            const hash = (year + month + day) % sajuHexagrams.length;
-            result = sajuHexagrams[hash];
-        }
-
-        document.getElementById('sajuTitle').textContent = `${result.title} (Hexagram ${upper}-${middle}-${lower})`;
-        document.getElementById('sajuHexagram').textContent = `Upper: ${upper} | Middle: ${middle} | Lower: ${lower}`;
+        document.getElementById('sajuTitle').textContent = result.title;
+        document.getElementById('sajuHexagram').textContent = result.hexagram;
         document.getElementById('sajuTotal').textContent = result.total;
         document.getElementById('sajuMonthly').textContent = result.monthly;
         document.getElementById('sajuAdvice').textContent = result.advice;
@@ -244,7 +307,7 @@ function analyzeSaju() {
 }
 
 function analyzeDream() {
-    const dreamText = document.getElementById('dreamInput').value.trim().toLowerCase();
+    const dreamText = document.getElementById('dreamInput').value.trim();
     if (!dreamText) {
         alert('Please describe your dream first!');
         return;
@@ -258,26 +321,14 @@ function analyzeDream() {
         userCredits--;
         updateCreditsDisplay();
 
-        let matchedSymbol = null;
-        for (const [key, value] of Object.entries(dreamSymbols)) {
-            if (dreamText.includes(key)) {
-                matchedSymbol = value;
-                break;
-            }
-        }
-        if (!matchedSymbol) {
-            matchedSymbol = {
-                symbol: '🌟',
-                meaning: 'Unique Dream',
-                interpretation: 'Your dream is deeply personal and reflects your subconscious processing of recent events and emotions.',
-                advice: 'Journal about your dream and the emotions it evoked. Consider connections to your waking life.'
-            };
-        }
+        // Use the new Advanced Engine
+        const result = analyzeDreamLogic(dreamText);
 
-        document.getElementById('dreamSymbol').textContent = matchedSymbol.symbol;
-        document.getElementById('dreamMeaning').textContent = matchedSymbol.meaning;
-        document.getElementById('dreamInterpretation').textContent = matchedSymbol.interpretation;
-        document.getElementById('dreamAdvice').textContent = matchedSymbol.advice;
+        document.getElementById('dreamSymbol').textContent = result.symbol;
+        document.getElementById('dreamMeaning').textContent = result.meaning;
+        document.getElementById('dreamInterpretation').textContent = result.interpretation;
+        document.getElementById('dreamAdvice').textContent = result.advice;
+
         document.getElementById('dreamResult').classList.remove('hidden');
         document.getElementById('dreamResult').scrollIntoView({ behavior: 'smooth' });
     });
