@@ -199,84 +199,22 @@ const NamingEngine = {
         water: { name: '수(水)', color: '#3498db', trait: '지혜, 유연성, 깊이' }
     },
 
-    // 이름 생성 함수 - 200개 이상의 다양한 이름 생성
-    generateNamePool: function (gender) {
-        const names = [];
-
-        if (gender === 'male') {
-            // 남자 이름 구성 요소
-            const firstChars = ['건', '동', '재', '경', '태', '준', '현', '성', '영', '윤', '시', '우', '도', '서', '승', '주', '민', '지', '하', '정', '상', '형', '철', '병', '수', '창', '종', '인', '대', '명', '광', '선', '규', '석', '용', '호', '진', '원', '기', '혁'];
-            const secondChars = ['우', '준', '민', '호', '현', '성', '진', '영', '수', '석', '철', '용', '규', '태', '원', '기', '혁', '훈', '재', '희', '찬', '욱', '환', '승', '윤', '하', '서', '도', '주', '경', '상', '형', '병', '창', '종', '인', '대', '명', '광', '선'];
-            const elements = ['wood', 'fire', 'earth', 'metal', 'water'];
-            const hanjaFirst = ['建', '東', '在', '京', '泰', '俊', '賢', '聖', '永', '潤', '時', '宇', '道', '瑞', '勝', '周', '敏', '智', '夏', '正', '尙', '亨', '哲', '炳', '秀', '昌', '鍾', '仁', '大', '明', '光', '善', '奎', '錫', '勇', '浩', '眞', '源', '基', '赫'];
-            const hanjaSecond = ['宇', '俊', '民', '浩', '賢', '聖', '眞', '永', '秀', '錫', '哲', '勇', '奎', '泰', '源', '基', '赫', '勳', '在', '熙', '燦', '旭', '煥', '承', '潤', '夏', '瑞', '道', '周', '京', '尙', '亨', '炳', '昌', '鍾', '仁', '大', '明', '光', '善'];
-
-            let idx = 0;
-            for (let i = 0; i < firstChars.length; i++) {
-                for (let j = 0; j < secondChars.length; j++) {
-                    if (idx >= 200) break;
-                    const element = elements[idx % 5];
-                    names.push({
-                        name: firstChars[i] + secondChars[j],
-                        hanja: hanjaFirst[i] + hanjaSecond[j],
-                        meaning: this.generateMeaning(firstChars[i], secondChars[j]),
-                        element: element,
-                        strokes: 10 + (idx % 30),
-                        score: 85 + (idx % 15)
-                    });
-                    idx++;
-                }
-                if (idx >= 200) break;
-            }
-        } else {
-            // 여자 이름 구성 요소
-            const firstChars = ['지', '수', '예', '가', '채', '하', '다', '유', '윤', '서', '은', '소', '민', '하', '지', '다', '예', '지', '하', '다', '서', '유', '윤', '은', '소', '민', '지', '수', '예', '가', '채', '하', '다', '유', '윤', '서', '은', '소', '민', '하'];
-            const secondChars = ['아', '연', '은', '원', '린', '영', '현', '진', '빈', '희', '주', '윤', '서', '지', '민', '인', '경', '나', '율', '우', '아', '연', '은', '원', '린', '영', '현', '진', '빈', '희', '주', '윤', '서', '지', '민', '인', '경', '나', '율', '우'];
-            const elements = ['wood', 'fire', 'earth', 'metal', 'water'];
-            const hanjaFirst = ['智', '秀', '藝', '佳', '采', '夏', '多', '有', '潤', '瑞', '恩', '昭', '敏', '夏', '智', '多', '睿', '智', '夏', '多', '瑞', '有', '潤', '恩', '昭', '敏', '智', '秀', '藝', '佳', '采', '夏', '多', '有', '潤', '瑞', '恩', '昭', '敏', '夏'];
-            const hanjaSecond = ['雅', '妍', '恩', '園', '璘', '英', '賢', '眞', '彬', '姬', '珠', '潤', '瑞', '智', '敏', '仁', '京', '娜', '律', '優', '雅', '妍', '恩', '園', '璘', '英', '賢', '眞', '彬', '姬', '珠', '潤', '瑞', '智', '敏', '仁', '京', '娜', '律', '優'];
-
-            let idx = 0;
-            for (let i = 0; i < firstChars.length; i++) {
-                for (let j = 0; j < secondChars.length; j++) {
-                    if (idx >= 200) break;
-                    const element = elements[idx % 5];
-                    names.push({
-                        name: firstChars[i] + secondChars[j],
-                        hanja: hanjaFirst[i] + hanjaSecond[j],
-                        meaning: this.generateMeaning(firstChars[i], secondChars[j]),
-                        element: element,
-                        strokes: 10 + (idx % 30),
-                        score: 85 + (idx % 15)
-                    });
-                    idx++;
-                }
-                if (idx >= 200) break;
-            }
-        }
-
-        return names;
+    premiumNames: {
+        male: [
+            { name: '건우', hanja: '建宇', meaning: '세상을 세우는 큰 집', element: 'wood', strokes: 20, score: 98 },
+            { name: '민준', hanja: '敏俊', meaning: '민첩하고 준수함', element: 'water', strokes: 22, score: 97 },
+            { name: '서준', hanja: '瑞俊', meaning: '상서롭고 준수함', element: 'metal', strokes: 23, score: 96 },
+            { name: '예준', hanja: '睿俊', meaning: '슬기롭고 준수함', element: 'fire', strokes: 24, score: 95 },
+            { name: '도윤', hanja: '道潤', meaning: '도를 윤택하게 함', element: 'earth', strokes: 25, score: 94 }
+        ],
+        female: [
+            { name: '지아', hanja: '智雅', meaning: '지혜롭고 우아함', element: 'water', strokes: 24, score: 99 },
+            { name: '서연', hanja: '瑞妍', meaning: '상서롭고 아름다움', element: 'metal', strokes: 23, score: 98 },
+            { name: '민서', hanja: '敏瑞', meaning: '민첩하고 상서로움', element: 'water', strokes: 25, score: 97 },
+            { name: '하은', hanja: '夏恩', meaning: '여름의 은혜', element: 'fire', strokes: 20, score: 96 },
+            { name: '지우', hanja: '智優', meaning: '지혜롭고 우수함', element: 'wood', strokes: 29, score: 95 }
+        ]
     },
-
-    generateMeaning: function (char1, char2) {
-        const meanings = {
-            '건': '세우다', '동': '동쪽', '재': '있다', '경': '서울', '태': '크다',
-            '준': '준수하다', '현': '현명하다', '성': '성스럽다', '영': '영원하다', '윤': '윤택하다',
-            '지': '지혜', '수': '빼어나다', '예': '예술', '가': '아름답다', '채': '가꾸다',
-            '하': '여름', '다': '많다', '유': '가지다', '서': '상서롭다', '은': '은혜',
-            '우': '집', '민': '백성', '호': '넓다', '진': '진실', '영': '빛나다',
-            '아': '우아하다', '연': '아름답다', '원': '정원', '린': '옥', '빈': '빛나다'
-        };
-        return (meanings[char1] || '훌륭한') + ' ' + (meanings[char2] || '사람');
-    },
-
-    get premiumNames() {
-        return {
-            male: this.generateNamePool('male'),
-            female: this.generateNamePool('female')
-        };
-    },
-
 
     analyzeSaju: function (birthDate) {
         const date = new Date(birthDate);
@@ -339,99 +277,23 @@ const NamingEngine = {
 
     calculateStrokes: function (surname) {
         const strokeMap = {
-            // 상위 20개 성씨 (인구 기준)
-            '김': 8, '이': 7, '박': 6, '최': 11, '정': 19, '강': 9, '조': 14, '윤': 4,
-            '장': 11, '임': 8, '한': 17, '오': 7, '서': 10, '신': 5, '권': 22, '황': 11,
-            '안': 6, '송': 7, '전': 6, '홍': 9,
-
-            // 21-50위 성씨
-            '유': 9, '고': 10, '문': 4, '양': 11, '손': 10, '배': 14, '백': 5, '허': 11,
-            '남': 9, '심': 7, '노': 16, '하': 8, '곽': 15, '성': 7, '차': 7,
-            '주': 6, '우': 9, '구': 8, '임': 6, '진': 10, '지': 6, '엄': 20,
-            '채': 14, '원': 4, '천': 3, '방': 4, '공': 4, '현': 5,
-
-            // 51-100위 성씨
-            '함': 9, '변': 18, '염': 13, '추': 9, '도': 11, '온': 13, '옥': 5,
-            '갈': 13, '육': 11, '맹': 8, '복': 2, '봉': 8, '왕': 4, '피': 5,
-            '계': 10, '탁': 8, '국': 17, '은': 10, '팽': 12, '명': 8, '용': 16,
-            '어': 11, '간': 18, '나': 19, '반': 15, '시': 9, '상': 8, '마': 10,
-            '표': 8, '모': 4, '설': 14, '기': 12, '석': 5, '선': 13, '소': 3,
-            '설': 14, '제': 11, '좌': 10, '경': 13, '봉': 8, '사': 5, '부': 5,
-
-            // 복성 (2자 성씨)
-            '제갈': 22, '선우': 19, '남궁': 19, '독고': 18, '황보': 20, '사공': 9,
-            '서문': 14, '동방': 12, '망절': 22, '장곡': 17, '선우': 19, '소봉': 11,
-            '어금': 19, '평강': 13, '제': 11, '갈': 13,
-
-            // 기타 희귀 성씨
-            '뇌': 13, '류': 15, '빈': 11, '사': 5, '삼': 3, '서': 10, '소': 3,
-            '순': 12, '시': 9, '신': 5, '아': 7, '애': 13, '야': 8, '양': 13,
-            '여': 7, '연': 14, '예': 11, '오': 7, '옹': 13, '요': 8, '우': 9,
-            '운': 12, '원': 4, '위': 12, '유': 9, '윤': 4, '은': 10, '음': 9,
-            '이': 7, '인': 6, '임': 8, '자': 6, '장': 11, '저': 8, '전': 6,
-            '정': 19, '제': 11, '조': 14, '종': 8, '좌': 10, '주': 6, '증': 15,
-            '지': 6, '진': 10, '차': 7, '창': 12, '채': 14, '천': 3, '초': 12,
-            '최': 11, '추': 9, '탁': 8, '탄': 9, '태': 9, '판': 15, '팽': 12,
-            '편': 15, '평': 5, '포': 9, '표': 8, '피': 5, '하': 8, '한': 17,
-            '함': 9, '해': 13, '허': 11, '현': 5, '형': 12, '호': 11, '홍': 9,
-            '화': 8, '환': 13, '황': 11, '후': 9, '흥': 16
+            '김': 8, '이': 7, '박': 5, '최': 11, '정': 9, '강': 11, '조': 10, '윤': 7,
+            '장': 11, '임': 6, '한': 14, '오': 8, '서': 9, '신': 10, '권': 18, '황': 12,
+            '안': 6, '송': 9, '전': 6, '홍': 10, '유': 6, '고': 10, '문': 4, '양': 13,
+            '손': 10, '배': 11, '백': 11, '허': 11, '남': 9, '심': 13, '노': 19, '하': 9,
+            '곽': 15, '성': 6, '차': 10
         };
-
-        // 입력된 성씨가 strokeMap에 있으면 해당 획수 반환, 없으면 기본값 10
         return strokeMap[surname] || 10;
     },
 
     generateNames: function (surname, birthDate, birthTime, gender) {
         const sajuAnalysis = this.analyzeSaju(birthDate);
         const targetElement = sajuAnalysis.weakElement;
-        const surnameStrokes = this.calculateStrokes(surname);
-
-        // 성씨를 해시값으로 변환하여 시드로 사용
-        let surnameHash = 0;
-        for (let i = 0; i < surname.length; i++) {
-            surnameHash = ((surnameHash << 5) - surnameHash) + surname.charCodeAt(i);
-            surnameHash = surnameHash & surnameHash;
-        }
-        surnameHash = Math.abs(surnameHash);
 
         let namePool = this.premiumNames[gender === 'male' ? 'male' : 'female'];
-
-        // 각 이름에 대해 성씨와의 궁합 점수 계산
-        const scoredNames = namePool.map(item => {
-            const totalStrokes = surnameStrokes + item.strokes;
-            const numerologyScore = this.numerology81[totalStrokes % 81] || { type: '중길(中吉)', meaning: '평범한 운', score: 50 };
-
-            // 궁합 점수 계산
-            let compatibilityScore = item.score;
-
-            // 오행 일치 보너스
-            if (item.element === targetElement) {
-                compatibilityScore += 30;
-            }
-
-            // 획수 길흉 보너스
-            if (numerologyScore.type.includes('대길') || numerologyScore.type.includes('大吉')) {
-                compatibilityScore += 25;
-            } else if (numerologyScore.type.includes('길') || numerologyScore.type.includes('吉')) {
-                compatibilityScore += 15;
-            }
-
-            // 성씨 해시 기반 랜덤 변동 (성씨마다 다른 결과)
-            const nameHash = item.name.charCodeAt(0) + item.name.charCodeAt(item.name.length - 1);
-            const randomBonus = ((surnameHash + nameHash) % 20) - 10; // -10 ~ +10
-            compatibilityScore += randomBonus;
-
-            return {
-                ...item,
-                totalStrokes: totalStrokes,
-                numerologyScore: numerologyScore,
-                compatibilityScore: compatibilityScore
-            };
-        });
-
-        // 궁합 점수 순으로 정렬하고 상위 5개 선택
-        scoredNames.sort((a, b) => b.compatibilityScore - a.compatibilityScore);
-        const selectedNames = scoredNames.slice(0, 5);
+        const matchingNames = namePool.filter(n => n.element === targetElement);
+        const otherNames = namePool.filter(n => n.element !== targetElement);
+        const selectedNames = [...matchingNames.slice(0, 3), ...otherNames.slice(0, 2)].slice(0, 5);
 
         return {
             sajuSummary: `생년월일: ${birthDate} | ${sajuAnalysis.recommendation}`,
@@ -442,6 +304,8 @@ const NamingEngine = {
             },
             recommendations: selectedNames.map(item => {
                 const fullName = surname + item.name;
+                const totalStrokes = this.calculateStrokes(surname) + item.strokes;
+                const numerologyScore = this.numerology81[totalStrokes % 81] || { type: '중길(中吉)', meaning: '평범한 운' };
 
                 return {
                     fullName: fullName,
@@ -449,11 +313,11 @@ const NamingEngine = {
                     meaning: item.meaning,
                     element: this.elements[item.element].name,
                     elementTrait: this.elements[item.element].trait,
-                    strokes: item.totalStrokes,
-                    numerology: item.numerologyScore.type,
-                    numerologyMeaning: item.numerologyScore.meaning,
-                    score: Math.round(item.compatibilityScore),
-                    reason: `${this.elements[item.element].name} 기운으로 사주의 ${this.elements[targetElement].name}을 보충합니다. 총 ${item.totalStrokes}획으로 ${item.numerologyScore.meaning}의 기운을 가진 이름입니다.`
+                    strokes: totalStrokes,
+                    numerology: numerologyScore.type,
+                    numerologyMeaning: numerologyScore.meaning,
+                    score: item.score,
+                    reason: `${this.elements[item.element].name} 기운으로 사주의 ${this.elements[targetElement].name}을 보충합니다. ${numerologyScore.meaning}의 기운을 가진 이름입니다.`
                 };
             })
         };

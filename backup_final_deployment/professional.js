@@ -79,48 +79,30 @@ function showScreen(screenId) {
     }
 }
 
-function showLoading(arg) {
+function showLoading(callback) {
     const overlay = document.getElementById('loadingOverlay');
     const textElement = document.getElementById('loadingText');
+    const messages = [
+        "Consulting the Stars...",
+        "Reading Ancient Patterns...",
+        "Aligning Cosmic Energies...",
+        "Decoding Your Destiny...",
+        "Whispering to the Spirits...",
+        "Analyzing Celestial Maps..."
+    ];
 
     if (overlay) overlay.classList.add('active');
 
-    // Case 1: Legacy callback usage (runs for 2.5s then executes callback)
-    if (typeof arg === 'function') {
-        const messages = [
-            "Consulting the Stars...",
-            "Reading Ancient Patterns...",
-            "Aligning Cosmic Energies...",
-            "Decoding Your Destiny...",
-            "Whispering to the Spirits...",
-            "Analyzing Celestial Maps..."
-        ];
+    let msgIndex = 0;
+    const interval = setInterval(() => {
+        if (textElement) textElement.textContent = messages[Math.floor(Math.random() * messages.length)];
+    }, 800);
 
-        if (textElement) textElement.textContent = messages[0];
-
-        const interval = setInterval(() => {
-            if (textElement) textElement.textContent = messages[Math.floor(Math.random() * messages.length)];
-        }, 800);
-
-        setTimeout(() => {
-            clearInterval(interval);
-            if (overlay) overlay.classList.remove('active');
-            arg();
-        }, 2500);
-    }
-    // Case 2: Message string usage (stays open until hideLoading is called)
-    else if (typeof arg === 'string') {
-        if (textElement) textElement.textContent = arg;
-    }
-    // Case 3: Default usage
-    else {
-        if (textElement) textElement.textContent = "Processing...";
-    }
-}
-
-function hideLoading() {
-    const overlay = document.getElementById('loadingOverlay');
-    if (overlay) overlay.classList.remove('active');
+    setTimeout(() => {
+        clearInterval(interval);
+        if (overlay) overlay.classList.remove('active');
+        if (callback) callback();
+    }, 2500);
 }
 
 // --- SERVICE FUNCTIONS ---
@@ -466,199 +448,4 @@ function analyzeName() {
         resultDiv.classList.remove('hidden');
         resultDiv.scrollIntoView({ behavior: 'smooth' });
     });
-
-}
-
-// ===== AI NAMING CENTER FUNCTIONS =====
-
-// 무료 미리보기 (2개 이름)
-function generateNamePreview() {
-    const surname = document.getElementById('namingSurname').value.trim();
-    const gender = document.getElementById('namingGender').value;
-    const year = document.getElementById('namingYear').value;
-    const month = document.getElementById('namingMonth').value;
-    const day = document.getElementById('namingDay').value;
-    const calendar = document.getElementById('namingCalendar').value;
-    const hour = document.getElementById('namingHour').value || '12';
-    const minute = document.getElementById('namingMinute').value || '0';
-
-    // 입력 검증
-    if (!surname || !gender || !year || !month || !day) {
-        alert('모든 필수 항목을 입력해주세요!');
-        return;
-    }
-
-    if (typeof NamingEngine === 'undefined') {
-        alert('작명 엔진이 로드되지 않았습니다. 페이지를 새로고침해주세요.');
-        console.error('NamingEngine is undefined');
-        return;
-    }
-
-    showLoading('사주를 분석하고 최고의 이름을 찾는 중...');
-
-    setTimeout(() => {
-        try {
-            const birthDate = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
-            const birthTime = `${hour.padStart(2, '0')}:${minute.padStart(2, '0')}`;
-
-            // NamingEngine 사용
-            const result = NamingEngine.generateNames(surname, birthDate, birthTime, gender);
-
-            if (!result || !result.recommendations) {
-                throw new Error("작명 결과를 생성하지 못했습니다.");
-            }
-
-            // 미리보기는 2개만
-            const previewNames = result.recommendations.slice(0, 2);
-
-            // 사주 분석 요약 표시
-            const summaryEl = document.getElementById('namingPreviewSummary');
-            if (summaryEl) summaryEl.textContent = result.sajuSummary;
-
-            // 미리보기 이름 목록 생성
-            const previewList = document.getElementById('namingPreviewList');
-            if (previewList) {
-                previewList.innerHTML = previewNames.map((name, index) => `
-                    <div style="background: hsla(270, 70%, 30%, 0.3); padding: 2rem; border-radius: 15px; margin-bottom: 1.5rem; border-left: 4px solid var(--accent-gold);">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                            <h3 style="color: var(--accent-gold); font-size: 1.8rem; margin: 0;">${name.fullName}</h3>
-                            <span style="background: var(--accent-gold); color: var(--bg-dark); padding: 0.3rem 0.8rem; border-radius: 20px; font-weight: bold;">${name.score}점</span>
-                        </div>
-                        <p style="color: var(--text-secondary); font-size: 1.1rem; margin-bottom: 0.5rem;">한자: ${name.hanja}</p>
-                        <p style="color: var(--text-primary); line-height: 1.6; margin-bottom: 1rem;">${name.meaning}</p>
-                        <div style="background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 10px;">
-                            <p style="color: var(--primary-purple-light); margin: 0; font-size: 0.95rem;">🔒 전체 결과에서 상세 분석을 확인하세요</p>
-                        </div>
-                    </div>
-                `).join('');
-            }
-
-            hideLoading();
-
-            // 미리보기 결과 표시
-            const previewScreen = document.getElementById('namingPreview');
-            if (previewScreen) {
-                previewScreen.classList.remove('hidden');
-                previewScreen.scrollIntoView({ behavior: 'smooth' });
-            }
-        } catch (error) {
-            hideLoading();
-            console.error(error);
-            alert('오류가 발생했습니다: ' + error.message);
-        }
-    }, 2000);
-}
-
-// 유료 전체 결과 (5개 이름)
-function generateNameFull() {
-    if (userCredits < 3) {
-        alert('크레딧이 부족합니다! 3 크레딧이 필요합니다.');
-        return;
-    }
-
-    showLoading('전체 이름 분석 중...');
-
-    setTimeout(() => {
-        try {
-            const surname = document.getElementById('namingSurname').value.trim();
-            const gender = document.getElementById('namingGender').value;
-            const year = document.getElementById('namingYear').value;
-            const month = document.getElementById('namingMonth').value;
-            const day = document.getElementById('namingDay').value;
-            const hour = document.getElementById('namingHour').value || '12';
-            const minute = document.getElementById('namingMinute').value || '0';
-
-            const birthDate = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
-            const birthTime = `${hour.padStart(2, '0')}:${minute.padStart(2, '0')}`;
-
-            // NamingEngine 사용
-            const result = NamingEngine.generateNames(surname, birthDate, birthTime, gender);
-
-            if (!result || !result.recommendations) {
-                throw new Error("작명 결과를 생성하지 못했습니다.");
-            }
-
-            // 사주 분석 상세 표시
-            const summaryEl = document.getElementById('namingFullSummary');
-            if (summaryEl) summaryEl.textContent = result.sajuSummary;
-
-            // 사주 오행 상세 정보
-            const sajuDetail = document.getElementById('namingSajuDetail');
-            if (sajuDetail) {
-                sajuDetail.innerHTML = `
-                    <div style="background: hsla(120, 70%, 40%, 0.2); padding: 0.8rem 1.2rem; border-radius: 10px;">
-                        <span style="color: var(--accent-green);">년주: ${result.sajuDetail.yearElement}</span>
-                    </div>
-                    <div style="background: hsla(0, 70%, 50%, 0.2); padding: 0.8rem 1.2rem; border-radius: 10px;">
-                        <span style="color: var(--secondary-pink);">월주: ${result.sajuDetail.monthElement}</span>
-                    </div>
-                    <div style="background: hsla(45, 100%, 50%, 0.2); padding: 0.8rem 1.2rem; border-radius: 10px;">
-                        <span style="color: var(--accent-gold);">보충: ${result.sajuDetail.weakElement}</span>
-                    </div>
-                `;
-            }
-
-            // 전체 이름 목록 (5개)
-            const namingList = document.getElementById('namingFullList');
-            if (namingList) {
-                namingList.innerHTML = result.recommendations.map((name, index) => `
-                    <div style="background: hsla(270, 70%, 30%, 0.3); padding: 2.5rem; border-radius: 15px; margin-bottom: 2rem; border-left: 4px solid var(--accent-gold);">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-                            <div>
-                                <span style="background: var(--primary-purple); color: white; padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.9rem; margin-right: 0.5rem;">추천 ${index + 1}</span>
-                                <h3 style="color: var(--accent-gold); font-size: 2rem; margin: 0.5rem 0; display: inline-block;">${name.fullName}</h3>
-                            </div>
-                            <span style="background: var(--accent-gold); color: var(--bg-dark); padding: 0.5rem 1.2rem; border-radius: 20px; font-weight: bold; font-size: 1.2rem;">${name.score}점</span>
-                        </div>
-                        
-                        <div style="margin-bottom: 1.5rem;">
-                            <p style="color: var(--text-secondary); font-size: 1.2rem; margin-bottom: 0.5rem;">📝 한자: <span style="color: var(--text-primary); font-weight: 600;">${name.hanja}</span></p>
-                            <p style="color: var(--text-secondary); font-size: 1.1rem;">💎 의미: <span style="color: var(--text-primary);">${name.meaning}</span></p>
-                        </div>
-                        
-                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
-                            <div style="background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 10px;">
-                                <p style="color: var(--primary-purple-light); font-size: 0.9rem; margin-bottom: 0.3rem;">오행 기운</p>
-                                <p style="color: var(--accent-gold); font-weight: 600; margin: 0;">${name.element}</p>
-                                <p style="color: var(--text-secondary); font-size: 0.85rem; margin-top: 0.3rem;">${name.elementTrait}</p>
-                            </div>
-                            <div style="background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 10px;">
-                                <p style="color: var(--primary-purple-light); font-size: 0.9rem; margin-bottom: 0.3rem;">수리 길흉</p>
-                                <p style="color: var(--accent-gold); font-weight: 600; margin: 0;">${name.numerology}</p>
-                                <p style="color: var(--text-secondary); font-size: 0.85rem; margin-top: 0.3rem;">총 ${name.strokes}획</p>
-                            </div>
-                        </div>
-                        
-                        <div style="background: hsla(45, 100%, 60%, 0.1); padding: 1.5rem; border-radius: 10px; border-left: 3px solid var(--accent-gold);">
-                            <h4 style="color: var(--accent-gold); margin-bottom: 0.8rem; display: flex; align-items: center; gap: 0.5rem;">
-                                <span>💡</span> 추천 이유
-                            </h4>
-                            <p style="color: var(--text-primary); line-height: 1.8; margin: 0;">${name.reason}</p>
-                            <p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 0.8rem; font-style: italic;">"${name.numerologyMeaning}"</p>
-                        </div>
-                    </div>
-                `).join('');
-            }
-
-            // 크레딧 차감
-            userCredits -= 3;
-            updateCreditsDisplay();
-
-            hideLoading();
-
-            // 미리보기 숨기고 전체 결과 표시
-            const previewScreen = document.getElementById('namingPreview');
-            if (previewScreen) previewScreen.classList.add('hidden');
-
-            const resultScreen = document.getElementById('namingResult');
-            if (resultScreen) {
-                resultScreen.classList.remove('hidden');
-                resultScreen.scrollIntoView({ behavior: 'smooth' });
-            }
-        } catch (error) {
-            hideLoading();
-            console.error(error);
-            alert('오류가 발생했습니다: ' + error.message);
-        }
-    }, 2500);
 }
