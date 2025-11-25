@@ -216,12 +216,17 @@ const NamingEngine = {
                 for (let j = 0; j < secondChars.length; j++) {
                     if (idx >= 200) break;
                     const element = elements[idx % 5];
+                    const nameCombined = firstChars[i] + secondChars[j];
+                    // 이름 글자의 해시값을 기반으로 획수 계산 (더 다양한 분포)
+                    const charHash = nameCombined.charCodeAt(0) + nameCombined.charCodeAt(1);
+                    const strokeVariation = (charHash % 28) + 8; // 8~35획 범위
+
                     names.push({
-                        name: firstChars[i] + secondChars[j],
+                        name: nameCombined,
                         hanja: hanjaFirst[i] + hanjaSecond[j],
                         meaning: this.generateMeaning(firstChars[i], secondChars[j]),
                         element: element,
-                        strokes: 10 + (idx % 30),
+                        strokes: strokeVariation,
                         score: 85 + (idx % 15)
                     });
                     idx++;
@@ -241,12 +246,17 @@ const NamingEngine = {
                 for (let j = 0; j < secondChars.length; j++) {
                     if (idx >= 200) break;
                     const element = elements[idx % 5];
+                    const nameCombined = firstChars[i] + secondChars[j];
+                    // 이름 글자의 해시값을 기반으로 획수 계산 (더 다양한 분포)
+                    const charHash = nameCombined.charCodeAt(0) + nameCombined.charCodeAt(1);
+                    const strokeVariation = (charHash % 28) + 8; // 8~35획 범위
+
                     names.push({
-                        name: firstChars[i] + secondChars[j],
+                        name: nameCombined,
                         hanja: hanjaFirst[i] + hanjaSecond[j],
                         meaning: this.generateMeaning(firstChars[i], secondChars[j]),
                         element: element,
-                        strokes: 10 + (idx % 30),
+                        strokes: strokeVariation,
                         score: 85 + (idx % 15)
                     });
                     idx++;
