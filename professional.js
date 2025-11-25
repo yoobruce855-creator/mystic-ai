@@ -383,22 +383,134 @@ function checkCompatibility() {
     });
 }
 
+// ===== DAILY FORTUNE (TOJEONGBIGYEOL STYLE) =====
+
+// Element data for daily fortune
+const dailyElements = {
+    wood: { name: '목(木)', color: '#2ecc71', trait: '성장, 창조', time: '새벽 (03:00-07:00)' },
+    fire: { name: '화(火)', color: '#e74c3c', trait: '열정, 명예', time: '오전 (09:00-13:00)' },
+    earth: { name: '토(土)', color: '#f39c12', trait: '안정, 신뢰', time: '오후 (13:00-17:00)' },
+    metal: { name: '금(金)', color: '#ecf0f1', trait: '결단력, 정의', time: '저녁 (17:00-21:00)' },
+    water: { name: '수(水)', color: '#3498db', trait: '지혜, 유연성', time: '밤 (21:00-01:00)' }
+};
+
+// Fortune messages by harmony type
+const fortuneByHarmony = {
+    generating: [  // 상생 (Your element generates today's element)
+        { emoji: '⭐', title: '대길한 날', message: '오늘은 당신의 기운이 세상과 완벽하게 조화를 이룹니다. 하고자 하는 일이 순조롭게 풀릴 것입니다.', advice: '적극적으로 행동하세요. 새로운 시도를 하기에 최적의 날입니다.' },
+        { emoji: '🌟', title: '행운의 날', message: '당신의 에너지가 우주의 흐름과 하나가 되는 날입니다. 중요한 결정을 내리기 좋습니다.', advice: '직감을 믿으세요. 오늘의 선택이 미래를 밝게 만들 것입니다.' }
+    ],
+    generated: [  // 상생 (Today's element generates your element)
+        { emoji: '💫', title: '성장의 날', message: '오늘은 당신에게 에너지가 흘러들어오는 날입니다. 배움과 성장의 기회가 찾아옵니다.', advice: '새로운 것을 배우고 경험하세요. 오늘의 노력이 큰 결실을 맺을 것입니다.' },
+        { emoji: '🌈', title: '발전의 날', message: '우주가 당신을 돕는 날입니다. 주변의 도움을 받아 한 단계 성장할 수 있습니다.', advice: '겸손하게 배우고 감사하세요. 좋은 인연이 당신을 이끌 것입니다.' }
+    ],
+    same: [  // 동일 (Same element)
+        { emoji: '✨', title: '안정의 날', message: '오늘은 당신의 본질이 그대로 드러나는 날입니다. 자신감을 가지고 행동하세요.', advice: '자신의 강점을 발휘하세요. 평소의 스타일대로 하면 좋은 결과가 있을 것입니다.' },
+        { emoji: '🌸', title: '조화의 날', message: '내면의 평화를 느낄 수 있는 날입니다. 자신을 돌아보고 정리하기 좋습니다.', advice: '명상이나 휴식을 취하세요. 내면의 소리에 귀 기울이는 시간을 가지세요.' }
+    ],
+    conquering: [  // 상극 (Your element conquers today's element)
+        { emoji: '⚡', title: '도전의 날', message: '오늘은 당신의 의지가 시험받는 날입니다. 어려움이 있을 수 있지만 극복할 수 있습니다.', advice: '인내심을 가지세요. 작은 성공에도 감사하며 한 걸음씩 나아가세요.' },
+        { emoji: '🔥', title: '극복의 날', message: '장애물이 있을 수 있지만 당신의 힘으로 이겨낼 수 있습니다. 포기하지 마세요.', advice: '긍정적인 마음가짐을 유지하세요. 어려움은 성장의 기회입니다.' }
+    ],
+    conquered: [  // 상극 (Today's element conquers your element)
+        { emoji: '🌙', title: '신중의 날', message: '오늘은 조심스럽게 행동해야 하는 날입니다. 무리하지 말고 현상 유지에 집중하세요.', advice: '중요한 결정은 미루세요. 휴식을 취하고 에너지를 보존하는 것이 좋습니다.' },
+        { emoji: '🍃', title: '준비의 날', message: '오늘은 앞으로 나아가기보다 내실을 다지는 날입니다. 계획을 세우고 준비하세요.', advice: '서두르지 마세요. 차분하게 준비하면 다음 기회에 큰 성과를 거둘 수 있습니다.' }
+    ]
+};
+
+function calculateUserElement(birthDate) {
+    const date = new Date(birthDate);
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+
+    // Simplified Saju element calculation (based on year)
+    const yearElements = ['metal', 'water', 'wood', 'fire', 'earth'];
+    const yearElement = yearElements[year % 5];
+
+    return yearElement;
+}
+
+function calculateTodayElement() {
+    const today = new Date();
+    const month = today.getMonth() + 1;
+
+    // Month to element mapping
+    const monthElements = {
+        1: 'water', 2: 'water',  // Winter
+        3: 'wood', 4: 'wood', 5: 'wood',  // Spring
+        6: 'fire', 7: 'fire', 8: 'fire',  // Summer
+        9: 'metal', 10: 'metal',  // Autumn
+        11: 'earth', 12: 'earth'  // Transition
+    };
+
+    return monthElements[month];
+}
+
+function analyzeElementHarmony(userElement, todayElement) {
+    const cycle = { wood: 'fire', fire: 'earth', earth: 'metal', metal: 'water', water: 'wood' };
+    const conquer = { wood: 'earth', earth: 'water', water: 'fire', fire: 'metal', metal: 'wood' };
+
+    if (userElement === todayElement) {
+        return { type: 'same', name: '동일 (Same)' };
+    } else if (cycle[userElement] === todayElement) {
+        return { type: 'generating', name: '상생 (Generating)' };
+    } else if (cycle[todayElement] === userElement) {
+        return { type: 'generated', name: '상생 (Generated)' };
+    } else if (conquer[userElement] === todayElement) {
+        return { type: 'conquering', name: '상극 (Conquering)' };
+    } else if (conquer[todayElement] === userElement) {
+        return { type: 'conquered', name: '상극 (Conquered)' };
+    }
+
+    return { type: 'same', name: '중립 (Neutral)' };
+}
+
 function getDailyFortune() {
+    const name = document.getElementById('todayName').value.trim();
+    const birthDate = document.getElementById('todayBirthDate').value;
+
+    if (!birthDate) {
+        alert('Please enter your birth date!');
+        return;
+    }
+
     showLoading(() => {
         const today = new Date();
-        const seed = today.getDate() + today.getMonth() * 31;
-        const fortuneIndex = seed % fortuneMessages.length;
-        const fortune = fortuneMessages[fortuneIndex];
+        const userElement = calculateUserElement(birthDate);
+        const todayElement = calculateTodayElement();
+        const harmony = analyzeElementHarmony(userElement, todayElement);
+
+        // Get fortune message based on harmony
+        const fortuneList = fortuneByHarmony[harmony.type] || fortuneByHarmony.same;
+        const fortune = fortuneList[Math.floor(Math.random() * fortuneList.length)];
+
+        // Calculate lucky numbers (based on birth date + today)
+        const birthSeed = new Date(birthDate).getTime();
+        const todaySeed = today.getDate() + today.getMonth() * 31;
+        const combinedSeed = (birthSeed % 10000) + todaySeed;
 
         const luckyNums = [];
         for (let i = 0; i < 6; i++) {
-            luckyNums.push(((seed * (i + 1) * 7) % 45) + 1);
+            luckyNums.push(((combinedSeed * (i + 1) * 7) % 45) + 1);
         }
 
+        // Display results
         document.getElementById('fortuneEmoji').textContent = fortune.emoji;
         document.getElementById('fortuneTitle').textContent = fortune.title;
+        document.getElementById('fortuneDate').textContent = today.toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' });
         document.getElementById('fortuneMessage').textContent = fortune.message;
+
+        document.getElementById('userElement').textContent = dailyElements[userElement].name;
+        document.getElementById('todayElement').textContent = dailyElements[todayElement].name;
+        document.getElementById('harmonyType').textContent = harmony.name;
+
         document.getElementById('luckyNumbers').textContent = luckyNums.join(', ');
+
+        document.getElementById('luckyColorBox').style.backgroundColor = dailyElements[userElement].color;
+        document.getElementById('luckyColorName').textContent = dailyElements[userElement].name;
+
+        document.getElementById('bestTime').textContent = dailyElements[userElement].time;
         document.getElementById('todayAdvice').textContent = fortune.advice;
 
         const resultDiv = document.getElementById('todayResult');
