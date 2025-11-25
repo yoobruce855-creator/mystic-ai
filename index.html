@@ -591,6 +591,99 @@
         </div>
     </div>
 
+    <!-- PAYMENT MODAL -->
+    <div id="paymentModal" class="modal">
+        <div class="modal-content"
+            style="max-width: 800px; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); border: 1px solid var(--border-glow);">
+            <span class="close-modal" onclick="closeModal('paymentModal')">&times;</span>
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <h2 style="color: var(--accent-gold); font-size: 2rem; margin-bottom: 0.5rem;">Choose Your Destiny</h2>
+                <p style="color: var(--text-secondary);">Unlock deeper insights with premium credits</p>
+            </div>
+
+            <div class="pricing-grid"
+                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+                <!-- Starter Pack -->
+                <div class="price-card" onclick="selectPrice('starter')"
+                    style="background: rgba(255,255,255,0.05); padding: 2rem; border-radius: 15px; border: 1px solid rgba(255,255,255,0.1); cursor: pointer; transition: all 0.3s ease;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">💎</div>
+                    <h3 style="color: white; margin-bottom: 0.5rem;">Starter</h3>
+                    <div style="font-size: 2rem; color: var(--accent-gold); font-weight: bold; margin-bottom: 1rem;">
+                        $1.99</div>
+                    <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">10 Credits</p>
+                    <ul
+                        style="text-align: left; color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1.5rem; list-style: none;">
+                        <li>✓ 3 Tarot Readings</li>
+                        <li>✓ 1 Dream Analysis</li>
+                        <li>✓ Basic Fortune</li>
+                    </ul>
+                    <button class="select-btn"
+                        style="width: 100%; padding: 0.8rem; background: transparent; border: 1px solid var(--accent-gold); color: var(--accent-gold); border-radius: 25px; cursor: pointer;">Select</button>
+                </div>
+
+                <!-- Popular Pack -->
+                <div class="price-card popular" onclick="selectPrice('popular')"
+                    style="background: rgba(255,255,255,0.08); padding: 2rem; border-radius: 15px; border: 2px solid var(--accent-gold); cursor: pointer; transform: scale(1.05); position: relative;">
+                    <div
+                        style="position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--accent-gold); color: black; padding: 0.2rem 1rem; border-radius: 15px; font-size: 0.8rem; font-weight: bold;">
+                        BEST VALUE</div>
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">👑</div>
+                    <h3 style="color: white; margin-bottom: 0.5rem;">Pro</h3>
+                    <div style="font-size: 2rem; color: var(--accent-gold); font-weight: bold; margin-bottom: 1rem;">
+                        $4.99</div>
+                    <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">50 Credits</p>
+                    <ul
+                        style="text-align: left; color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1.5rem; list-style: none;">
+                        <li>✓ 15 Tarot Readings</li>
+                        <li>✓ 5 Dream Analyses</li>
+                        <li>✓ Full Saju Analysis</li>
+                        <li>✓ Name Compatibility</li>
+                    </ul>
+                    <button class="select-btn"
+                        style="width: 100%; padding: 0.8rem; background: var(--accent-gold); border: none; color: black; border-radius: 25px; font-weight: bold; cursor: pointer;">Select</button>
+                </div>
+
+                <!-- Premium Pack -->
+                <div class="price-card" onclick="selectPrice('premium')"
+                    style="background: rgba(255,255,255,0.05); padding: 2rem; border-radius: 15px; border: 1px solid rgba(255,255,255,0.1); cursor: pointer; transition: all 0.3s ease;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">🌟</div>
+                    <h3 style="color: white; margin-bottom: 0.5rem;">Master</h3>
+                    <div style="font-size: 2rem; color: var(--accent-gold); font-weight: bold; margin-bottom: 1rem;">
+                        $9.99</div>
+                    <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">120 Credits</p>
+                    <ul
+                        style="text-align: left; color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1.5rem; list-style: none;">
+                        <li>✓ Unlimited Access</li>
+                        <li>✓ All Premium Features</li>
+                        <li>✓ Priority Support</li>
+                        <li>✓ Ad-free Experience</li>
+                    </ul>
+                    <button class="select-btn"
+                        style="width: 100%; padding: 0.8rem; background: transparent; border: 1px solid var(--accent-gold); color: var(--accent-gold); border-radius: 25px; cursor: pointer;">Select</button>
+                </div>
+            </div>
+
+            <div id="paymentMethods" class="hidden"
+                style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 2rem;">
+                <h3 style="color: white; margin-bottom: 1.5rem;">Select Payment Method</h3>
+                <div style="display: flex; gap: 1rem; justify-content: center;">
+                    <button onclick="processPayment('stripe')"
+                        style="display: flex; align-items: center; gap: 0.5rem; padding: 1rem 2rem; background: #635bff; border: none; border-radius: 8px; color: white; font-size: 1.1rem; cursor: pointer; transition: transform 0.2s;">
+                        <span>💳</span> Pay with Card
+                    </button>
+                    <button onclick="processPayment('paypal')"
+                        style="display: flex; align-items: center; gap: 0.5rem; padding: 1rem 2rem; background: #0070ba; border: none; border-radius: 8px; color: white; font-size: 1.1rem; cursor: pointer; transition: transform 0.2s;">
+                        <span>🅿️</span> PayPal
+                    </button>
+                </div>
+                <p style="color: var(--text-secondary); font-size: 0.8rem; margin-top: 1rem;">
+                    Secure payment processed by Stripe/PayPal. <br>
+                    By continuing, you agree to our Terms of Service.
+                </p>
+            </div>
+        </div>
+    </div>
+
     <div id="loadingOverlay" class="loading-overlay">
         <div class="crystal-ball"></div>
         <div class="loading-text" id="loadingText">Consulting the Stars...</div>

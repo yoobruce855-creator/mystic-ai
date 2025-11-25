@@ -936,3 +936,107 @@ function showTodayFortune(birthDate, gender) {
     todayResult.classList.remove('hidden');
 }
 
+
+// ===== PAYMENT SYSTEM =====
+
+let selectedPlan = null;
+
+function openPaymentModal() {
+    const modal = document.getElementById('paymentModal');
+    if (modal) {
+        modal.style.display = 'block';
+        // Reset selection
+        document.querySelectorAll('.price-card').forEach(c => {
+            c.style.borderColor = 'rgba(255,255,255,0.1)';
+            c.style.background = 'rgba(255,255,255,0.05)';
+        });
+        document.getElementById('paymentMethods').classList.add('hidden');
+        selectedPlan = null;
+    }
+}
+
+function closeModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+        modal.style.display = 'none';
+    }
+}
+
+function selectPrice(plan) {
+    selectedPlan = plan;
+
+    // Visual feedback
+    document.querySelectorAll('.price-card').forEach(c => {
+        c.style.borderColor = 'rgba(255,255,255,0.1)';
+        c.style.transform = 'scale(1)';
+    });
+
+    const selectedCard = document.querySelector(`.price-card[onclick="selectPrice('${plan}')"]`);
+    if (selectedCard) {
+        selectedCard.style.borderColor = 'var(--accent-gold)';
+        selectedCard.style.transform = 'scale(1.05)';
+    }
+
+    // Show payment methods
+    const methods = document.getElementById('paymentMethods');
+    methods.classList.remove('hidden');
+    methods.scrollIntoView({ behavior: 'smooth' });
+}
+
+function processPayment(method) {
+    if (!selectedPlan) return;
+
+    // Credits amount based on plan
+    let creditsToAdd = 0;
+    let amount = 0;
+
+    switch (selectedPlan) {
+        case 'starter': creditsToAdd = 10; amount = 1.99; break;
+        case 'popular': creditsToAdd = 50; amount = 4.99; break;
+        case 'premium': creditsToAdd = 120; amount = 9.99; break;
+    }
+
+    showLoading(`Processing ${method === 'stripe' ? 'Card' : 'PayPal'} Payment...`);
+
+    // SIMULATED PAYMENT PROCESS
+    // TODO: Replace this timeout with actual API call
+    // Stripe: stripe.redirectToCheckout(...)
+    // PayPal: paypal.Buttons(...).render(...)
+
+    setTimeout(() => {
+        hideLoading();
+
+        // Success!
+        userCredits += creditsToAdd;
+        updateCreditsDisplay();
+
+        // Save to local storage (simple persistence)
+        localStorage.setItem('mysticUserCredits', userCredits);
+
+        // Show success message
+        alert(`Payment Successful! ${creditsToAdd} credits have been added to your account.`);
+        closeModal('paymentModal');
+
+        // If premium, unlock premium features
+        if (selectedPlan === 'premium') {
+            isPremium = true;
+            document.querySelector('.upgrade-btn').textContent = '👑 Premium Member';
+        }
+
+    }, 2000);
+}
+
+// Update upgrade button to open payment modal
+document.addEventListener('DOMContentLoaded', () => {
+    const upgradeBtn = document.querySelector('.upgrade-btn');
+    if (upgradeBtn) {
+        upgradeBtn.onclick = openPaymentModal;
+    }
+
+    // Load saved credits
+    const savedCredits = localStorage.getItem('mysticUserCredits');
+    if (savedCredits) {
+        userCredits = parseInt(savedCredits);
+        updateCreditsDisplay();
+    }
+});
