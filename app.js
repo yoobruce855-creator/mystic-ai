@@ -193,10 +193,92 @@ document.addEventListener('DOMContentLoaded', () => {
                     showScreen('todayScreen');
                     break;
                 case 'saju':
+                    showScreen('sajuScreen');
+                    break;
                 case 'naming':
-                    alert(this.querySelector('h2').textContent + ' - Coming soon!');
+                    showScreen('namingScreen');
                     break;
             }
         });
     });
 });
+
+// Naming Center Functions
+function generateNamePreview() {
+    // Gather inputs
+    const surname = document.getElementById('namingSurname').value.trim();
+    const gender = document.getElementById('namingGender').value;
+    const calendar = document.getElementById('namingCalendar').value;
+    const hour = document.getElementById('namingHour').value || '12';
+    const minute = document.getElementById('namingMinute').value || '00';
+
+    if (!surname) {
+        alert('Please enter a surname.');
+        return;
+    }
+    if (!gender) {
+        alert('Please select a gender.');
+        return;
+    }
+
+    // Simplified placeholder birth date (year/month/day) – using 2000-01-01 for preview
+    const birthDate = `${calendar === 'solar' ? '2000-01-01' : '2000-01-01'}`;
+    const birthTime = `${hour.padStart(2, '0')}:${minute.padStart(2, '0')}`;
+
+    // Call naming data (assumes global namingData object from naming_data.js)
+    const result = namingData.generateNames(surname, birthDate, birthTime, gender);
+
+    // Update preview UI
+    const previewSummary = document.getElementById('namingPreviewSummary');
+    if (previewSummary) previewSummary.textContent = result.sajuSummary;
+    const previewList = document.getElementById('namingPreviewList');
+    if (previewList) {
+        previewList.innerHTML = '';
+        result.recommendations.slice(0, 2).forEach(rec => {
+            const li = document.createElement('li');
+            li.textContent = `${rec.fullName} (${rec.element}) – Score: ${rec.score}`;
+            previewList.appendChild(li);
+        });
+    }
+    const previewDiv = document.getElementById('namingPreview');
+    if (previewDiv) previewDiv.classList.remove('hidden');
+}
+
+function generateNameFull() {
+    const surname = document.getElementById('namingSurname').value.trim();
+    const gender = document.getElementById('namingGender').value;
+    const calendar = document.getElementById('namingCalendar').value;
+    const hour = document.getElementById('namingHour').value || '12';
+    const minute = document.getElementById('namingMinute').value || '00';
+
+    if (!surname) {
+        alert('Please enter a surname.');
+        return;
+    }
+    if (!gender) {
+        alert('Please select a gender.');
+        return;
+    }
+
+    const birthDate = `${calendar === 'solar' ? '2000-01-01' : '2000-01-01'}`;
+    const birthTime = `${hour.padStart(2, '0')}:${minute.padStart(2, '0')}`;
+
+    const result = namingData.generateNames(surname, birthDate, birthTime, gender);
+
+    // Update full result UI
+    const sajuDetail = document.getElementById('namingSajuDetail');
+    if (sajuDetail) sajuDetail.textContent = `${result.sajuDetail.yearElement} / ${result.sajuDetail.monthElement} – Weak: ${result.sajuDetail.weakElement}`;
+    const fullList = document.getElementById('namingFullList');
+    if (fullList) {
+        fullList.innerHTML = '';
+        result.recommendations.forEach(rec => {
+            const div = document.createElement('div');
+            div.style = 'margin-bottom:1.5rem; padding:1rem; background: var(--card-bg); border-radius:12px; border:1px solid var(--border-glow);';
+            div.innerHTML = `<strong>${rec.fullName}</strong> (${rec.element}) - Score: ${rec.score}<br/>Reason: ${rec.reason}`;
+            fullList.appendChild(div);
+        });
+    }
+    const resultDiv = document.getElementById('namingResult');
+    if (resultDiv) resultDiv.classList.remove('hidden');
+}
+

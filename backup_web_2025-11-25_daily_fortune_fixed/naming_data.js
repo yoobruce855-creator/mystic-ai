@@ -211,30 +211,15 @@ const NamingEngine = {
             const hanjaFirst = ['建', '東', '在', '京', '泰', '俊', '賢', '聖', '永', '潤', '時', '宇', '道', '瑞', '勝', '周', '敏', '智', '夏', '正', '尙', '亨', '哲', '炳', '秀', '昌', '鍾', '仁', '大', '明', '光', '善', '奎', '錫', '勇', '浩', '眞', '源', '基', '赫'];
             const hanjaSecond = ['宇', '俊', '民', '浩', '賢', '聖', '眞', '永', '秀', '錫', '哲', '勇', '奎', '泰', '源', '基', '赫', '勳', '在', '熙', '燦', '旭', '煥', '承', '潤', '夏', '瑞', '道', '周', '京', '尙', '亨', '炳', '昌', '鍾', '仁', '大', '明', '光', '善'];
 
-            // 배열 셔플하여 매번 다른 순서로 이름 생성
-            const shuffleArray = (array) => {
-                const shuffled = [...array];
-                for (let i = shuffled.length - 1; i > 0; i--) {
-                    const j = Math.floor(Math.random() * (i + 1));
-                    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-                }
-                return shuffled;
-            };
-
-            const shuffledFirst = shuffleArray(firstChars);
-            const shuffledSecond = shuffleArray(secondChars);
-            const shuffledHanjaFirst = shuffleArray(hanjaFirst);
-            const shuffledHanjaSecond = shuffleArray(hanjaSecond);
-
             let idx = 0;
-            for (let i = 0; i < shuffledFirst.length; i++) {
-                for (let j = 0; j < shuffledSecond.length; j++) {
+            for (let i = 0; i < firstChars.length; i++) {
+                for (let j = 0; j < secondChars.length; j++) {
                     if (idx >= 200) break;
                     const element = elements[idx % 5];
                     names.push({
-                        name: shuffledFirst[i] + shuffledSecond[j],
-                        hanja: shuffledHanjaFirst[i] + shuffledHanjaSecond[j],
-                        meaning: this.generateMeaning(shuffledFirst[i], shuffledSecond[j]),
+                        name: firstChars[i] + secondChars[j],
+                        hanja: hanjaFirst[i] + hanjaSecond[j],
+                        meaning: this.generateMeaning(firstChars[i], secondChars[j]),
                         element: element,
                         strokes: 10 + (idx % 30),
                         score: 85 + (idx % 15)
@@ -431,12 +416,9 @@ const NamingEngine = {
                 compatibilityScore += 15;
             }
 
-            // 생년월일 + 현재 시간 + 진짜 랜덤 기반 변동 (매번 다른 결과 보장)
-            const birthHash = new Date(birthDate).getTime();
-            const currentTime = Date.now();
+            // 성씨 해시 기반 랜덤 변동 (성씨마다 다른 결과)
             const nameHash = item.name.charCodeAt(0) + item.name.charCodeAt(item.name.length - 1);
-            const trueRandom = Math.floor(Math.random() * 1000); // 0-999 랜덤 값
-            const randomBonus = ((surnameHash + nameHash + birthHash + currentTime + trueRandom) % 30) - 15; // -15 ~ +15
+            const randomBonus = ((surnameHash + nameHash) % 20) - 10; // -10 ~ +10
             compatibilityScore += randomBonus;
 
             // 100점 만점으로 제한
@@ -450,40 +432,9 @@ const NamingEngine = {
             };
         });
 
-        // 궁합 점수 순으로 정렬하고 상위 30개 중에서 첫 글자가 중복되지 않게 5개 선택
+        // 궁합 점수 순으로 정렬하고 상위 5개 선택
         scoredNames.sort((a, b) => b.compatibilityScore - a.compatibilityScore);
-        const topCandidates = scoredNames.slice(0, Math.min(30, scoredNames.length));
-
-        // 첫 글자가 중복되지 않도록 5개 선택
-        const selectedNames = [];
-        const usedFirstChars = new Set();
-        const candidatesCopy = [...topCandidates];
-
-        // 셔플하여 랜덤성 추가
-        for (let i = candidatesCopy.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [candidatesCopy[i], candidatesCopy[j]] = [candidatesCopy[j], candidatesCopy[i]];
-        }
-
-        for (const candidate of candidatesCopy) {
-            if (selectedNames.length >= 5) break;
-
-            const firstChar = candidate.name.charAt(0);
-            if (!usedFirstChars.has(firstChar)) {
-                selectedNames.push(candidate);
-                usedFirstChars.add(firstChar);
-            }
-        }
-
-        // 만약 5개가 안 되면 나머지는 중복 허용
-        if (selectedNames.length < 5) {
-            for (const candidate of candidatesCopy) {
-                if (selectedNames.length >= 5) break;
-                if (!selectedNames.includes(candidate)) {
-                    selectedNames.push(candidate);
-                }
-            }
-        }
+        const selectedNames = scoredNames.slice(0, 5);
 
         return {
             sajuSummary: `생년월일: ${birthDate} | ${sajuAnalysis.recommendation}`,

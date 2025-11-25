@@ -82,111 +82,102 @@ const dreamPatterns = {
 };
 
 function analyzeDreamWithDatabase(text) {
-    try {
-        text = text.toLowerCase();
+    text = text.toLowerCase();
 
-        // 0. Check Scenarios (Priority 1)
-        if (dreamPatterns && dreamPatterns.scenarios) {
-            for (const scenario of dreamPatterns.scenarios) {
-                const matchCount = scenario.keywords.filter(k => text.includes(k)).length;
-                if (matchCount >= scenario.required) {
-                    return {
-                        symbol: scenario.symbol,
-                        meaning: scenario.meaning,
-                        interpretation: `<strong>[정밀 분석]</strong> ${scenario.interpretation}`,
-                        advice: scenario.advice
-                    };
-                }
+    // 0. Check Scenarios (Priority 1)
+    if (dreamPatterns.scenarios) {
+        for (const scenario of dreamPatterns.scenarios) {
+            const matchCount = scenario.keywords.filter(k => text.includes(k)).length;
+            if (matchCount >= scenario.required) {
+                return {
+                    symbol: scenario.symbol,
+                    meaning: scenario.meaning,
+                    interpretation: `<strong>[정밀 분석]</strong> ${scenario.interpretation}`,
+                    advice: scenario.advice
+                };
             }
         }
+    }
 
-        let foundSubject = null;
-        let foundAction = null;
+    let foundSubject = null;
+    let foundAction = null;
 
-        if (dreamPatterns && dreamPatterns.subjects) {
-            // 1. Find Subject
-            for (const [key, data] of Object.entries(dreamPatterns.subjects)) {
-                if (data.keywords.some(k => text.includes(k))) {
-                    foundSubject = { key, ...data };
-                    break; // Take the first matching subject
-                }
-            }
+    // 1. Find Subject
+    for (const [key, data] of Object.entries(dreamPatterns.subjects)) {
+        if (data.keywords.some(k => text.includes(k))) {
+            foundSubject = { key, ...data };
+            break; // Take the first matching subject
         }
+    }
 
-        if (dreamPatterns && dreamPatterns.actions) {
-            // 2. Find Action
-            for (const [key, data] of Object.entries(dreamPatterns.actions)) {
-                if (data.keywords.some(k => text.includes(k))) {
-                    foundAction = { key, ...data };
-                    break;
-                }
-            }
+    // 2. Find Action
+    for (const [key, data] of Object.entries(dreamPatterns.actions)) {
+        if (data.keywords.some(k => text.includes(k))) {
+            foundAction = { key, ...data };
+            break;
         }
+    }
 
-        // 3. Generate Interpretation
-        let symbol = '🌙';
-        let meaning = '';
-        let interpretation = '';
-        let advice = '';
+    // 3. Generate Interpretation
+    let symbol = '🌙';
+    let meaning = '';
+    let interpretation = '';
+    let advice = '';
 
-        // Case A: Subject + Action (Specific Context)
-        if (foundSubject && foundAction) {
-            symbol = getSymbol(foundSubject.key);
-            meaning = `${foundSubject.name}와(과) ${foundAction.name}`;
+    // Case A: Subject + Action (Specific Context)
+    if (foundSubject && foundAction) {
+        symbol = getSymbol(foundSubject.key);
+        meaning = `${foundSubject.name}와(과) ${foundAction.name}`;
 
-            // Dynamic Interpretation Logic
-            if (foundAction.key === 'bite') {
-                if (['snake', 'dog', 'tiger', 'dragon'].includes(foundSubject.key)) {
-                    interpretation = `<strong>${foundSubject.name}에게 물리는 꿈</strong>은 길몽입니다. ${foundSubject.meaning}의 기운을 강하게 받아들여 큰 권리나 이권을 얻게 될 징조입니다. 태몽일 가능성도 높습니다.`;
-                    advice = '적극적으로 기회를 잡으세요. 귀인이 찾아올 수 있습니다.';
-                } else {
-                    interpretation = `${foundSubject.name}에게 물리는 것은 뜻밖의 일로 인해 ${foundSubject.meaning}에 관련된 영향을 받게 됨을 의미합니다.`;
-                    advice = '주변 상황 변화에 주의를 기울이세요.';
-                }
-            } else if (foundAction.key === 'run') {
-                interpretation = `<strong>${foundSubject.name}에게서 도망치는 꿈</strong>은 심리적인 압박감을 나타냅니다. ${foundSubject.meaning}와 관련된 문제로 스트레스를 받고 있거나, 기회가 왔음에도 준비가 되지 않아 피하고 싶은 심리일 수 있습니다.`;
-                advice = '문제를 회피하기보다 정면으로 마주하는 용기가 필요합니다.';
-            } else if (foundAction.key === 'kill') {
-                interpretation = `<strong>${foundSubject.name}을(를) 죽이거나 죽는 것을 보는 꿈</strong>은 대길몽입니다. ${foundSubject.meaning}와 관련된 골치 아픈 문제가 완전히 해결되고, 원하는 바를 성취하게 됩니다.`;
-                advice = '막혔던 일이 시원하게 뚫릴 것입니다. 자신감을 가지세요.';
-            } else if (foundAction.key === 'get') {
-                interpretation = `<strong>${foundSubject.name}을(를) 얻거나 줍는 꿈</strong>은 ${foundSubject.meaning}이(가) 당신에게 들어올 징조입니다. 현실적인 이득으로 이어질 가능성이 큽니다.`;
-                advice = '작은 행운도 소중히 여기세요. 더 큰 복으로 돌아옵니다.';
+        // Dynamic Interpretation Logic
+        if (foundAction.key === 'bite') {
+            if (['snake', 'dog', 'tiger', 'dragon'].includes(foundSubject.key)) {
+                interpretation = `<strong>${foundSubject.name}에게 물리는 꿈</strong>은 길몽입니다. ${foundSubject.meaning}의 기운을 강하게 받아들여 큰 권리나 이권을 얻게 될 징조입니다. 태몽일 가능성도 높습니다.`;
+                advice = '적극적으로 기회를 잡으세요. 귀인이 찾아올 수 있습니다.';
             } else {
-                // General combination
-                interpretation = `${foundSubject.name}은(는) ${foundSubject.meaning}을(를) 상징합니다. 여기에 '${foundAction.desc}'라는 행동이 더해져, 당신의 삶에 ${foundAction.type === 'positive' ? '긍정적인' : '주의가 필요한'} 변화가 생길 것임을 암시합니다.`;
-                advice = foundAction.type === 'positive' ? '흐름이 좋습니다. 추진력을 얻으세요.' : '매사에 신중을 기하는 것이 좋습니다.';
+                interpretation = `${foundSubject.name}에게 물리는 것은 뜻밖의 일로 인해 ${foundSubject.meaning}에 관련된 영향을 받게 됨을 의미합니다.`;
+                advice = '주변 상황 변화에 주의를 기울이세요.';
             }
+        } else if (foundAction.key === 'run') {
+            interpretation = `<strong>${foundSubject.name}에게서 도망치는 꿈</strong>은 심리적인 압박감을 나타냅니다. ${foundSubject.meaning}와 관련된 문제로 스트레스를 받고 있거나, 기회가 왔음에도 준비가 되지 않아 피하고 싶은 심리일 수 있습니다.`;
+            advice = '문제를 회피하기보다 정면으로 마주하는 용기가 필요합니다.';
+        } else if (foundAction.key === 'kill') {
+            interpretation = `<strong>${foundSubject.name}을(를) 죽이거나 죽는 것을 보는 꿈</strong>은 대길몽입니다. ${foundSubject.meaning}와 관련된 골치 아픈 문제가 완전히 해결되고, 원하는 바를 성취하게 됩니다.`;
+            advice = '막혔던 일이 시원하게 뚫릴 것입니다. 자신감을 가지세요.';
+        } else if (foundAction.key === 'get') {
+            interpretation = `<strong>${foundSubject.name}을(를) 얻거나 줍는 꿈</strong>은 ${foundSubject.meaning}이(가) 당신에게 들어올 징조입니다. 현실적인 이득으로 이어질 가능성이 큽니다.`;
+            advice = '작은 행운도 소중히 여기세요. 더 큰 복으로 돌아옵니다.';
+        } else {
+            // General combination
+            interpretation = `${foundSubject.name}은(는) ${foundSubject.meaning}을(를) 상징합니다. 여기에 '${foundAction.desc}'라는 행동이 더해져, 당신의 삶에 ${foundAction.type === 'positive' ? '긍정적인' : '주의가 필요한'} 변화가 생길 것임을 암시합니다.`;
+            advice = foundAction.type === 'positive' ? '흐름이 좋습니다. 추진력을 얻으세요.' : '매사에 신중을 기하는 것이 좋습니다.';
         }
-        // Case B: Only Subject
-        else if (foundSubject) {
-            symbol = getSymbol(foundSubject.key);
-            meaning = `${foundSubject.name}의 상징`;
-            interpretation = `꿈속의 <strong>${foundSubject.name}</strong>은(는) ${foundSubject.meaning}을(를) 상징합니다. 이 꿈은 당신의 현재 상황에서 ${foundSubject.core === 'wealth' ? '재물운' : (foundSubject.core === 'relationship' ? '대인관계' : '심리 상태')}가 중요하게 작용하고 있음을 보여줍니다.`;
-            advice = `${foundSubject.meaning}에 집중하여 균형을 잡으세요.`;
-        }
-        // Case C: Only Action
-        else if (foundAction) {
-            symbol = '⚡';
-            meaning = `${foundAction.name}의 심리`;
-            interpretation = `꿈에서 <strong>${foundAction.name}</strong>하는 행동은 현재 당신의 심리 상태가 '${foundAction.desc}'임을 반영합니다. ${foundAction.type === 'positive' ? '에너지가 상승하고 있습니다.' : '마음의 여유가 필요합니다.'}`;
-            advice = foundAction.type === 'positive' ? '지금의 기세를 몰아 목표를 향해 나아가세요.' : '잠시 멈춰서 자신을 돌아보는 시간을 가지세요.';
-        }
-        // Case D: No Match (Hash-based Fallback)
-        else {
-            return generateFallbackResult(text);
-        }
-
-        return {
-            symbol: symbol,
-            meaning: meaning,
-            interpretation: interpretation,
-            advice: advice
-        };
-    } catch (e) {
-        console.error("Dream Analysis Error:", e);
+    }
+    // Case B: Only Subject
+    else if (foundSubject) {
+        symbol = getSymbol(foundSubject.key);
+        meaning = `${foundSubject.name}의 상징`;
+        interpretation = `꿈속의 <strong>${foundSubject.name}</strong>은(는) ${foundSubject.meaning}을(를) 상징합니다. 이 꿈은 당신의 현재 상황에서 ${foundSubject.core === 'wealth' ? '재물운' : (foundSubject.core === 'relationship' ? '대인관계' : '심리 상태')}가 중요하게 작용하고 있음을 보여줍니다.`;
+        advice = `${foundSubject.meaning}에 집중하여 균형을 잡으세요.`;
+    }
+    // Case C: Only Action
+    else if (foundAction) {
+        symbol = '⚡';
+        meaning = `${foundAction.name}의 심리`;
+        interpretation = `꿈에서 <strong>${foundAction.name}</strong>하는 행동은 현재 당신의 심리 상태가 '${foundAction.desc}'임을 반영합니다. ${foundAction.type === 'positive' ? '에너지가 상승하고 있습니다.' : '마음의 여유가 필요합니다.'}`;
+        advice = foundAction.type === 'positive' ? '지금의 기세를 몰아 목표를 향해 나아가세요.' : '잠시 멈춰서 자신을 돌아보는 시간을 가지세요.';
+    }
+    // Case D: No Match (Hash-based Fallback)
+    else {
         return generateFallbackResult(text);
     }
+
+    return {
+        symbol: symbol,
+        meaning: meaning,
+        interpretation: interpretation,
+        advice: advice
+    };
 }
 
 function getSymbol(key) {
@@ -207,9 +198,9 @@ function generateFallbackResult(text) {
     hash = Math.abs(hash);
 
     const themes = [
-        { s: '🔮', m: '내면의 목소리', i: '이 꿈은 당신의 무의식이 보내는 특별한 신호입니다. 구체적인 형상보다는 꿈에서 느꼈던 \'감정\'이 해석의 열쇠입니다.', advice: '꿈의 내용을 기록해두고, 오늘 하루 마주칠 작은 우연들에 주목하세요.' },
-        { s: '✨', m: '잠재된 가능성', i: '아직 뚜렷하게 드러나지 않은 기회나 재능이 꿈틀거리고 있습니다. 조만간 새로운 영감이 떠오를 것입니다.', advice: '새로운 시도를 두려워하지 마세요.' },
-        { s: '🌀', m: '심리적 정리', i: '복잡한 생각들이 꿈을 통해 정리되고 있습니다. 혼란스러워 보이지만, 이는 마음이 안정을 찾아가는 과정입니다.', advice: '잠시 휴식을 취하며 마음을 비우세요.' }
+        { s: '🔮', m: '내면의 목소리', i: '이 꿈은 당신의 무의식이 보내는 특별한 신호입니다. 구체적인 형상보다는 꿈에서 느꼈던 \'감정\'이 해석의 열쇠입니다.' },
+        { s: '✨', m: '잠재된 가능성', i: '아직 뚜렷하게 드러나지 않은 기회나 재능이 꿈틀거리고 있습니다. 조만간 새로운 영감이 떠오를 것입니다.' },
+        { s: '🌀', m: '심리적 정리', i: '복잡한 생각들이 꿈을 통해 정리되고 있습니다. 혼란스러워 보이지만, 이는 마음이 안정을 찾아가는 과정입니다.' }
     ];
 
     const t = themes[hash % themes.length];
@@ -218,8 +209,6 @@ function generateFallbackResult(text) {
         symbol: t.s,
         meaning: t.m,
         interpretation: t.i + ' (입력하신 내용에 대한 고유 분석 결과입니다)',
-        advice: t.advice
+        advice: '꿈의 내용을 기록해두고, 오늘 하루 마주칠 작은 우연들에 주목하세요.'
     };
 }
-
-console.log("Dream Analysis Engine Loaded");

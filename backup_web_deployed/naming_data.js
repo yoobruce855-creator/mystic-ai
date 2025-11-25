@@ -211,30 +211,15 @@ const NamingEngine = {
             const hanjaFirst = ['建', '東', '在', '京', '泰', '俊', '賢', '聖', '永', '潤', '時', '宇', '道', '瑞', '勝', '周', '敏', '智', '夏', '正', '尙', '亨', '哲', '炳', '秀', '昌', '鍾', '仁', '大', '明', '光', '善', '奎', '錫', '勇', '浩', '眞', '源', '基', '赫'];
             const hanjaSecond = ['宇', '俊', '民', '浩', '賢', '聖', '眞', '永', '秀', '錫', '哲', '勇', '奎', '泰', '源', '基', '赫', '勳', '在', '熙', '燦', '旭', '煥', '承', '潤', '夏', '瑞', '道', '周', '京', '尙', '亨', '炳', '昌', '鍾', '仁', '大', '明', '光', '善'];
 
-            // 배열 셔플하여 매번 다른 순서로 이름 생성
-            const shuffleArray = (array) => {
-                const shuffled = [...array];
-                for (let i = shuffled.length - 1; i > 0; i--) {
-                    const j = Math.floor(Math.random() * (i + 1));
-                    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-                }
-                return shuffled;
-            };
-
-            const shuffledFirst = shuffleArray(firstChars);
-            const shuffledSecond = shuffleArray(secondChars);
-            const shuffledHanjaFirst = shuffleArray(hanjaFirst);
-            const shuffledHanjaSecond = shuffleArray(hanjaSecond);
-
             let idx = 0;
-            for (let i = 0; i < shuffledFirst.length; i++) {
-                for (let j = 0; j < shuffledSecond.length; j++) {
+            for (let i = 0; i < firstChars.length; i++) {
+                for (let j = 0; j < secondChars.length; j++) {
                     if (idx >= 200) break;
                     const element = elements[idx % 5];
                     names.push({
-                        name: shuffledFirst[i] + shuffledSecond[j],
-                        hanja: shuffledHanjaFirst[i] + shuffledHanjaSecond[j],
-                        meaning: this.generateMeaning(shuffledFirst[i], shuffledSecond[j]),
+                        name: firstChars[i] + secondChars[j],
+                        hanja: hanjaFirst[i] + hanjaSecond[j],
+                        meaning: this.generateMeaning(firstChars[i], secondChars[j]),
                         element: element,
                         strokes: 10 + (idx % 30),
                         score: 85 + (idx % 15)
@@ -416,7 +401,7 @@ const NamingEngine = {
             const totalStrokes = surnameStrokes + item.strokes;
             const numerologyScore = this.numerology81[totalStrokes % 81] || { type: '중길(中吉)', meaning: '평범한 운', score: 50 };
 
-            // 궁합 점수 계산 (100점 만점)
+            // 궁합 점수 계산
             let compatibilityScore = item.score;
 
             // 오행 일치 보너스
@@ -431,16 +416,10 @@ const NamingEngine = {
                 compatibilityScore += 15;
             }
 
-            // 생년월일 + 현재 시간 + 진짜 랜덤 기반 변동 (매번 다른 결과 보장)
-            const birthHash = new Date(birthDate).getTime();
-            const currentTime = Date.now();
+            // 성씨 해시 기반 랜덤 변동 (성씨마다 다른 결과)
             const nameHash = item.name.charCodeAt(0) + item.name.charCodeAt(item.name.length - 1);
-            const trueRandom = Math.floor(Math.random() * 1000); // 0-999 랜덤 값
-            const randomBonus = ((surnameHash + nameHash + birthHash + currentTime + trueRandom) % 30) - 15; // -15 ~ +15
+            const randomBonus = ((surnameHash + nameHash) % 20) - 10; // -10 ~ +10
             compatibilityScore += randomBonus;
-
-            // 100점 만점으로 제한
-            compatibilityScore = Math.min(100, Math.max(60, compatibilityScore));
 
             return {
                 ...item,
@@ -450,40 +429,9 @@ const NamingEngine = {
             };
         });
 
-        // 궁합 점수 순으로 정렬하고 상위 30개 중에서 첫 글자가 중복되지 않게 5개 선택
+        // 궁합 점수 순으로 정렬하고 상위 5개 선택
         scoredNames.sort((a, b) => b.compatibilityScore - a.compatibilityScore);
-        const topCandidates = scoredNames.slice(0, Math.min(30, scoredNames.length));
-
-        // 첫 글자가 중복되지 않도록 5개 선택
-        const selectedNames = [];
-        const usedFirstChars = new Set();
-        const candidatesCopy = [...topCandidates];
-
-        // 셔플하여 랜덤성 추가
-        for (let i = candidatesCopy.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [candidatesCopy[i], candidatesCopy[j]] = [candidatesCopy[j], candidatesCopy[i]];
-        }
-
-        for (const candidate of candidatesCopy) {
-            if (selectedNames.length >= 5) break;
-
-            const firstChar = candidate.name.charAt(0);
-            if (!usedFirstChars.has(firstChar)) {
-                selectedNames.push(candidate);
-                usedFirstChars.add(firstChar);
-            }
-        }
-
-        // 만약 5개가 안 되면 나머지는 중복 허용
-        if (selectedNames.length < 5) {
-            for (const candidate of candidatesCopy) {
-                if (selectedNames.length >= 5) break;
-                if (!selectedNames.includes(candidate)) {
-                    selectedNames.push(candidate);
-                }
-            }
-        }
+        const selectedNames = scoredNames.slice(0, 5);
 
         return {
             sajuSummary: `생년월일: ${birthDate} | ${sajuAnalysis.recommendation}`,
@@ -492,50 +440,8 @@ const NamingEngine = {
                 monthElement: this.elements[sajuAnalysis.monthElement].name,
                 weakElement: this.elements[targetElement].name
             },
-            recommendations: selectedNames.map((item, index) => {
+            recommendations: selectedNames.map(item => {
                 const fullName = surname + item.name;
-
-                // Generate unique analyzed recommendation based on actual name characteristics
-                let reason;
-
-                // Analyze the name's unique characteristics
-                const strokeRange = item.totalStrokes <= 20 ? '적은' : item.totalStrokes <= 30 ? '적당한' : '많은';
-                const elementTrait = this.elements[item.element].trait;
-                const numerologyType = item.numerologyScore.type;
-                const numerologyMeaning = item.numerologyScore.meaning;
-
-                // Create diverse analysis patterns based on name index
-                const analysisPatterns = [
-                    // Pattern 1: Meaning + Numerology focus
-                    `"${item.meaning}"의 뜻을 가진 이름으로, ${numerologyMeaning}을 나타냅니다. ${elementTrait}의 기질을 타고나며, 총 ${item.totalStrokes}획의 ${numerologyType} 운세를 지닙니다.`,
-
-                    // Pattern 2: Element trait + Fortune focus
-                    `${this.elements[item.element].name} 오행의 ${elementTrait} 성향이 강한 이름입니다. ${numerologyMeaning}으로 인생에서 큰 성취를 이룰 수 있으며, ${item.totalStrokes}획의 조화로운 기운을 가집니다.`,
-
-                    // Pattern 3: Numerology + Meaning combination
-                    `${numerologyType}에 해당하는 ${item.totalStrokes}획의 이름으로, ${numerologyMeaning}의 운을 타고났습니다. "${item.meaning}"이라는 깊은 의미와 함께 ${elementTrait}의 장점을 발휘합니다.`,
-
-                    // Pattern 4: Stroke analysis + Element
-                    `${strokeRange} 획수(${item.totalStrokes}획)로 ${numerologyMeaning}을 상징합니다. ${this.elements[item.element].name} 기운의 ${elementTrait} 특성이 두드러지며, ${numerologyType}의 좋은 운세를 지닙니다.`,
-
-                    // Pattern 5: Comprehensive analysis
-                    `"${item.meaning}"의 의미를 담은 ${item.totalStrokes}획 이름입니다. ${numerologyMeaning}으로 ${elementTrait}을 발휘하며, ${numerologyType}에 해당하는 길한 운명을 가집니다.`,
-
-                    // Pattern 6: Fortune-first approach
-                    `${numerologyMeaning}의 운세를 가진 ${numerologyType} 이름입니다. ${this.elements[item.element].name} 오행으로 ${elementTrait}이 뛰어나며, "${item.meaning}"이라는 훌륭한 뜻을 담고 있습니다.`,
-
-                    // Pattern 7: Trait-focused
-                    `${elementTrait}의 성품을 타고나는 이름으로, ${item.totalStrokes}획의 ${numerologyMeaning}을 지닙니다. "${item.meaning}"의 의미처럼 ${numerologyType}의 운을 가집니다.`,
-
-                    // Pattern 8: Balanced description
-                    `총 ${item.totalStrokes}획으로 ${numerologyType}에 해당하며, ${numerologyMeaning}의 기운이 있습니다. ${this.elements[item.element].name} 오행의 ${elementTrait} 특성과 "${item.meaning}"의 뜻이 조화롭습니다.`,
-
-                    // Pattern 9: Meaning-emphasized
-                    `"${item.meaning}"이라는 아름다운 의미를 가진 이름입니다. ${item.totalStrokes}획의 ${numerologyMeaning}으로 ${elementTrait}을 발휘하며, ${numerologyType}의 길한 운명을 타고났습니다.`
-                ];
-
-                // Select pattern based on index to ensure variety
-                reason = analysisPatterns[index % analysisPatterns.length];
 
                 return {
                     fullName: fullName,
@@ -547,7 +453,7 @@ const NamingEngine = {
                     numerology: item.numerologyScore.type,
                     numerologyMeaning: item.numerologyScore.meaning,
                     score: Math.round(item.compatibilityScore),
-                    reason: reason
+                    reason: `${this.elements[item.element].name} 기운으로 사주의 ${this.elements[targetElement].name}을 보충합니다. 총 ${item.totalStrokes}획으로 ${item.numerologyScore.meaning}의 기운을 가진 이름입니다.`
                 };
             })
         };

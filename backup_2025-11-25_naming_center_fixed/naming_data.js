@@ -290,10 +290,23 @@ const NamingEngine = {
         const sajuAnalysis = this.analyzeSaju(birthDate);
         const targetElement = sajuAnalysis.weakElement;
 
+        // Generate a more diverse name pool with varied stroke counts
         let namePool = this.premiumNames[gender === 'male' ? 'male' : 'female'];
-        const matchingNames = namePool.filter(n => n.element === targetElement);
-        const otherNames = namePool.filter(n => n.element !== targetElement);
-        const selectedNames = [...matchingNames.slice(0, 3), ...otherNames.slice(0, 2)].slice(0, 5);
+
+        // Create hash from input for deterministic but varied selection
+        const inputHash = (surname + birthDate + birthTime).split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+
+        // Shuffle names based on input hash for variety
+        const shuffledPool = [...namePool].sort((a, b) => {
+            const hashA = (a.name.charCodeAt(0) + inputHash) % 100;
+            const hashB = (b.name.charCodeAt(0) + inputHash) % 100;
+            return hashA - hashB;
+        });
+
+        // Select names: prioritize target element but include variety
+        const matchingNames = shuffledPool.filter(n => n.element === targetElement);
+        const otherNames = shuffledPool.filter(n => n.element !== targetElement);
+        const selectedNames = [...matchingNames.slice(0, 2), ...otherNames.slice(0, 3)].slice(0, 5);
 
         return {
             sajuSummary: `생년월일: ${birthDate} | ${sajuAnalysis.recommendation}`,
@@ -302,10 +315,36 @@ const NamingEngine = {
                 monthElement: this.elements[sajuAnalysis.monthElement].name,
                 weakElement: this.elements[targetElement].name
             },
-            recommendations: selectedNames.map(item => {
+            recommendations: selectedNames.map((item, index) => {
                 const fullName = surname + item.name;
-                const totalStrokes = this.calculateStrokes(surname) + item.strokes;
-                const numerologyScore = this.numerology81[totalStrokes % 81] || { type: '중길(中吉)', meaning: '평범한 운' };
+                const surnameStrokes = this.calculateStrokes(surname);
+                const totalStrokes = surnameStrokes + item.strokes;
+
+                // Use actual total strokes for numerology lookup
+                const numerologyKey = totalStrokes <= 81 ? totalStrokes : (totalStrokes % 81 || 81);
+                const numerologyScore = this.numerology81[numerologyKey] || { type: '중길(中吉)', meaning: '평범한 운' };
+
+                // Generate unique reason based on element relationship
+                let reason;
+                if (item.element === targetElement) {
+                    reason = `${this.elements[item.element].name} 기운이 사주의 부족한 ${this.elements[targetElement].name}을 직접 보충합니다. ${numerologyScore.meaning}의 기운을 가진 이름입니다.`;
+                } else {
+                    // Check if this element generates or supports the target element
+                    const elementCycle = { wood: 'fire', fire: 'earth', earth: 'metal', metal: 'water', water: 'wood' };
+                    if (elementCycle[item.element] === targetElement) {
+                        reason = `${this.elements[item.element].name} 기운이 ${this.elements[targetElement].name}을 생성하여 간접적으로 보충합니다. ${numerologyScore.meaning}의 기운을 가진 이름입니다.`;
+                    } else {
+                        reason = `${this.elements[item.element].name} 기운이 전체적인 오행 균형을 맞춰줍니다. ${numerologyScore.meaning}의 기운을 가진 이름입니다.`;
+                    }
+                }
+
+                // Add slight variation to score based on element match
+                let adjustedScore = item.score;
+                if (item.element === targetElement) {
+                    adjustedScore = Math.min(100, item.score + 2);
+                } else if (elementCycle[item.element] === targetElement) {
+                    adjustedScore = Math.min(100, item.score + 1);
+                }
 
                 return {
                     fullName: fullName,
@@ -316,8 +355,8 @@ const NamingEngine = {
                     strokes: totalStrokes,
                     numerology: numerologyScore.type,
                     numerologyMeaning: numerologyScore.meaning,
-                    score: item.score,
-                    reason: `${this.elements[item.element].name} 기운으로 사주의 ${this.elements[targetElement].name}을 보충합니다. ${numerologyScore.meaning}의 기운을 가진 이름입니다.`
+                    score: adjustedScore,
+                    reason: reason
                 };
             })
         };
