@@ -222,7 +222,7 @@ const NamingEngine = {
                         meaning: this.generateMeaning(firstChars[i], secondChars[j]),
                         element: element,
                         strokes: 10 + (idx % 30),
-                        score: 85 + (idx % 15)
+                        score: 70 + (idx % 31)  // 70-100점 범위
                     });
                     idx++;
                 }
@@ -247,7 +247,7 @@ const NamingEngine = {
                         meaning: this.generateMeaning(firstChars[i], secondChars[j]),
                         element: element,
                         strokes: 10 + (idx % 30),
-                        score: 85 + (idx % 15)
+                        score: 70 + (idx % 31)  // 70-100점 범위
                     });
                     idx++;
                 }
