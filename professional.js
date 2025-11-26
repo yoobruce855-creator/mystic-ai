@@ -1,51 +1,5 @@
 // ===== PROFESSIONAL MYSTIC AI - STABLE VERSION =====
 
-// ===== CREDIT MANAGEMENT =====
-let userCredits = 3;
-let isPremium = false;
-
-function checkCredits(required) {
-    if (isPremium) return true;
-    if (userCredits >= required) return true;
-
-    const wantsToBuy = confirm(`You need ${required} credits for this service. You have ${userCredits} credits.\n\nWould you like to purchase more credits?`);
-    if (wantsToBuy) {
-        openPaymentModal();
-    }
-    return false;
-}
-
-function useCredits(amount) {
-    if (isPremium) return true;
-    if (userCredits >= amount) {
-        userCredits -= amount;
-        updateCreditsDisplay();
-        return true;
-    }
-    return false;
-}
-
-function updateCreditsDisplay() {
-    const creditsDisplay = document.getElementById('userCredits');
-    if (creditsDisplay) {
-        creditsDisplay.textContent = userCredits;
-    }
-}
-
-function showScreen(screenId) {
-    // Hide all screens
-    document.querySelectorAll('.screen').forEach(screen => {
-        screen.classList.remove('active');
-    });
-
-    // Show target screen
-    const targetScreen = document.getElementById(screenId);
-    if (targetScreen) {
-        targetScreen.classList.add('active');
-        targetScreen.scrollIntoView({ behavior: 'smooth' });
-    }
-}
-
 // 1. TAROT DATA
 const tarotCards = [
     { name: 'The Fool', emoji: '🃏', meaning: 'New Beginning', description: 'New beginnings, spontaneity, and a free spirit. Embrace new journeys with optimism.' },
@@ -100,6 +54,8 @@ const sajuInterpretations = {
 };
 
 // ===== CORE FUNCTIONS =====
+
+let userCredits = 3;
 
 // Initialize
 document.addEventListener('DOMContentLoaded', function () {
@@ -276,6 +232,39 @@ function analyzeSaju() {
     });
 }
 
+function analyzeDream() {
+    const dreamText = document.getElementById('dreamInput').value.trim();
+    if (!dreamText) {
+        alert('Please describe your dream first!');
+        return;
+    }
+    if (userCredits < 1) {
+        alert('Not enough credits! You need 1 credit.');
+        return;
+    }
+
+    if (typeof analyzeDreamWithDatabase !== 'function') {
+        console.error("Dream database not loaded!");
+        alert("System error: Dream database missing. Please refresh.");
+        return;
+    }
+
+    showLoading(() => {
+        userCredits--;
+        updateCreditsDisplay();
+
+        const result = analyzeDreamWithDatabase(dreamText);
+
+        document.getElementById('dreamSymbol').textContent = result.symbol;
+        document.getElementById('dreamMeaning').textContent = result.meaning;
+        document.getElementById('dreamInterpretation').innerHTML = result.interpretation;
+        document.getElementById('dreamAdvice').textContent = result.advice;
+
+        const resultDiv = document.getElementById('dreamResult');
+        resultDiv.classList.remove('hidden');
+        resultDiv.scrollIntoView({ behavior: 'smooth' });
+    });
+}
 
 function checkCompatibility() {
     const name1 = document.getElementById('person1Name').value.trim();
@@ -394,134 +383,22 @@ function checkCompatibility() {
     });
 }
 
-// ===== DAILY FORTUNE (TOJEONGBIGYEOL STYLE) =====
-
-// Element data for daily fortune
-const dailyElements = {
-    wood: { name: '목(木)', color: '#2ecc71', trait: '성장, 창조', time: '새벽 (03:00-07:00)' },
-    fire: { name: '화(火)', color: '#e74c3c', trait: '열정, 명예', time: '오전 (09:00-13:00)' },
-    earth: { name: '토(土)', color: '#f39c12', trait: '안정, 신뢰', time: '오후 (13:00-17:00)' },
-    metal: { name: '금(金)', color: '#ecf0f1', trait: '결단력, 정의', time: '저녁 (17:00-21:00)' },
-    water: { name: '수(水)', color: '#3498db', trait: '지혜, 유연성', time: '밤 (21:00-01:00)' }
-};
-
-// Fortune messages by harmony type
-const fortuneByHarmony = {
-    generating: [  // 상생 (Your element generates today's element)
-        { emoji: '⭐', title: '대길한 날', message: '오늘은 당신의 기운이 세상과 완벽하게 조화를 이룹니다. 하고자 하는 일이 순조롭게 풀릴 것입니다.', advice: '적극적으로 행동하세요. 새로운 시도를 하기에 최적의 날입니다.' },
-        { emoji: '🌟', title: '행운의 날', message: '당신의 에너지가 우주의 흐름과 하나가 되는 날입니다. 중요한 결정을 내리기 좋습니다.', advice: '직감을 믿으세요. 오늘의 선택이 미래를 밝게 만들 것입니다.' }
-    ],
-    generated: [  // 상생 (Today's element generates your element)
-        { emoji: '💫', title: '성장의 날', message: '오늘은 당신에게 에너지가 흘러들어오는 날입니다. 배움과 성장의 기회가 찾아옵니다.', advice: '새로운 것을 배우고 경험하세요. 오늘의 노력이 큰 결실을 맺을 것입니다.' },
-        { emoji: '🌈', title: '발전의 날', message: '우주가 당신을 돕는 날입니다. 주변의 도움을 받아 한 단계 성장할 수 있습니다.', advice: '겸손하게 배우고 감사하세요. 좋은 인연이 당신을 이끌 것입니다.' }
-    ],
-    same: [  // 동일 (Same element)
-        { emoji: '✨', title: '안정의 날', message: '오늘은 당신의 본질이 그대로 드러나는 날입니다. 자신감을 가지고 행동하세요.', advice: '자신의 강점을 발휘하세요. 평소의 스타일대로 하면 좋은 결과가 있을 것입니다.' },
-        { emoji: '🌸', title: '조화의 날', message: '내면의 평화를 느낄 수 있는 날입니다. 자신을 돌아보고 정리하기 좋습니다.', advice: '명상이나 휴식을 취하세요. 내면의 소리에 귀 기울이는 시간을 가지세요.' }
-    ],
-    conquering: [  // 상극 (Your element conquers today's element)
-        { emoji: '⚡', title: '도전의 날', message: '오늘은 당신의 의지가 시험받는 날입니다. 어려움이 있을 수 있지만 극복할 수 있습니다.', advice: '인내심을 가지세요. 작은 성공에도 감사하며 한 걸음씩 나아가세요.' },
-        { emoji: '🔥', title: '극복의 날', message: '장애물이 있을 수 있지만 당신의 힘으로 이겨낼 수 있습니다. 포기하지 마세요.', advice: '긍정적인 마음가짐을 유지하세요. 어려움은 성장의 기회입니다.' }
-    ],
-    conquered: [  // 상극 (Today's element conquers your element)
-        { emoji: '🌙', title: '신중의 날', message: '오늘은 조심스럽게 행동해야 하는 날입니다. 무리하지 말고 현상 유지에 집중하세요.', advice: '중요한 결정은 미루세요. 휴식을 취하고 에너지를 보존하는 것이 좋습니다.' },
-        { emoji: '🍃', title: '준비의 날', message: '오늘은 앞으로 나아가기보다 내실을 다지는 날입니다. 계획을 세우고 준비하세요.', advice: '서두르지 마세요. 차분하게 준비하면 다음 기회에 큰 성과를 거둘 수 있습니다.' }
-    ]
-};
-
-function calculateUserElement(birthDate) {
-    const date = new Date(birthDate);
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1;
-    const day = date.getDate();
-
-    // Simplified Saju element calculation (based on year)
-    const yearElements = ['metal', 'water', 'wood', 'fire', 'earth'];
-    const yearElement = yearElements[year % 5];
-
-    return yearElement;
-}
-
-function calculateTodayElement() {
-    const today = new Date();
-    const month = today.getMonth() + 1;
-
-    // Month to element mapping
-    const monthElements = {
-        1: 'water', 2: 'water',  // Winter
-        3: 'wood', 4: 'wood', 5: 'wood',  // Spring
-        6: 'fire', 7: 'fire', 8: 'fire',  // Summer
-        9: 'metal', 10: 'metal',  // Autumn
-        11: 'earth', 12: 'earth'  // Transition
-    };
-
-    return monthElements[month];
-}
-
-function analyzeElementHarmony(userElement, todayElement) {
-    const cycle = { wood: 'fire', fire: 'earth', earth: 'metal', metal: 'water', water: 'wood' };
-    const conquer = { wood: 'earth', earth: 'water', water: 'fire', fire: 'metal', metal: 'wood' };
-
-    if (userElement === todayElement) {
-        return { type: 'same', name: '동일 (Same)' };
-    } else if (cycle[userElement] === todayElement) {
-        return { type: 'generating', name: '상생 (Generating)' };
-    } else if (cycle[todayElement] === userElement) {
-        return { type: 'generated', name: '상생 (Generated)' };
-    } else if (conquer[userElement] === todayElement) {
-        return { type: 'conquering', name: '상극 (Conquering)' };
-    } else if (conquer[todayElement] === userElement) {
-        return { type: 'conquered', name: '상극 (Conquered)' };
-    }
-
-    return { type: 'same', name: '중립 (Neutral)' };
-}
-
 function getDailyFortune() {
-    const name = document.getElementById('todayName').value.trim();
-    const birthDate = document.getElementById('todayBirthDate').value;
-
-    if (!birthDate) {
-        alert('Please enter your birth date!');
-        return;
-    }
-
     showLoading(() => {
         const today = new Date();
-        const userElement = calculateUserElement(birthDate);
-        const todayElement = calculateTodayElement();
-        const harmony = analyzeElementHarmony(userElement, todayElement);
-
-        // Get fortune message based on harmony
-        const fortuneList = fortuneByHarmony[harmony.type] || fortuneByHarmony.same;
-        const fortune = fortuneList[Math.floor(Math.random() * fortuneList.length)];
-
-        // Calculate lucky numbers (based on birth date + today)
-        const birthSeed = new Date(birthDate).getTime();
-        const todaySeed = today.getDate() + today.getMonth() * 31;
-        const combinedSeed = (birthSeed % 10000) + todaySeed;
+        const seed = today.getDate() + today.getMonth() * 31;
+        const fortuneIndex = seed % fortuneMessages.length;
+        const fortune = fortuneMessages[fortuneIndex];
 
         const luckyNums = [];
         for (let i = 0; i < 6; i++) {
-            luckyNums.push(((combinedSeed * (i + 1) * 7) % 45) + 1);
+            luckyNums.push(((seed * (i + 1) * 7) % 45) + 1);
         }
 
-        // Display results
         document.getElementById('fortuneEmoji').textContent = fortune.emoji;
         document.getElementById('fortuneTitle').textContent = fortune.title;
-        document.getElementById('fortuneDate').textContent = today.toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' });
         document.getElementById('fortuneMessage').textContent = fortune.message;
-
-        document.getElementById('userElement').textContent = dailyElements[userElement].name;
-        document.getElementById('todayElement').textContent = dailyElements[todayElement].name;
-        document.getElementById('harmonyType').textContent = harmony.name;
-
         document.getElementById('luckyNumbers').textContent = luckyNums.join(', ');
-
-        document.getElementById('luckyColorBox').style.backgroundColor = dailyElements[userElement].color;
-        document.getElementById('luckyColorName').textContent = dailyElements[userElement].name;
-
-        document.getElementById('bestTime').textContent = dailyElements[userElement].time;
         document.getElementById('todayAdvice').textContent = fortune.advice;
 
         const resultDiv = document.getElementById('todayResult');
@@ -785,214 +662,3 @@ function generateNameFull() {
         }
     }, 2500);
 }
-
-
-
-
-// ===== DREAM ANALYSIS =====
-
-function analyzeDream() {
-    const dreamInput = document.getElementById('dreamInput');
-    const dreamText = dreamInput ? dreamInput.value.trim() : '';
-
-    if (!dreamText) {
-        alert('꿈 내용을 입력해주세요.');
-        return;
-    }
-
-    if (!checkCredits(3)) return;
-    if (!useCredits(3)) {
-        alert('크레딧이 부족합니다.');
-        return;
-    }
-
-    showLoading('꿈을 분석하는 중...');
-
-    setTimeout(() => {
-        try {
-            const result = analyzeDreamWithDatabase(dreamText);
-
-            const dreamResult = document.getElementById('dreamResult');
-            const dreamResultContent = document.getElementById('dreamResultContent');
-
-            if (dreamResultContent) {
-                dreamResultContent.innerHTML = `
-                    <div style="text-align: center; margin-bottom: 2rem;">
-                        <div style="font-size: 4rem; margin-bottom: 1rem;">${result.symbol}</div>
-                        <h3 style="color: var(--accent-gold); font-size: 1.8rem; margin-bottom: 0.5rem;">${result.meaning}</h3>
-                    </div>
-                    
-                    <div style="background: hsla(270, 70%, 30%, 0.3); padding: 2rem; border-radius: 15px; margin-bottom: 1.5rem;">
-                        <h4 style="color: var(--secondary-pink); margin-bottom: 1rem;">🔮 해석</h4>
-                        <p style="color: var(--text-primary); line-height: 1.8;">${result.interpretation}</p>
-                    </div>
-                    
-                    <div style="background: hsla(45, 100%, 60%, 0.1); padding: 1.5rem; border-radius: 15px; border-left: 3px solid var(--accent-gold);">
-                        <h4 style="color: var(--accent-gold); margin-bottom: 1rem;">💡 조언</h4>
-                        <p style="color: var(--text-primary); line-height: 1.8;">${result.advice}</p>
-                    </div>
-                `;
-            }
-
-            hideLoading();
-
-            if (dreamResult) {
-                dreamResult.classList.remove('hidden');
-                dreamResult.scrollIntoView({ behavior: 'smooth' });
-            }
-        } catch (error) {
-            hideLoading();
-            console.error(error);
-            alert('오류가 발생했습니다: ' + error.message);
-        }
-    }, 2000);
-}
-
-// ===== LOADING OVERLAY FUNCTIONS =====
-
-function showLoading(message) {
-    const overlay = document.getElementById('loadingOverlay');
-    const textElement = document.getElementById('loadingText');
-
-    if (overlay) {
-        overlay.classList.add('active');
-    }
-
-    if (textElement && message) {
-        textElement.textContent = message;
-    }
-}
-
-function hideLoading() {
-    const overlay = document.getElementById('loadingOverlay');
-    if (overlay) {
-        overlay.classList.remove('active');
-    }
-}
-
-// ===== PAYMENT SYSTEM =====
-
-let selectedPlan = null;
-
-function openPaymentModal() {
-    const modal = document.getElementById('paymentModal');
-    if (modal) {
-        modal.style.display = 'block';
-        // Reset selection
-        document.querySelectorAll('.price-card').forEach(c => {
-            c.style.borderColor = 'rgba(255,255,255,0.1)';
-            c.style.background = 'rgba(255,255,255,0.05)';
-        });
-        const paymentMethods = document.getElementById('paymentMethods');
-        if (paymentMethods) {
-            paymentMethods.classList.add('hidden');
-        }
-        selectedPlan = null;
-    }
-}
-
-function closeModal(modalId) {
-    const modal = document.getElementById(modalId);
-    if (modal) {
-        modal.style.display = 'none';
-    }
-}
-
-function selectPrice(plan) {
-    selectedPlan = plan;
-
-    // Visual feedback - reset all cards and buttons
-    document.querySelectorAll('.price-card').forEach(c => {
-        c.style.border = '1px solid rgba(255,255,255,0.1)';
-        c.style.transform = 'scale(1)';
-        c.style.boxShadow = 'none';
-
-        // Reset all buttons to transparent style
-        const btn = c.querySelector('.select-btn');
-        if (btn) {
-            btn.style.background = 'transparent';
-            btn.style.border = '1px solid var(--accent-gold)';
-            btn.style.color = 'var(--accent-gold)';
-        }
-    });
-
-    // Highlight selected card
-    const selectedCard = document.querySelector(`.price-card[onclick="selectPrice('${plan}')"]`);
-    if (selectedCard) {
-        selectedCard.style.border = '2px solid var(--accent-gold)';
-        selectedCard.style.transform = 'scale(1.05)';
-        selectedCard.style.boxShadow = '0 0 20px rgba(255, 215, 0, 0.3)';
-
-        // Change selected button to gold
-        const selectedBtn = selectedCard.querySelector('.select-btn');
-        if (selectedBtn) {
-            selectedBtn.style.background = 'var(--accent-gold)';
-            selectedBtn.style.border = 'none';
-            selectedBtn.style.color = 'black';
-        }
-    }
-
-    // Show payment methods
-    const methods = document.getElementById('paymentMethods');
-    if (methods) {
-        methods.classList.remove('hidden');
-        methods.scrollIntoView({ behavior: 'smooth' });
-    }
-}
-
-function processPayment(method) {
-    if (!selectedPlan) return;
-
-    // Credits amount based on plan
-    let creditsToAdd = 0;
-    let amount = 0;
-
-    switch (selectedPlan) {
-        case 'starter': creditsToAdd = 10; amount = 1.99; break;
-        case 'popular': creditsToAdd = 50; amount = 4.99; break;
-        case 'premium': creditsToAdd = 120; amount = 9.99; break;
-    }
-
-    showLoading(`Processing ${method === 'stripe' ? 'Card' : 'PayPal'} Payment...`);
-
-    // SIMULATED PAYMENT PROCESS
-    setTimeout(() => {
-        hideLoading();
-
-        // Success!
-        userCredits += creditsToAdd;
-        updateCreditsDisplay();
-
-        // Save to local storage
-        localStorage.setItem('mysticUserCredits', userCredits);
-
-        // Show success message
-        alert(`Payment Successful! ${creditsToAdd} credits have been added to your account.`);
-        closeModal('paymentModal');
-
-        // If premium, unlock premium features
-        if (selectedPlan === 'premium') {
-            isPremium = true;
-            const upgradeBtn = document.querySelector('.upgrade-btn');
-            if (upgradeBtn) {
-                upgradeBtn.textContent = '👑 Premium Member';
-            }
-        }
-
-    }, 2000);
-}
-
-// Initialize on page load
-document.addEventListener('DOMContentLoaded', () => {
-    const upgradeBtn = document.querySelector('.upgrade-btn');
-    if (upgradeBtn) {
-        upgradeBtn.onclick = openPaymentModal;
-    }
-
-    // Load saved credits
-    const savedCredits = localStorage.getItem('mysticUserCredits');
-    if (savedCredits) {
-        userCredits = parseInt(savedCredits);
-        updateCreditsDisplay();
-    }
-});

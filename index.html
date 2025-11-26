@@ -37,7 +37,7 @@
             <span class="credit-icon">💎</span>
             <span id="userCredits">3</span> Credits
         </div>
-        <button class="upgrade-btn" onclick="openPaymentModal()">⭐ Premium</button>
+        <button class="upgrade-btn">⭐ Premium</button>
     </div>
 
     <div id="mainScreen" class="screen active">
@@ -351,7 +351,41 @@
 
 
 
-
+    <div id="todayScreen" class="screen">
+        <div class="stars"></div>
+        <div class="container">
+            <button class="back-btn" onclick="showScreen('mainScreen')">← Back</button>
+            <div class="service-header">
+                <div class="service-icon">📅</div>
+                <h1>Daily Fortune</h1>
+                <p>Your personalized guidance for today</p>
+            </div>
+            <div style="text-align: center; margin: 3rem 0;">
+                <button class="primary-button" onclick="getDailyFortune()" style="max-width: 400px; margin: 0 auto;">Get
+                    Today's Fortune (Free!)</button>
+            </div>
+            <div id="todayResult" class="hidden" style="margin-top: 3rem;">
+                <div
+                    style="background: var(--card-bg); padding: 3rem; border-radius: 20px; border: 2px solid var(--border-glow);">
+                    <div style="text-align: center; font-size: 5rem; margin-bottom: 1rem;" id="fortuneEmoji"></div>
+                    <h2 style="color: var(--accent-gold); text-align: center; margin-bottom: 1rem;" id="fortuneTitle">
+                    </h2>
+                    <p style="color: var(--text-secondary); text-align: center; font-size: 1.2rem; line-height: 1.8; margin-bottom: 2rem;"
+                        id="fortuneMessage"></p>
+                    <div
+                        style="background: hsla(45, 100%, 60%, 0.1); padding: 2rem; border-radius: 15px; text-align: center;">
+                        <p style="color: var(--accent-gold); font-weight: 600; margin-bottom: 1rem;">Lucky Numbers</p>
+                        <p style="font-size: 2rem; color: white;" id="luckyNumbers"></p>
+                    </div>
+                    <div
+                        style="margin-top: 2rem; padding: 2rem; background: hsla(270, 70%, 30%, 0.3); border-radius: 15px;">
+                        <h4 style="color: var(--primary-purple-light); margin-bottom: 1rem;">Today's Guidance</h4>
+                        <p id="todayAdvice" style="color: var(--text-secondary); line-height: 1.8;"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div id="namingScreen" class="screen">
         <div class="stars"></div>
@@ -463,271 +497,15 @@
         </div>
     </div>
 
-    <!-- DAILY FORTUNE SCREEN -->
-    <div id="todayScreen" class="screen">
-        <div class="stars"></div>
-        <div class="container">
-            <button class="back-btn" onclick="showScreen('mainScreen')">← Back</button>
-            <div class="service-header">
-                <div class="service-icon">📅</div>
-                <h1>Daily Fortune</h1>
-                <p>Personalized guidance based on your birth date</p>
-            </div>
-
-            <div class="input-section"
-                style="background: var(--card-bg); padding: 2rem; border-radius: 15px; margin-top: 2rem;">
-                <h3 style="color: var(--accent-gold); margin-bottom: 1.5rem;">Your Information</h3>
-                <div class="input-group" style="margin-bottom: 1.5rem;">
-                    <label style="display: block; color: var(--text-secondary); margin-bottom: 0.5rem;">Name</label>
-                    <input type="text" id="todayName" placeholder="Enter your name"
-                        style="width: 100%; padding: 0.8rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: white; font-size: 1rem;">
-                </div>
-                <div class="input-group" style="margin-bottom: 1.5rem;">
-                    <label style="display: block; color: var(--text-secondary); margin-bottom: 0.5rem;">Birth Date
-                        *</label>
-                    <input type="date" id="todayBirthDate" required
-                        style="width: 100%; padding: 0.8rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: white; font-size: 1rem;">
-                </div>
-                <div class="input-group" style="margin-bottom: 1.5rem;">
-                    <label style="display: block; color: var(--text-secondary); margin-bottom: 0.5rem;">Gender
-                        (Optional)</label>
-                    <select id="todayGender"
-                        style="width: 100%; padding: 0.8rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: white; font-size: 1rem;">
-                        <option value="male" style="color: black;">Male</option>
-                        <option value="female" style="color: black;">Female</option>
-                        <option value="other" style="color: black;">Other</option>
-                    </select>
-                </div>
-                <button class="primary-button" onclick="getDailyFortune()"
-                    style="width: 100%; padding: 1rem; background: linear-gradient(135deg, var(--primary-purple), var(--secondary-pink)); border: none; border-radius: 12px; color: white; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: transform 0.2s;">Get
-                    Today's Fortune (Free)</button>
-            </div>
-
-            <div id="todayResult" class="hidden" style="margin-top: 3rem;">
-                <div
-                    style="background: var(--card-bg); padding: 3rem; border-radius: 20px; border: 2px solid var(--border-glow);">
-                    <div
-                        style="text-align: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 2rem; margin-bottom: 2rem;">
-                        <div style="font-size: 5rem; margin-bottom: 1rem;" id="fortuneEmoji"></div>
-                        <h2 style="color: var(--accent-gold); margin-bottom: 0.5rem;" id="fortuneTitle"></h2>
-                        <p style="color: var(--text-secondary); font-size: 1.1rem;" id="fortuneDate"></p>
-                    </div>
-
-                    <div style="margin-bottom: 2.5rem;">
-                        <h4
-                            style="color: var(--primary-purple-light); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
-                            <span>🔮</span> Today's Fortune
-                        </h4>
-                        <p style="color: var(--text-primary); font-size: 1.2rem; line-height: 1.8; margin-bottom: 1.5rem;"
-                            id="fortuneMessage"></p>
-                    </div>
-
-                    <div
-                        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
-                        <div
-                            style="background: hsla(270, 70%, 30%, 0.3); padding: 1.5rem; border-radius: 15px; text-align: center;">
-                            <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 0.5rem;">Your
-                                Element</p>
-                            <p style="color: var(--accent-gold); font-size: 1.3rem; font-weight: 600;" id="userElement">
-                            </p>
-                        </div>
-                        <div
-                            style="background: hsla(270, 70%, 30%, 0.3); padding: 1.5rem; border-radius: 15px; text-align: center;">
-                            <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 0.5rem;">Today's
-                                Element</p>
-                            <p style="color: var(--accent-gold); font-size: 1.3rem; font-weight: 600;"
-                                id="todayElement"></p>
-                        </div>
-                        <div
-                            style="background: hsla(270, 70%, 30%, 0.3); padding: 1.5rem; border-radius: 15px; text-align: center;">
-                            <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 0.5rem;">Harmony
-                            </p>
-                            <p style="color: var(--accent-gold); font-size: 1.3rem; font-weight: 600;" id="harmonyType">
-                            </p>
-                        </div>
-                    </div>
-
-                    <div
-                        style="background: hsla(45, 100%, 60%, 0.1); padding: 2rem; border-radius: 15px; margin-bottom: 2rem; border-left: 4px solid var(--accent-gold);">
-                        <h4
-                            style="color: var(--accent-gold); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
-                            <span>🎰</span> Lucky Numbers
-                        </h4>
-                        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-                            <span id="luckyNumbers"
-                                style="color: var(--text-primary); font-size: 1.5rem; font-weight: 600;"></span>
-                        </div>
-                    </div>
-
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem;">
-                        <div style="background: hsla(120, 70%, 40%, 0.2); padding: 1.5rem; border-radius: 15px;">
-                            <h4 style="color: var(--accent-green); margin-bottom: 0.8rem;">🎨 Lucky Color</h4>
-                            <div style="display: flex; align-items: center; gap: 1rem;">
-                                <div id="luckyColorBox"
-                                    style="width: 50px; height: 50px; border-radius: 10px; border: 2px solid white;">
-                                </div>
-                                <p id="luckyColorName"
-                                    style="color: var(--text-primary); font-size: 1.1rem; font-weight: 600;"></p>
-                            </div>
-                        </div>
-                        <div style="background: hsla(200, 70%, 50%, 0.2); padding: 1.5rem; border-radius: 15px;">
-                            <h4 style="color: var(--accent-blue); margin-bottom: 0.8rem;">⏰ Best Time</h4>
-                            <p id="bestTime" style="color: var(--text-primary); font-size: 1.3rem; font-weight: 600;">
-                            </p>
-                        </div>
-                    </div>
-
-                    <div
-                        style="background: hsla(270, 70%, 30%, 0.3); padding: 2rem; border-radius: 15px; border-left: 4px solid var(--accent-green);">
-                        <h4
-                            style="color: var(--accent-green); margin-bottom: 0.8rem; display: flex; align-items: center; gap: 0.5rem;">
-                            <span>💡</span> Today's Advice
-                        </h4>
-                        <p id="todayAdvice" style="color: var(--text-primary); line-height: 1.8; font-size: 1.1rem;">
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- DREAM ANALYSIS SCREEN -->
-    <div id="dreamScreen" class="screen">
-        <div class="stars"></div>
-        <div class="container">
-            <button class="back-btn" onclick="showScreen('mainScreen')">← Back</button>
-            <div class="service-header">
-                <div class="service-icon">🌙</div>
-                <h1>Dream Analysis</h1>
-                <p>Discover the hidden meanings in your dreams</p>
-            </div>
-
-            <!-- Dream Input -->
-            <div id="dreamInputSection" class="input-section"
-                style="background: var(--card-bg); padding: 2rem; border-radius: 20px; border: 2px solid var(--border-glow); margin-bottom: 2rem;">
-                <h3 style="color: var(--accent-gold); margin-bottom: 1rem;">Tell us about your dream</h3>
-                <textarea id="dreamInput" placeholder="예: 뱀 꿈을 꿨어요. 큰 뱀이 나타났는데..."
-                    style="width: 100%; min-height: 150px; padding: 1rem; background: rgba(0,0,0,0.3); border: 1px solid var(--border-glow); border-radius: 10px; color: var(--text-primary); font-size: 1.1rem; resize: vertical;"></textarea>
-                <button onclick="analyzeDream()"
-                    style="margin-top: 1rem; padding: 1rem 2rem; background: linear-gradient(135deg, var(--primary-purple), var(--secondary-pink)); border: none; border-radius: 25px; color: white; font-size: 1.2rem; font-weight: bold; cursor: pointer; width: 100%;">
-                    🔮 Analyze Dream (3 Credits)
-                </button>
-            </div>
-
-            <!-- Dream Result -->
-            <div id="dreamResult" class="hidden"
-                style="background: var(--card-bg); padding: 3rem; border-radius: 20px; border: 2px solid var(--border-glow);">
-                <div id="dreamResultContent"></div>
-                <button onclick="showScreen('mainScreen')"
-                    style="margin-top: 2rem; padding: 1rem 2rem; background: var(--accent-gold); border: none; border-radius: 25px; color: var(--bg-dark); font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%;">
-                    ← Back to Main
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- PAYMENT MODAL -->
-    <div id="paymentModal" class="modal">
-        <div class="modal-content"
-            style="max-width: 800px; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); border: 1px solid var(--border-glow);">
-            <span class="close-modal" onclick="closeModal('paymentModal')">&times;</span>
-            <div style="text-align: center; margin-bottom: 2rem;">
-                <h2 style="color: var(--accent-gold); font-size: 2rem; margin-bottom: 0.5rem;">Choose Your Destiny</h2>
-                <p style="color: var(--text-secondary);">Unlock deeper insights with premium credits</p>
-            </div>
-
-            <div class="pricing-grid"
-                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
-                <!-- Starter Pack -->
-                <div class="price-card" onclick="selectPrice('starter')"
-                    style="background: rgba(255,255,255,0.05); padding: 2rem; border-radius: 15px; border: 1px solid rgba(255,255,255,0.1); cursor: pointer; transition: all 0.3s ease;">
-                    <div style="font-size: 3rem; margin-bottom: 1rem;">💎</div>
-                    <h3 style="color: white; margin-bottom: 0.5rem;">Starter</h3>
-                    <div style="font-size: 2rem; color: var(--accent-gold); font-weight: bold; margin-bottom: 1rem;">
-                        $1.99</div>
-                    <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">10 Credits</p>
-                    <ul
-                        style="text-align: left; color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1.5rem; list-style: none;">
-                        <li>✓ 3 Tarot Readings</li>
-                        <li>✓ 1 Dream Analysis</li>
-                        <li>✓ Basic Fortune</li>
-                    </ul>
-                    <button class="select-btn"
-                        style="width: 100%; padding: 0.8rem; background: transparent; border: 1px solid var(--accent-gold); color: var(--accent-gold); border-radius: 25px; cursor: pointer;">Select</button>
-                </div>
-
-                <!-- Popular Pack -->
-                <div class="price-card popular" onclick="selectPrice('popular')"
-                    style="background: rgba(255,255,255,0.08); padding: 2rem; border-radius: 15px; border: 2px solid var(--accent-gold); cursor: pointer; transform: scale(1.05); position: relative;">
-                    <div
-                        style="position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--accent-gold); color: black; padding: 0.2rem 1rem; border-radius: 15px; font-size: 0.8rem; font-weight: bold;">
-                        BEST VALUE</div>
-                    <div style="font-size: 3rem; margin-bottom: 1rem;">👑</div>
-                    <h3 style="color: white; margin-bottom: 0.5rem;">Pro</h3>
-                    <div style="font-size: 2rem; color: var(--accent-gold); font-weight: bold; margin-bottom: 1rem;">
-                        $4.99</div>
-                    <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">50 Credits</p>
-                    <ul
-                        style="text-align: left; color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1.5rem; list-style: none;">
-                        <li>✓ 15 Tarot Readings</li>
-                        <li>✓ 5 Dream Analyses</li>
-                        <li>✓ Full Saju Analysis</li>
-                        <li>✓ Name Compatibility</li>
-                    </ul>
-                    <button class="select-btn"
-                        style="width: 100%; padding: 0.8rem; background: var(--accent-gold); border: none; color: black; border-radius: 25px; font-weight: bold; cursor: pointer;">Select</button>
-                </div>
-
-                <!-- Premium Pack -->
-                <div class="price-card" onclick="selectPrice('premium')"
-                    style="background: rgba(255,255,255,0.05); padding: 2rem; border-radius: 15px; border: 1px solid rgba(255,255,255,0.1); cursor: pointer; transition: all 0.3s ease;">
-                    <div style="font-size: 3rem; margin-bottom: 1rem;">🌟</div>
-                    <h3 style="color: white; margin-bottom: 0.5rem;">Master</h3>
-                    <div style="font-size: 2rem; color: var(--accent-gold); font-weight: bold; margin-bottom: 1rem;">
-                        $9.99</div>
-                    <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">120 Credits</p>
-                    <ul
-                        style="text-align: left; color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1.5rem; list-style: none;">
-                        <li>✓ Unlimited Access</li>
-                        <li>✓ All Premium Features</li>
-                        <li>✓ Priority Support</li>
-                        <li>✓ Ad-free Experience</li>
-                    </ul>
-                    <button class="select-btn"
-                        style="width: 100%; padding: 0.8rem; background: transparent; border: 1px solid var(--accent-gold); color: var(--accent-gold); border-radius: 25px; cursor: pointer;">Select</button>
-                </div>
-            </div>
-
-            <div id="paymentMethods" class="hidden"
-                style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 2rem;">
-                <h3 style="color: white; margin-bottom: 1.5rem;">Select Payment Method</h3>
-                <div style="display: flex; gap: 1rem; justify-content: center;">
-                    <button onclick="processPayment('stripe')"
-                        style="display: flex; align-items: center; gap: 0.5rem; padding: 1rem 2rem; background: #635bff; border: none; border-radius: 8px; color: white; font-size: 1.1rem; cursor: pointer; transition: transform 0.2s;">
-                        <span>💳</span> Pay with Card
-                    </button>
-                    <button onclick="processPayment('paypal')"
-                        style="display: flex; align-items: center; gap: 0.5rem; padding: 1rem 2rem; background: #0070ba; border: none; border-radius: 8px; color: white; font-size: 1.1rem; cursor: pointer; transition: transform 0.2s;">
-                        <span>🅿️</span> PayPal
-                    </button>
-                </div>
-                <p style="color: var(--text-secondary); font-size: 0.8rem; margin-top: 1rem;">
-                    Secure payment processed by Stripe/PayPal. <br>
-                    By continuing, you agree to our Terms of Service.
-                </p>
-            </div>
-        </div>
-    </div>
 
     <div id="loadingOverlay" class="loading-overlay">
         <div class="crystal-ball"></div>
         <div class="loading-text" id="loadingText">Consulting the Stars...</div>
     </div>
 
-    <script src="naming_data.js?v=19"></script>
-    <script src="dream_data.js?v=5"></script>
-    <script src="professional.js?v=17"></script>
-
+    <script src="naming_data.js?v=11"></script>
+    <script src="dream_data.js"></script>
+    <script src="professional.js?v=9"></script>
 </body>
 
 </html>
