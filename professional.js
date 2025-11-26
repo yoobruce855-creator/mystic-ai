@@ -662,3 +662,108 @@ function generateNameFull() {
         }
     }, 2500);
 }
+
+// ===== PAYMENT SYSTEM =====
+
+let selectedPlan = null;
+
+function openPaymentModal() {
+    const modal = document.getElementById('paymentModal');
+    if (modal) {
+        modal.style.display = 'block';
+        // Reset selection
+        document.querySelectorAll('.price-card').forEach(c => {
+            c.style.borderColor = 'rgba(255,255,255,0.1)';
+            c.style.background = 'rgba(255,255,255,0.05)';
+        });
+        const popular = document.querySelector('.price-card.popular');
+        if (popular) {
+            popular.style.background = 'linear-gradient(135deg, var(--primary-purple), var(--secondary-pink))';
+        }
+        const paymentMethods = document.getElementById('paymentMethods');
+        if (paymentMethods) {
+            paymentMethods.classList.add('hidden');
+        }
+        selectedPlan = null;
+    }
+}
+
+function closeModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+        modal.style.display = 'none';
+    }
+}
+
+function selectPlan(plan) {
+    selectedPlan = plan;
+
+    // Update UI
+    document.querySelectorAll('.price-card').forEach(card => {
+        if (card.dataset.plan === plan) {
+            card.style.borderColor = 'var(--accent-gold)';
+            card.style.background = 'rgba(255, 215, 0, 0.1)';
+        } else {
+            card.style.borderColor = 'rgba(255,255,255,0.1)';
+            if (!card.classList.contains('popular')) {
+                card.style.background = 'var(--card-bg)';
+            }
+        }
+    });
+
+    // Show payment methods
+    const paymentMethods = document.getElementById('paymentMethods');
+    if (paymentMethods) {
+        paymentMethods.classList.remove('hidden');
+    }
+}
+
+function processPayment(method) {
+    if (!selectedPlan) {
+        alert('Please select a plan first');
+        return;
+    }
+
+    let creditsToAdd = 0;
+    let amount = 0;
+
+    switch (selectedPlan) {
+        case 'starter': creditsToAdd = 10; amount = 1.99; break;
+        case 'popular': creditsToAdd = 50; amount = 4.99; break;
+        case 'premium': creditsToAdd = 120; amount = 9.99; break;
+    }
+
+    showLoading(`Processing ${method === 'stripe' ? 'Card' : 'PayPal'} Payment...`);
+
+    // SIMULATED PAYMENT PROCESS
+    setTimeout(() => {
+        hideLoading();
+
+        // Success!
+        userCredits += creditsToAdd;
+        updateCreditsDisplay();
+
+        // Save to local storage
+        localStorage.setItem('mysticUserCredits', userCredits);
+
+        // Show success message
+        alert(`Payment Successful! ${creditsToAdd} credits have been added to your account.`);
+        closeModal('paymentModal');
+
+    }, 2000);
+}
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', () => {
+    const upgradeBtn = document.querySelector('.upgrade-btn');
+    if (upgradeBtn) {
+        upgradeBtn.onclick = openPaymentModal;
+    }
+
+    // Load saved credits
+    const savedCredits = localStorage.getItem('mysticUserCredits');
+    if (savedCredits) {
+        userCredits = parseInt(savedCredits);
+        updateCreditsDisplay();
+    }
+});

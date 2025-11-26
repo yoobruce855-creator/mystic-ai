@@ -497,6 +497,74 @@
         </div>
     </div>
 
+    <!-- PAYMENT MODAL -->
+    <div id="paymentModal" class="modal" style="display: none;">
+        <div class="modal-content" style="max-width: 800px;">
+            <span class="close-btn" onclick="closeModal('paymentModal')">&times;</span>
+
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <div style="font-size: 3rem; margin-bottom: 1rem;">💎</div>
+                <h2 style="color: var(--accent-gold); margin-bottom: 0.5rem;">Get More Credits</h2>
+                <p style="color: var(--text-secondary);">Choose a package to continue your mystical journey</p>
+            </div>
+
+            <div class="pricing-grid"
+                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+                <div class="price-card" data-plan="starter" onclick="selectPlan('starter')"
+                    style="background: var(--card-bg); border: 2px solid rgba(255,255,255,0.1); border-radius: 15px; padding: 2rem; cursor: pointer; transition: all 0.3s;">
+                    <h3 style="color: var(--primary-purple-light); margin-bottom: 1rem;">Starter</h3>
+                    <div style="font-size: 2rem; color: var(--accent-gold); margin-bottom: 0.5rem;">$1.99</div>
+                    <div style="color: var(--text-secondary); margin-bottom: 1rem;">10 Credits</div>
+                    <ul style="list-style: none; padding: 0; color: var(--text-secondary); font-size: 0.9rem;">
+                        <li>✓ 3-4 readings</li>
+                        <li>✓ Basic features</li>
+                    </ul>
+                </div>
+
+                <div class="price-card popular" data-plan="popular" onclick="selectPlan('popular')"
+                    style="background: linear-gradient(135deg, var(--primary-purple), var(--secondary-pink)); border: 2px solid var(--accent-gold); border-radius: 15px; padding: 2rem; cursor: pointer; transition: all 0.3s; position: relative;">
+                    <div
+                        style="position: absolute; top: -10px; right: 10px; background: var(--accent-gold); color: black; padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.8rem; font-weight: bold;">
+                        POPULAR</div>
+                    <h3 style="color: white; margin-bottom: 1rem;">Popular</h3>
+                    <div style="font-size: 2rem; color: var(--accent-gold); margin-bottom: 0.5rem;">$4.99</div>
+                    <div style="color: white; margin-bottom: 1rem;">50 Credits</div>
+                    <ul style="list-style: none; padding: 0; color: white; font-size: 0.9rem;">
+                        <li>✓ 15-20 readings</li>
+                        <li>✓ All features</li>
+                        <li>✓ Best value</li>
+                    </ul>
+                </div>
+
+                <div class="price-card" data-plan="premium" onclick="selectPlan('premium')"
+                    style="background: var(--card-bg); border: 2px solid rgba(255,255,255,0.1); border-radius: 15px; padding: 2rem; cursor: pointer; transition: all 0.3s;">
+                    <h3 style="color: var(--primary-purple-light); margin-bottom: 1rem;">Premium</h3>
+                    <div style="font-size: 2rem; color: var(--accent-gold); margin-bottom: 0.5rem;">$9.99</div>
+                    <div style="color: var(--text-secondary); margin-bottom: 1rem;">120 Credits</div>
+                    <ul style="list-style: none; padding: 0; color: var(--text-secondary); font-size: 0.9rem;">
+                        <li>✓ 40+ readings</li>
+                        <li>✓ Premium support</li>
+                        <li>✓ Exclusive features</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div id="paymentMethods" class="hidden" style="margin-top: 2rem;">
+                <h3 style="color: var(--accent-gold); text-align: center; margin-bottom: 1.5rem;">Choose Payment Method
+                </h3>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <button onclick="processPayment('stripe')"
+                        style="padding: 1.5rem; background: linear-gradient(135deg, #635BFF, #4F46E5); border: none; border-radius: 12px; color: white; font-size: 1.1rem; font-weight: bold; cursor: pointer;">
+                        💳 Credit Card
+                    </button>
+                    <button onclick="processPayment('paypal')"
+                        style="padding: 1.5rem; background: linear-gradient(135deg, #0070BA, #003087); border: none; border-radius: 12px; color: white; font-size: 1.1rem; font-weight: bold; cursor: pointer;">
+                        🅿️ PayPal
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div id="loadingOverlay" class="loading-overlay">
         <div class="crystal-ball"></div>
