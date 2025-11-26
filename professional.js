@@ -746,33 +746,33 @@ function processPayment(method) {
 
     if (method === 'stripe') {
         // Redirect to Stripe Checkout
-        // Replace with your actual Stripe payment link
+        // TODO: Replace with your actual Stripe payment links
         const stripeUrls = {
             'starter': 'https://buy.stripe.com/test_starter_link',
             'popular': 'https://buy.stripe.com/test_popular_link',
             'premium': 'https://buy.stripe.com/test_premium_link'
         };
 
-        // For now, show instructions
-        alert(`Stripe Payment:\n\nPlan: ${selectedPlan}\nAmount: $${amount}\nCredits: ${creditsToAdd}\n\nPlease set up your Stripe payment links in professional.js`);
-
-        // Uncomment when you have real Stripe links:
-        // window.location.href = stripeUrls[selectedPlan];
+        // Show confirmation before redirect
+        if (confirm(`Stripe 결제 페이지로 이동합니다.\n\n플랜: ${selectedPlan}\n금액: $${amount}\n크레딧: ${creditsToAdd}\n\n계속하시겠습니까?`)) {
+            // Redirect to payment page
+            window.location.href = stripeUrls[selectedPlan];
+        }
 
     } else if (method === 'paypal') {
         // Redirect to PayPal
-        // Replace with your actual PayPal payment link
+        // TODO: Replace with your actual PayPal payment links
         const paypalUrls = {
             'starter': 'https://www.paypal.com/paypalme/yourlink/1.99',
             'popular': 'https://www.paypal.com/paypalme/yourlink/4.99',
             'premium': 'https://www.paypal.com/paypalme/yourlink/9.99'
         };
 
-        // For now, show instructions
-        alert(`PayPal Payment:\n\nPlan: ${selectedPlan}\nAmount: $${amount}\nCredits: ${creditsToAdd}\n\nPlease set up your PayPal payment links in professional.js`);
-
-        // Uncomment when you have real PayPal links:
-        // window.location.href = paypalUrls[selectedPlan];
+        // Show confirmation before redirect
+        if (confirm(`PayPal 결제 페이지로 이동합니다.\n\n플랜: ${selectedPlan}\n금액: $${amount}\n크레딧: ${creditsToAdd}\n\n계속하시겠습니까?`)) {
+            // Redirect to payment page
+            window.location.href = paypalUrls[selectedPlan];
+        }
     }
 }
 
