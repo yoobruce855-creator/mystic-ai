@@ -733,24 +733,47 @@ function processPayment(method) {
         case 'premium': creditsToAdd = 120; amount = 9.99; break;
     }
 
-    showLoading(`Processing ${method === 'stripe' ? 'Card' : 'PayPal'} Payment...`);
+    // Prepare payment data
+    const paymentData = {
+        plan: selectedPlan,
+        credits: creditsToAdd,
+        amount: amount,
+        method: method
+    };
 
-    // SIMULATED PAYMENT PROCESS
-    setTimeout(() => {
-        hideLoading();
+    // Save to localStorage for return handling
+    localStorage.setItem('pendingPayment', JSON.stringify(paymentData));
 
-        // Success!
-        userCredits += creditsToAdd;
-        updateCreditsDisplay();
+    if (method === 'stripe') {
+        // Redirect to Stripe Checkout
+        // Replace with your actual Stripe payment link
+        const stripeUrls = {
+            'starter': 'https://buy.stripe.com/test_starter_link',
+            'popular': 'https://buy.stripe.com/test_popular_link',
+            'premium': 'https://buy.stripe.com/test_premium_link'
+        };
 
-        // Save to local storage
-        localStorage.setItem('mysticUserCredits', userCredits);
+        // For now, show instructions
+        alert(`Stripe Payment:\n\nPlan: ${selectedPlan}\nAmount: $${amount}\nCredits: ${creditsToAdd}\n\nPlease set up your Stripe payment links in professional.js`);
 
-        // Show success message
-        alert(`Payment Successful! ${creditsToAdd} credits have been added to your account.`);
-        closeModal('paymentModal');
+        // Uncomment when you have real Stripe links:
+        // window.location.href = stripeUrls[selectedPlan];
 
-    }, 2000);
+    } else if (method === 'paypal') {
+        // Redirect to PayPal
+        // Replace with your actual PayPal payment link
+        const paypalUrls = {
+            'starter': 'https://www.paypal.com/paypalme/yourlink/1.99',
+            'popular': 'https://www.paypal.com/paypalme/yourlink/4.99',
+            'premium': 'https://www.paypal.com/paypalme/yourlink/9.99'
+        };
+
+        // For now, show instructions
+        alert(`PayPal Payment:\n\nPlan: ${selectedPlan}\nAmount: $${amount}\nCredits: ${creditsToAdd}\n\nPlease set up your PayPal payment links in professional.js`);
+
+        // Uncomment when you have real PayPal links:
+        // window.location.href = paypalUrls[selectedPlan];
+    }
 }
 
 // Initialize on page load
