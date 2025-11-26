@@ -429,9 +429,32 @@ const NamingEngine = {
             };
         });
 
-        // 궁합 점수 순으로 정렬하고 상위 5개 선택
+        // 궁합 점수 순으로 정렬
         scoredNames.sort((a, b) => b.compatibilityScore - a.compatibilityScore);
-        const selectedNames = scoredNames.slice(0, 5);
+
+        // 오행 다양성을 고려한 선택
+        const selectedNames = [];
+        const usedElements = new Set();
+        const elements = ['wood', 'fire', 'earth', 'metal', 'water'];
+
+        // 1차: 각 오행에서 최고 점수 1개씩 선택 (최대 5개)
+        for (const element of elements) {
+            const nameWithElement = scoredNames.find(n => n.element === element && !selectedNames.includes(n));
+            if (nameWithElement) {
+                selectedNames.push(nameWithElement);
+                usedElements.add(element);
+            }
+        }
+
+        // 2차: 5개가 안 되면 점수 순으로 추가
+        if (selectedNames.length < 5) {
+            for (const name of scoredNames) {
+                if (!selectedNames.includes(name)) {
+                    selectedNames.push(name);
+                    if (selectedNames.length >= 5) break;
+                }
+            }
+        }
 
         return {
             sajuSummary: `생년월일: ${birthDate} | ${sajuAnalysis.recommendation}`,
