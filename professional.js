@@ -767,3 +767,79 @@ document.addEventListener('DOMContentLoaded', () => {
         updateCreditsDisplay();
     }
 });
+
+// ===== DAILY FORTUNE =====
+
+function getDailyFortune() {
+    const name = document.getElementById('todayName').value.trim();
+    const birthDate = document.getElementById('todayBirthDate').value;
+    const gender = document.getElementById('todayGender').value;
+
+    if (!birthDate) {
+        alert('Please enter your birth date');
+        return;
+    }
+
+    showLoading('Calculating your fortune...');
+
+    setTimeout(() => {
+        const birth = new Date(birthDate);
+        const today = new Date();
+
+        // Calculate elements
+        const elements = ['Wood 🌳', 'Fire 🔥', 'Earth 🌍', 'Metal ⚙️', 'Water 💧'];
+        const userElement = elements[birth.getMonth() % 5];
+        const todayElement = elements[today.getMonth() % 5];
+
+        // Calculate harmony
+        const harmony = (birth.getMonth() + today.getMonth()) % 3;
+        const harmonyTypes = ['Excellent ⭐⭐⭐', 'Good ⭐⭐', 'Fair ⭐'];
+
+        // Lucky numbers
+        const luckyNums = [];
+        for (let i = 0; i < 5; i++) {
+            luckyNums.push(((birth.getDate() + today.getDate() + i * 7) % 45) + 1);
+        }
+
+        // Lucky color
+        const colors = [
+            { name: 'Golden Yellow', hex: '#FFD700' },
+            { name: 'Royal Purple', hex: '#9B59B6' },
+            { name: 'Emerald Green', hex: '#2ECC71' },
+            { name: 'Sky Blue', hex: '#3498DB' },
+            { name: 'Ruby Red', hex: '#E74C3C' }
+        ];
+        const luckyColor = colors[today.getDay()];
+
+        // Best time
+        const times = ['Morning (6-9 AM)', 'Noon (11 AM-2 PM)', 'Afternoon (2-5 PM)', 'Evening (6-9 PM)', 'Night (9 PM-12 AM)'];
+        const bestTime = times[today.getDay() % 5];
+
+        // Fortune message
+        const fortune = fortuneMessages[today.getDate() % fortuneMessages.length];
+
+        // Update UI
+        document.getElementById('fortuneEmoji').textContent = fortune.emoji;
+        document.getElementById('fortuneTitle').textContent = fortune.title;
+        document.getElementById('fortuneDate').textContent = today.toLocaleDateString('en-US', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+        document.getElementById('fortuneMessage').textContent = fortune.message;
+        document.getElementById('userElement').textContent = userElement;
+        document.getElementById('todayElement').textContent = todayElement;
+        document.getElementById('harmonyType').textContent = harmonyTypes[harmony];
+        document.getElementById('luckyNumbers').textContent = luckyNums.join('  •  ');
+        document.getElementById('luckyColorBox').style.background = luckyColor.hex;
+        document.getElementById('luckyColorName').textContent = luckyColor.name;
+        document.getElementById('bestTime').textContent = bestTime;
+        document.getElementById('todayAdvice').textContent = fortune.advice;
+
+        hideLoading();
+
+        document.getElementById('todayResult').classList.remove('hidden');
+        document.getElementById('todayResult').scrollIntoView({ behavior: 'smooth' });
+    }, 2000);
+}
