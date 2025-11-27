@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 
 <head>
     <meta charset="UTF-8">
@@ -7,7 +7,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <title>Mystic AI - Professional Fortune Telling</title>
+    <title>미스틱 AI - 전문 운세 서비스</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="loading.css">
     <style>
@@ -35,9 +35,9 @@
     <div class="credits-bar">
         <div class="credits-info">
             <span class="credit-icon">💎</span>
-            <span id="userCredits">3</span> Credits
+            <span id="userCredits">3</span> 크레딧
         </div>
-        <button class="upgrade-btn" onclick="openPaymentModal()">⭐ Premium</button>
+        <button class="upgrade-btn" onclick="openPaymentModal()">⭐ 프리미엄</button>
     </div>
 
     <div id="mainScreen" class="screen active">
@@ -46,41 +46,41 @@
             <header class="header">
                 <div class="logo">
                     <span class="logo-icon">🔮</span>
-                    <h1>Mystic AI</h1>
+                    <h1>미스틱 AI</h1>
                 </div>
-                <p class="tagline">Professional AI-Powered Fortune Telling</p>
+                <p class="tagline">AI 기반 전문 운세 서비스</p>
             </header>
 
             <div class="services-grid">
                 <div class="service-card" onclick="showScreen('tarotScreen')">
                     <div class="card-icon">🎴</div>
-                    <h2>Tarot Reading</h2>
-                    <p>Deep insights from 22 Major Arcana cards</p>
+                    <h2>타로 카드</h2>
+                    <p>22장의 메이저 아르카나로 깊은 통찰</p>
                 </div>
                 <div class="service-card" onclick="showScreen('sajuScreen')">
                     <div class="card-icon">📿</div>
-                    <h2>Saju (Four Pillars)</h2>
-                    <p>Traditional Korean fortune based on birth data</p>
+                    <h2>사주팔자</h2>
+                    <p>생년월일 기반 전통 한국 운세</p>
                 </div>
                 <div class="service-card" onclick="showScreen('dreamScreen')">
                     <div class="card-icon">🌙</div>
-                    <h2>Dream Analysis</h2>
-                    <p>100+ symbols with detailed interpretations</p>
+                    <h2>꿈 해몽</h2>
+                    <p>100가지 이상의 상징과 상세한 해석</p>
                 </div>
                 <div class="service-card" onclick="showScreen('compatibilityScreen')">
                     <div class="card-icon">💕</div>
-                    <h2>Compatibility</h2>
-                    <p>Detailed analysis based on birth information</p>
+                    <h2>궁합</h2>
+                    <p>생년월일 기반 상세한 궁합 분석</p>
                 </div>
                 <div class="service-card" onclick="showScreen('namingScreen')">
                     <div class="card-icon">✍️</div>
-                    <h2>Name Analysis</h2>
-                    <p>Numerology and meaning analysis</p>
+                    <h2>작명/개명</h2>
+                    <p>성명학과 수리 분석</p>
                 </div>
                 <div class="service-card" onclick="showScreen('todayScreen')">
                     <div class="card-icon">📅</div>
-                    <h2>Daily Fortune</h2>
-                    <p>Personalized daily guidance</p>
+                    <h2>오늘의 운세</h2>
+                    <p>개인 맞춤 일일 운세</p>
                 </div>
             </div>
         </div>
@@ -89,11 +89,11 @@
     <div id="tarotScreen" class="screen">
         <div class="stars"></div>
         <div class="container">
-            <button class="back-btn" onclick="showScreen('mainScreen')">← Back</button>
+            <button class="back-btn" onclick="showScreen('mainScreen')">← 뒤로</button>
             <div class="service-header">
                 <div class="service-icon">🎴</div>
-                <h1>Tarot Reading</h1>
-                <p>Draw 3 cards for past, present, and future insights</p>
+                <h1>타로 카드</h1>
+                <p>과거, 현재, 미래를 위한 3장의 카드를 뽑으세요</p>
             </div>
             <div class="tarot-cards">
                 <div class="cards-container">
@@ -101,13 +101,13 @@
                         <div class="card-back">🎴</div>
                     </div>
                 </div>
-                <p style="text-align: center; margin-top: 2rem; color: var(--text-secondary);">Click to draw 3 cards (1
-                    credit)</p>
+                <p style="text-align: center; margin-top: 2rem; color: var(--text-secondary);">클릭하여 3장의 카드 뽑기 (1 크레딧)
+                </p>
                 <div id="tarotResult" class="hidden" style="margin-top: 3rem;">
                     <div class="cards-container" style="gap: 2rem;">
                         <div
                             style="background: var(--card-bg); padding: 2rem; border-radius: 20px; border: 2px solid var(--border-glow); text-align: center; min-width: 250px;">
-                            <h4 style="color: var(--secondary-pink); margin-bottom: 1rem;">PAST</h4>
+                            <h4 style="color: var(--secondary-pink); margin-bottom: 1rem;">과거</h4>
                             <div id="card1Emoji" style="font-size: 4rem; margin-bottom: 1rem;"></div>
                             <h3 id="card1Name" style="color: var(--accent-gold); margin-bottom: 0.5rem;"></h3>
                             <p id="card1Meaning"
@@ -117,7 +117,7 @@
                         </div>
                         <div
                             style="background: var(--card-bg); padding: 2rem; border-radius: 20px; border: 2px solid var(--border-glow); text-align: center; min-width: 250px;">
-                            <h4 style="color: var(--secondary-pink); margin-bottom: 1rem;">PRESENT</h4>
+                            <h4 style="color: var(--secondary-pink); margin-bottom: 1rem;">현재</h4>
                             <div id="card2Emoji" style="font-size: 4rem; margin-bottom: 1rem;"></div>
                             <h3 id="card2Name" style="color: var(--accent-gold); margin-bottom: 0.5rem;"></h3>
                             <p id="card2Meaning"
@@ -127,7 +127,7 @@
                         </div>
                         <div
                             style="background: var(--card-bg); padding: 2rem; border-radius: 20px; border: 2px solid var(--border-glow); text-align: center; min-width: 250px;">
-                            <h4 style="color: var(--secondary-pink); margin-bottom: 1rem;">FUTURE</h4>
+                            <h4 style="color: var(--secondary-pink); margin-bottom: 1rem;">미래</h4>
                             <div id="card3Emoji" style="font-size: 4rem; margin-bottom: 1rem;"></div>
                             <h3 id="card3Name" style="color: var(--accent-gold); margin-bottom: 0.5rem;"></h3>
                             <p id="card3Meaning"
@@ -137,7 +137,7 @@
                         </div>
                     </div>
                     <button class="primary-button" onclick="drawTarotCards()"
-                        style="max-width: 400px; margin: 2rem auto; display: block;">Draw Again</button>
+                        style="max-width: 400px; margin: 2rem auto; display: block;">다시 뽑기</button>
                 </div>
             </div>
         </div>
@@ -147,32 +147,32 @@
     <div id="todayScreen" class="screen">
         <div class="stars"></div>
         <div class="container">
-            <button class="back-btn" onclick="showScreen('mainScreen')">← Back</button>
+            <button class="back-btn" onclick="showScreen('mainScreen')">← 뒤로</button>
             <div class="service-header">
                 <div class="service-icon">📅</div>
-                <h1>Daily Fortune</h1>
-                <p>Personalized guidance based on your birth date</p>
+                <h1>오늘의 운세</h1>
+                <p>생년월일 기반 개인 맞춤 운세</p>
             </div>
 
             <div class="input-section">
-                <h3>Your Information</h3>
+                <h3>정보 입력</h3>
                 <div class="input-group">
-                    <label>Name</label>
-                    <input type="text" id="todayName" placeholder="Enter your name">
+                    <label>이름</label>
+                    <input type="text" id="todayName" placeholder="이름을 입력하세요">
                 </div>
                 <div class="input-group">
-                    <label>Birth Date *</label>
+                    <label>생년월일 *</label>
                     <input type="date" id="todayBirthDate" required>
                 </div>
                 <div class="input-group">
-                    <label>Gender (Optional)</label>
+                    <label>성별 (선택)</label>
                     <select id="todayGender">
-                        <option value="male">Male</option>
-                        <option value="female">Female</option>
-                        <option value="other">Other</option>
+                        <option value="male">남성</option>
+                        <option value="female">여성</option>
+                        <option value="other">기타</option>
                     </select>
                 </div>
-                <button class="primary-button" onclick="getDailyFortune()">Get Today's Fortune (Free)</button>
+                <button class="primary-button" onclick="getDailyFortune()">오늘의 운세 보기 (무료)</button>
             </div>
 
             <div id="todayResult" class="hidden" style="margin-top: 3rem;">
@@ -190,7 +190,7 @@
                     <div style="margin-bottom: 2.5rem;">
                         <h4
                             style="color: var(--primary-purple-light); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
-                            <span>🔮</span> Today's Fortune
+                            <span>🔮</span> 오늘의 운세
                         </h4>
                         <p style="color: var(--text-primary); font-size: 1.2rem; line-height: 1.8; margin-bottom: 1.5rem;"
                             id="fortuneMessage"></p>
@@ -201,24 +201,22 @@
                         style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
                         <div
                             style="background: hsla(270, 70%, 30%, 0.3); padding: 1.5rem; border-radius: 15px; text-align: center;">
-                            <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 0.5rem;">Your
-                                Element
+                            <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 0.5rem;">나의 오행
                             </p>
                             <p style="color: var(--accent-gold); font-size: 1.3rem; font-weight: 600;" id="userElement">
                             </p>
                         </div>
                         <div
                             style="background: hsla(270, 70%, 30%, 0.3); padding: 1.5rem; border-radius: 15px; text-align: center;">
-                            <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 0.5rem;">Today's
-                                Element</p>
+                            <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 0.5rem;">오늘의 오행
+                            </p>
                             <p style="color: var(--accent-gold); font-size: 1.3rem; font-weight: 600;"
                                 id="todayElement">
                             </p>
                         </div>
                         <div
                             style="background: hsla(270, 70%, 30%, 0.3); padding: 1.5rem; border-radius: 15px; text-align: center;">
-                            <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 0.5rem;">Harmony
-                            </p>
+                            <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 0.5rem;">조화</p>
                             <p style="color: var(--accent-gold); font-size: 1.3rem; font-weight: 600;" id="harmonyType">
                             </p>
                         </div>
@@ -229,7 +227,7 @@
                         style="background: hsla(45, 100%, 60%, 0.1); padding: 2rem; border-radius: 15px; margin-bottom: 2rem; border-left: 4px solid var(--accent-gold);">
                         <h4
                             style="color: var(--accent-gold); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
-                            <span>🎰</span> Lucky Numbers
+                            <span>🎰</span> 행운의 숫자
                         </h4>
                         <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
                             <span id="luckyNumbers"
@@ -240,7 +238,7 @@
                     <!-- Lucky Color & Best Time -->
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem;">
                         <div style="background: hsla(120, 70%, 40%, 0.2); padding: 1.5rem; border-radius: 15px;">
-                            <h4 style="color: var(--accent-green); margin-bottom: 0.8rem;">🎨 Lucky Color</h4>
+                            <h4 style="color: var(--accent-green); margin-bottom: 0.8rem;">🎨 행운의 색</h4>
                             <div style="display: flex; align-items: center; gap: 1rem;">
                                 <div id="luckyColorBox"
                                     style="width: 50px; height: 50px; border-radius: 10px; border: 2px solid white;">
@@ -250,7 +248,7 @@
                             </div>
                         </div>
                         <div style="background: hsla(200, 70%, 50%, 0.2); padding: 1.5rem; border-radius: 15px;">
-                            <h4 style="color: var(--accent-blue); margin-bottom: 0.8rem;">⏰ Best Time</h4>
+                            <h4 style="color: var(--accent-blue); margin-bottom: 0.8rem;">⏰ 최고의 시간</h4>
                             <p id="bestTime" style="color: var(--text-primary); font-size: 1.3rem; font-weight: 600;">
                             </p>
                         </div>
@@ -261,7 +259,7 @@
                         style="background: hsla(270, 70%, 30%, 0.3); padding: 2rem; border-radius: 15px; border-left: 4px solid var(--accent-green);">
                         <h4
                             style="color: var(--accent-green); margin-bottom: 0.8rem; display: flex; align-items: center; gap: 0.5rem;">
-                            <span>💡</span> Today's Advice
+                            <span>💡</span> 오늘의 조언
                         </h4>
                         <p id="todayAdvice" style="color: var(--text-primary); line-height: 1.8; font-size: 1.1rem;">
                         </p>
@@ -274,34 +272,34 @@
     <div id="sajuScreen" class="screen">
         <div class="stars"></div>
         <div class="container">
-            <button class="back-btn" onclick="showScreen('mainScreen')">← Back</button>
+            <button class="back-btn" onclick="showScreen('mainScreen')">← 뒤로</button>
             <div class="service-header">
                 <div class="service-icon">🎴</div>
-                <h1>Tojeongbigyeol Saju</h1>
-                <p>Traditional Korean fortune telling based on birth data</p>
+                <h1>사주팔자</h1>
+                <p>생년월일 시 기반 전통 한국 운세</p>
             </div>
             <div class="input-section">
-                <h3>Enter Birth Information</h3>
+                <h3>생년월일 시 입력</h3>
                 <div class="input-group">
-                    <label>Name</label>
-                    <input type="text" id="sajuName" placeholder="Enter your name">
+                    <label>이름</label>
+                    <input type="text" id="sajuName" placeholder="이름을 입력하세요">
                 </div>
                 <div class="input-group">
-                    <label>Birth Date</label>
+                    <label>생년월일</label>
                     <input type="date" id="sajuDate">
                 </div>
                 <div class="input-group">
-                    <label>Birth Time</label>
+                    <label>태어난 시간</label>
                     <input type="time" id="sajuTime">
                 </div>
                 <div class="input-group">
-                    <label>Gender</label>
+                    <label>성별</label>
                     <select id="sajuGender">
-                        <option value="male">Male</option>
-                        <option value="female">Female</option>
+                        <option value="male">남성</option>
+                        <option value="female">여성</option>
                     </select>
                 </div>
-                <button class="primary-button" onclick="analyzeSaju()">Analyze Fortune (2 credits)</button>
+                <button class="primary-button" onclick="analyzeSaju()">운세 분석 (2 크레딧)</button>
             </div>
             <div id="sajuResult" class="hidden" style="margin-top: 3rem;">
                 <div
@@ -313,16 +311,16 @@
                     <div
                         style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
                         <div style="background: hsla(270, 70%, 30%, 0.3); padding: 1.5rem; border-radius: 15px;">
-                            <h4 style="color: var(--secondary-pink); margin-bottom: 0.5rem;">Total Luck</h4>
+                            <h4 style="color: var(--secondary-pink); margin-bottom: 0.5rem;">종합 운</h4>
                             <p id="sajuTotal" style="color: var(--text-primary); line-height: 1.6;"></p>
                         </div>
                         <div style="background: hsla(270, 70%, 30%, 0.3); padding: 1.5rem; border-radius: 15px;">
-                            <h4 style="color: var(--accent-green); margin-bottom: 0.5rem;">Monthly Luck</h4>
+                            <h4 style="color: var(--accent-green); margin-bottom: 0.5rem;">월별 운</h4>
                             <p id="sajuMonthly" style="color: var(--text-primary); line-height: 1.6;"></p>
                         </div>
                     </div>
                     <div style="background: hsla(45, 100%, 60%, 0.1); padding: 2rem; border-radius: 15px;">
-                        <h4 style="color: var(--accent-gold); margin-bottom: 1rem;">Advice for the Year</h4>
+                        <h4 style="color: var(--accent-gold); margin-bottom: 1rem;">올해의 조언</h4>
                         <p id="sajuAdvice" style="color: var(--text-secondary); line-height: 1.8;"></p>
                     </div>
                 </div>
@@ -333,20 +331,19 @@
     <div id="dreamScreen" class="screen">
         <div class="stars"></div>
         <div class="container">
-            <button class="back-btn" onclick="showScreen('mainScreen')">← Back</button>
+            <button class="back-btn" onclick="showScreen('mainScreen')">← 뒤로</button>
             <div class="service-header">
                 <div class="service-icon">🌙</div>
-                <h1>Dream Analysis</h1>
-                <p>Discover the hidden meanings in your dreams</p>
+                <h1>꿈 해몽</h1>
+                <p>꿈속에 숨겨진 의미를 발견하세요</p>
             </div>
             <div class="input-section">
-                <h3>Describe Your Dream</h3>
+                <h3>꿈 내용 설명</h3>
                 <div class="input-group">
-                    <textarea id="dreamInput" placeholder="I dreamed about..." style="min-height: 150px;"></textarea>
-                    <small>Try keywords like: snake, water, fire, flying, falling, death, money, house, cat, dog,
-                        etc.</small>
+                    <textarea id="dreamInput" placeholder="저는 이런 꿈을 꾸었어요..." style="min-height: 150px;"></textarea>
+                    <small>키워드 예시: 뱀, 물, 불, 날기, 떨어지기, 죽음, 돈, 집, 고양이, 개 등</small>
                 </div>
-                <button class="primary-button" onclick="analyzeDream()">Analyze Dream (1 credit)</button>
+                <button class="primary-button" onclick="analyzeDream()">꿈 해몽하기 (1 크레딧)</button>
             </div>
             <div id="dreamResult" class="hidden" style="margin-top: 3rem;">
                 <div
@@ -356,13 +353,13 @@
                         <div style="font-size: 5rem; margin-bottom: 1rem;" id="dreamSymbol"></div>
                         <h2 style="color: var(--accent-gold); margin-bottom: 0.5rem;" id="dreamMeaning"></h2>
                         <span
-                            style="background: rgba(157, 78, 221, 0.2); color: var(--secondary-pink); padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.9rem; border: 1px solid var(--secondary-pink);">Psychological
-                            Archetype</span>
+                            style="background: rgba(157, 78, 221, 0.2); color: var(--secondary-pink); padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.9rem; border: 1px solid var(--secondary-pink);">심리적
+                            원형</span>
                     </div>
                     <div style="margin-bottom: 2.5rem;">
                         <h4
                             style="color: var(--primary-purple-light); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
-                            <span>👁️</span> Deep Interpretation
+                            <span>👁️</span> 깊은 해석
                         </h4>
                         <p style="color: var(--text-secondary); font-size: 1.1rem; line-height: 1.8;"
                             id="dreamInterpretation"></p>
@@ -371,7 +368,7 @@
                         style="background: hsla(270, 70%, 30%, 0.3); padding: 2rem; border-radius: 15px; border-left: 4px solid var(--accent-green);">
                         <h4
                             style="color: var(--accent-green); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
-                            <span>💡</span> Actionable Advice
+                            <span>💡</span> 실행 가능한 조언
                         </h4>
                         <p id="dreamAdvice" style="color: var(--text-primary); line-height: 1.6; font-weight: 500;"></p>
                     </div>
@@ -383,84 +380,84 @@
     <div id="compatibilityScreen" class="screen">
         <div class="stars"></div>
         <div class="container">
-            <button class="back-btn" onclick="showScreen('mainScreen')">← Back</button>
+            <button class="back-btn" onclick="showScreen('mainScreen')">← 뒤로</button>
             <div class="service-header">
                 <div class="service-icon">💕</div>
-                <h1>Compatibility Analysis</h1>
-                <p>Detailed compatibility based on birth information</p>
+                <h1>궁합 분석</h1>
+                <p>생년월일 기반 상세한 궁합 분석</p>
             </div>
             <div class="input-section">
-                <h3>Your Information</h3>
+                <h3>내 정보</h3>
                 <div class="input-group">
-                    <label>Your Name</label>
-                    <input type="text" id="person1Name" placeholder="Enter your name">
+                    <label>내 이름</label>
+                    <input type="text" id="person1Name" placeholder="이름을 입력하세요">
                 </div>
                 <div class="input-group">
-                    <label>Birth Date</label>
+                    <label>생년월일</label>
                     <input type="date" id="person1Date">
                 </div>
                 <div class="input-group">
-                    <label>Birth Time (Optional)</label>
+                    <label>태어난 시간 (선택)</label>
                     <input type="time" id="person1Time">
                 </div>
                 <div class="input-group">
-                    <label>Gender</label>
+                    <label>성별</label>
                     <select id="person1Gender">
-                        <option value="male">Male</option>
-                        <option value="female">Female</option>
+                        <option value="male">남성</option>
+                        <option value="female">여성</option>
                     </select>
                 </div>
             </div>
             <div class="input-section" style="margin-top: 2rem;">
-                <h3>Their Information</h3>
+                <h3>상대방 정보</h3>
                 <div class="input-group">
-                    <label>Their Name</label>
-                    <input type="text" id="person2Name" placeholder="Enter their name">
+                    <label>상대방 이름</label>
+                    <input type="text" id="person2Name" placeholder="이름을 입력하세요">
                 </div>
                 <div class="input-group">
-                    <label>Birth Date</label>
+                    <label>생년월일</label>
                     <input type="date" id="person2Date">
                 </div>
                 <div class="input-group">
-                    <label>Birth Time (Optional)</label>
+                    <label>태어난 시간 (선택)</label>
                     <input type="time" id="person2Time">
                 </div>
                 <div class="input-group">
-                    <label>Gender</label>
+                    <label>성별</label>
                     <select id="person2Gender">
-                        <option value="male">Male</option>
-                        <option value="female">Female</option>
+                        <option value="male">남성</option>
+                        <option value="female">여성</option>
                     </select>
                 </div>
-                <button class="primary-button" onclick="checkCompatibility()" style="margin-top: 2rem;">Analyze
-                    Compatibility (2 credits)</button>
+                <button class="primary-button" onclick="checkCompatibility()" style="margin-top: 2rem;">궁합 분석 (2
+                    크레딧)</button>
             </div>
             <div id="compatibilityResult" class="hidden" style="margin-top: 3rem;">
                 <div
                     style="background: var(--card-bg); padding: 3rem; border-radius: 20px; border: 2px solid var(--border-glow);">
                     <div style="text-align: center; font-size: 5rem; margin-bottom: 1rem;">💕</div>
-                    <h2 style="color: var(--accent-gold); text-align: center; margin-bottom: 2rem;">Compatibility Report
+                    <h2 style="color: var(--accent-gold); text-align: center; margin-bottom: 2rem;">궁합 분석 결과
                     </h2>
                     <div style="text-align: center; margin: 2rem 0;">
                         <div style="font-size: 4rem; color: var(--secondary-pink); font-weight: bold;" id="compatScore">
                         </div>
-                        <p style="color: var(--text-secondary); margin-top: 0.5rem;">Overall Compatibility</p>
+                        <p style="color: var(--text-secondary); margin-top: 0.5rem;">종합 궁합도</p>
                     </div>
                     <div
                         style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin: 2rem 0;">
                         <div
                             style="background: hsla(270, 70%, 30%, 0.3); padding: 1.5rem; border-radius: 15px; text-align: center;">
-                            <h4 style="color: var(--primary-purple-light); margin-bottom: 0.5rem;">Love</h4>
+                            <h4 style="color: var(--primary-purple-light); margin-bottom: 0.5rem;">애정</h4>
                             <p id="loveScore" style="font-size: 2rem; color: var(--accent-gold);"></p>
                         </div>
                         <div
                             style="background: hsla(270, 70%, 30%, 0.3); padding: 1.5rem; border-radius: 15px; text-align: center;">
-                            <h4 style="color: var(--primary-purple-light); margin-bottom: 0.5rem;">Communication</h4>
+                            <h4 style="color: var(--primary-purple-light); margin-bottom: 0.5rem;">소통</h4>
                             <p id="commScore" style="font-size: 2rem; color: var(--accent-gold);"></p>
                         </div>
                         <div
                             style="background: hsla(270, 70%, 30%, 0.3); padding: 1.5rem; border-radius: 15px; text-align: center;">
-                            <h4 style="color: var(--primary-purple-light); margin-bottom: 0.5rem;">Trust</h4>
+                            <h4 style="color: var(--primary-purple-light); margin-bottom: 0.5rem;">신뢰</h4>
                             <p id="trustScore" style="font-size: 2rem; color: var(--accent-gold);"></p>
                         </div>
                     </div>
@@ -469,7 +466,7 @@
                     </p>
                     <div
                         style="background: hsla(45, 100%, 60%, 0.1); padding: 2rem; border-radius: 15px; margin-top: 2rem;">
-                        <h4 style="color: var(--accent-gold); margin-bottom: 1rem;">Relationship Advice</h4>
+                        <h4 style="color: var(--accent-gold); margin-bottom: 1rem;">관계 조언</h4>
                         <p id="compatAdvice" style="color: var(--text-secondary); line-height: 1.8;"></p>
                     </div>
                 </div>
@@ -482,15 +479,15 @@
     <div id="todayScreen" class="screen">
         <div class="stars"></div>
         <div class="container">
-            <button class="back-btn" onclick="showScreen('mainScreen')">← Back</button>
+            <button class="back-btn" onclick="showScreen('mainScreen')">← 뒤로</button>
             <div class="service-header">
                 <div class="service-icon">📅</div>
-                <h1>Daily Fortune</h1>
-                <p>Your personalized guidance for today</p>
+                <h1>오늘의 운세</h1>
+                <p>오늘을 위한 개인 맞춤 안내</p>
             </div>
             <div style="text-align: center; margin: 3rem 0;">
-                <button class="primary-button" onclick="getDailyFortune()" style="max-width: 400px; margin: 0 auto;">Get
-                    Today's Fortune (Free!)</button>
+                <button class="primary-button" onclick="getDailyFortune()" style="max-width: 400px; margin: 0 auto;">오늘의
+                    운세 보기 (무료!)</button>
             </div>
             <div id="todayResult" class="hidden" style="margin-top: 3rem;">
                 <div
@@ -502,12 +499,12 @@
                         id="fortuneMessage"></p>
                     <div
                         style="background: hsla(45, 100%, 60%, 0.1); padding: 2rem; border-radius: 15px; text-align: center;">
-                        <p style="color: var(--accent-gold); font-weight: 600; margin-bottom: 1rem;">Lucky Numbers</p>
+                        <p style="color: var(--accent-gold); font-weight: 600; margin-bottom: 1rem;">행운의 숫자</p>
                         <p style="font-size: 2rem; color: white;" id="luckyNumbers"></p>
                     </div>
                     <div
                         style="margin-top: 2rem; padding: 2rem; background: hsla(270, 70%, 30%, 0.3); border-radius: 15px;">
-                        <h4 style="color: var(--primary-purple-light); margin-bottom: 1rem;">Today's Guidance</h4>
+                        <h4 style="color: var(--primary-purple-light); margin-bottom: 1rem;">오늘의 안내</h4>
                         <p id="todayAdvice" style="color: var(--text-secondary); line-height: 1.8;"></p>
                     </div>
                 </div>
@@ -518,58 +515,58 @@
     <div id="namingScreen" class="screen">
         <div class="stars"></div>
         <div class="container">
-            <button class="back-btn" onclick="showScreen('mainScreen')">← Back</button>
+            <button class="back-btn" onclick="showScreen('mainScreen')">← 뒤로</button>
             <div class="service-header">
                 <div class="service-icon">✍️</div>
-                <h1>AI Naming Center</h1>
-                <p>Professional name recommendations based on Saju analysis</p>
+                <h1>AI 작명 센터</h1>
+                <p>사주 분석 기반 전문 이름 추천</p>
             </div>
             <div class="input-section">
-                <h3>Baby Information</h3>
+                <h3>아기 정보</h3>
 
                 <div class="input-group">
-                    <label>Surname *</label>
-                    <input type="text" id="namingSurname" placeholder="e.g. Kim, Lee, Park" maxlength="20">
+                    <label>성씨 *</label>
+                    <input type="text" id="namingSurname" placeholder="예: 김, 이, 박" maxlength="20">
                 </div>
 
                 <div class="input-group">
-                    <label>Gender *</label>
+                    <label>성별 *</label>
                     <select id="namingGender">
-                        <option value="">Select</option>
-                        <option value="male">Male</option>
-                        <option value="female">Female</option>
+                        <option value="">선택</option>
+                        <option value="male">남아</option>
+                        <option value="female">여아</option>
                     </select>
                 </div>
 
                 <div class="input-group">
-                    <label>Birth Date *</label>
+                    <label>생년월일 *</label>
                     <div style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 10px;">
-                        <input type="number" id="namingYear" placeholder="Year" min="1900" max="2100">
-                        <input type="number" id="namingMonth" placeholder="Month" min="1" max="12">
-                        <input type="number" id="namingDay" placeholder="Day" min="1" max="31">
+                        <input type="number" id="namingYear" placeholder="년" min="1900" max="2100">
+                        <input type="number" id="namingMonth" placeholder="월" min="1" max="12">
+                        <input type="number" id="namingDay" placeholder="일" min="1" max="31">
                     </div>
                 </div>
 
                 <div class="input-group">
-                    <label>Calendar Type *</label>
+                    <label>달력 종류 *</label>
                     <select id="namingCalendar">
-                        <option value="solar">Solar</option>
-                        <option value="lunar">Lunar</option>
+                        <option value="solar">양력</option>
+                        <option value="lunar">음력</option>
                     </select>
-                    <small>Most cases use Solar calendar</small>
+                    <small>대부분의 경우 양력을 사용합니다</small>
                 </div>
 
                 <div class="input-group">
-                    <label>Birth Time *</label>
+                    <label>태어난 시간 *</label>
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                        <input type="number" id="namingHour" placeholder="Hour" min="0" max="23">
-                        <input type="number" id="namingMinute" placeholder="Minute" min="0" max="59">
+                        <input type="number" id="namingHour" placeholder="시" min="0" max="23">
+                        <input type="number" id="namingMinute" placeholder="분" min="0" max="59">
                     </div>
-                    <small>If unknown, use 12:00</small>
+                    <small>모를 경우 12:00 입력</small>
                 </div>
 
                 <button class="primary-button" onclick="generateNamePreview()">
-                    Free Preview (2 Names)
+                    무료 미리보기 (2개)
                 </button>
             </div>
 
@@ -579,7 +576,7 @@
                     style="background: var(--card-bg); padding: 3rem; border-radius: 20px; border: 2px solid var(--border-glow);">
                     <div
                         style="text-align: center; margin-bottom: 2rem; padding-bottom: 2rem; border-bottom: 1px solid rgba(255,255,255,0.1);">
-                        <h2 style="color: var(--accent-gold); margin-bottom: 1rem;">Saju Analysis Preview</h2>
+                        <h2 style="color: var(--accent-gold); margin-bottom: 1rem;">사주 분석 미리보기</h2>
                         <p id="namingPreviewSummary" style="color: var(--text-secondary); line-height: 1.8;"></p>
                     </div>
 
@@ -701,7 +698,7 @@
 
     <script src="naming_data.js?v=20"></script>
     <script src="dream_data.js"></script>
-    <script src="professional.js?v=9"></script>
+    <script src="professional.js?v=20"></script>
 </body>
 
 </html>

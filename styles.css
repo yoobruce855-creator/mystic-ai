@@ -1,3 +1,6 @@
+/* ===== Google Fonts Import ===== */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@400;700&display=swap');
+
 /* ===== CSS Variables ===== */
 :root {
     --primary-purple: hsl(270, 70%, 50%);
@@ -14,7 +17,7 @@
     --border-glow: hsla(270, 70%, 60%, 0.3);
 
     --font-serif: 'Noto Serif KR', serif;
-    --font-sans: 'Outfit', sans-serif;
+    --font-sans: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 
     --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-bounce: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);

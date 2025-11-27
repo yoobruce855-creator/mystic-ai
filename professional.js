@@ -2,55 +2,55 @@
 
 // 1. TAROT DATA
 const tarotCards = [
-    { name: 'The Fool', emoji: '🃏', meaning: 'New Beginning', description: 'New beginnings, spontaneity, and a free spirit. Embrace new journeys with optimism.' },
-    { name: 'The Magician', emoji: '🎩', meaning: 'Manifestation', description: 'You have all the tools needed to succeed. Channel your willpower and focus.' },
-    { name: 'The High Priestess', emoji: '🌙', meaning: 'Intuition', description: 'Listen to your inner voice. Trust your instincts and spiritual wisdom.' },
-    { name: 'The Empress', emoji: '👑', meaning: 'Abundance', description: 'Growth and prosperity await. Creativity flows freely in your life.' },
-    { name: 'The Emperor', emoji: '⚜️', meaning: 'Authority', description: 'Take charge with confidence. Establish order and clear boundaries.' },
-    { name: 'The Hierophant', emoji: '📿', meaning: 'Tradition', description: 'Seek guidance from mentors. Honor traditions while finding your path.' },
-    { name: 'The Lovers', emoji: '💕', meaning: 'Love & Choices', description: 'Significant relationships or decisions await. Follow your heart wisely.' },
-    { name: 'The Chariot', emoji: '🏇', meaning: 'Victory', description: 'You are in control and moving forward. Success is within reach.' },
-    { name: 'Strength', emoji: '🦁', meaning: 'Inner Power', description: 'Face challenges with compassion. True strength comes from within.' },
-    { name: 'The Hermit', emoji: '🕯️', meaning: 'Soul Searching', description: 'Take time for solitude and reflection. Seek wisdom from within.' },
-    { name: 'Wheel of Fortune', emoji: '☸️', meaning: 'Change', description: 'Life is in constant motion. Good fortune may be coming your way.' },
-    { name: 'Justice', emoji: '⚖️', meaning: 'Fairness', description: 'Seek balance and make fair decisions. Truth will prevail.' },
-    { name: 'The Hanged Man', emoji: '🙃', meaning: 'New Perspective', description: 'Pause and see things differently. Surrender brings wisdom.' },
-    { name: 'Death', emoji: '💀', meaning: 'Transformation', description: 'Something must end for new beginnings. Embrace profound change.' },
-    { name: 'Temperance', emoji: '🍷', meaning: 'Balance', description: 'Find the middle path. Blend opposing forces harmoniously.' },
-    { name: 'The Devil', emoji: '😈', meaning: 'Bondage', description: 'Examine what enslaves you. Break free from unhealthy attachments.' },
-    { name: 'The Tower', emoji: '🗼', meaning: 'Sudden Change', description: 'Unexpected events shake foundations. Necessary change brings liberation.' },
-    { name: 'The Star', emoji: '⭐', meaning: 'Hope', description: 'After darkness comes light. Your wishes may come true.' },
-    { name: 'The Moon', emoji: '🌙', meaning: 'Illusion', description: 'Things may not be as they seem. Trust intuition but verify facts.' },
-    { name: 'The Sun', emoji: '☀️', meaning: 'Success', description: 'Positivity radiates from you. Success and happiness are yours.' },
-    { name: 'Judgement', emoji: '📯', meaning: 'Rebirth', description: 'Time of reckoning and reflection. Rise to higher consciousness.' },
-    { name: 'The World', emoji: '🌍', meaning: 'Completion', description: 'You have achieved your goals. Celebrate your success and fulfillment.' }
+    { name: '바보', emoji: '🃏', meaning: '새로운 시작', description: '새로운 시작, 자발성, 자유로운 영혼. 낙관적으로 새로운 여정을 시작하세요.' },
+    { name: '마법사', emoji: '🎩', meaning: '현현', description: '성공에 필요한 모든 도구를 가지고 있습니다. 의지력과 집중력을 발휘하세요.' },
+    { name: '여사제', emoji: '🌙', meaning: '직관', description: '내면의 목소리에 귀 기울이세요. 직감과 영적 지혜를 믿으세요.' },
+    { name: '여황제', emoji: '👑', meaning: '풍요', description: '성장과 번영이 기다립니다. 창의성이 자유롭게 흐릅니다.' },
+    { name: '황제', emoji: '⚜️', meaning: '권위', description: '자신감을 가지고 주도하세요. 질서와 명확한 경계를 확립하세요.' },
+    { name: '교황', emoji: '📿', meaning: '전통', description: '멘토의 조언을 구하세요. 전통을 존중하며 자신의 길을 찾으세요.' },
+    { name: '연인', emoji: '💕', meaning: '사랑과 선택', description: '중요한 관계나 결정이 기다립니다. 현명하게 마음을 따르세요.' },
+    { name: '전차', emoji: '🏇', meaning: '승리', description: '당신은 통제력을 가지고 전진하고 있습니다. 성공이 가까이 있습니다.' },
+    { name: '힘', emoji: '🦁', meaning: '내면의 힘', description: '연민으로 도전에 맞서세요. 진정한 힘은 내면에서 나옵니다.' },
+    { name: '은둔자', emoji: '🕯️', meaning: '영혼 탐구', description: '고독과 성찰의 시간을 가지세요. 내면에서 지혜를 구하세요.' },
+    { name: '운명의 수레바퀴', emoji: '☸️', meaning: '변화', description: '삶은 끊임없이 움직입니다. 행운이 찾아올 수 있습니다.' },
+    { name: '정의', emoji: '⚖️', meaning: '공정', description: '균형을 찾고 공정한 결정을 내리세요. 진실이 승리할 것입니다.' },
+    { name: '매달린 사람', emoji: '🙃', meaning: '새로운 관점', description: '멈추고 다르게 보세요. 항복이 지혜를 가져옵니다.' },
+    { name: '죽음', emoji: '💀', meaning: '변화', description: '새로운 시작을 위해 무언가가 끝나야 합니다. 깊은 변화를 받아들이세요.' },
+    { name: '절제', emoji: '🍷', meaning: '균형', description: '중도를 찾으세요. 대립하는 힘을 조화롭게 융합하세요.' },
+    { name: '악마', emoji: '😈', meaning: '속박', description: '무엇이 당신을 노예로 만드는지 살펴보세요. 건강하지 않은 집착에서 벗어나세요.' },
+    { name: '탑', emoji: '🗼', meaning: '급격한 변화', description: '예상치 못한 사건이 기반을 흔듭니다. 필요한 변화가 해방을 가져옵니다.' },
+    { name: '별', emoji: '⭐', meaning: '희망', description: '어둠 뒤에 빛이 옵니다. 당신의 소원이 이루어질 수 있습니다.' },
+    { name: '달', emoji: '🌙', meaning: '환상', description: '보이는 것이 전부가 아닐 수 있습니다. 직관을 믿되 사실을 확인하세요.' },
+    { name: '태양', emoji: '☀️', meaning: '성공', description: '긍정적인 에너지가 빛납니다. 성공과 행복이 당신의 것입니다.' },
+    { name: '심판', emoji: '📯', meaning: '재탄생', description: '심판과 성찰의 시간입니다. 더 높은 의식으로 올라가세요.' },
+    { name: '세계', emoji: '🌍', meaning: '완성', description: '목표를 달성했습니다. 성공과 성취를 축하하세요.' }
 ];
 
 // 2. FORTUNE MESSAGES
 const fortuneMessages = [
-    { emoji: '⭐', title: 'Exceptional Day', message: 'Extraordinary opportunities await. The universe aligns in your favor.', advice: 'Take bold action. Your confidence will attract success.' },
-    { emoji: '🌟', title: 'Abundant Blessings', message: 'Pleasant surprises and positive energy fill your day.', advice: 'Express gratitude and share your good fortune.' },
-    { emoji: '💫', title: 'Steady Progress', message: 'Consistent effort leads to meaningful progress today.', advice: 'Stay focused on goals. Celebrate small wins.' },
-    { emoji: '🌈', title: 'Creative Inspiration', message: 'Your creativity peaks today. Innovative ideas flow freely.', advice: 'Express yourself creatively. Try something new.' },
-    { emoji: '✨', title: 'Magical Synchronicities', message: 'Pay attention to signs. The universe communicates with you.', advice: 'Trust your intuition. Notice patterns and signs.' }
+    { emoji: '⭐', title: '최고의 날', message: '특별한 기회가 기다립니다. 우주가 당신 편입니다.', advice: '과감하게 행동하세요. 자신감이 성공을 끌어당깁니다.' },
+    { emoji: '🌟', title: '풍성한 축복', message: '즐거운 놀라움과 긍정적인 에너지가 가득한 하루입니다.', advice: '감사를 표현하고 행운을 나누세요.' },
+    { emoji: '💫', title: '꾸준한 진전', message: '일관된 노력이 오늘 의미 있는 진전으로 이어집니다.', advice: '목표에 집중하세요. 작은 성취를 축하하세요.' },
+    { emoji: '🌈', title: '창의적 영감', message: '오늘 창의력이 최고조에 달합니다. 혁신적인 아이디어가 자유롭게 흐릅니다.', advice: '창의적으로 표현하세요. 새로운 것을 시도하세요.' },
+    { emoji: '✨', title: '마법 같은 우연', message: '신호에 주의를 기울이세요. 우주가 당신과 소통합니다.', advice: '직관을 믿으세요. 패턴과 신호를 알아차리세요.' }
 ];
 
 // 3. SAJU DATA
 const sajuElements = {
-    upper: ['Sky (Geon)', 'Lake (Tae)', 'Fire (Ri)', 'Thunder (Jin)', 'Wind (Son)', 'Water (Gam)', 'Mountain (Gan)', 'Earth (Gon)'],
-    middle: ['Prosperity', 'Conflict', 'Harmony', 'Change', 'Stagnation', 'Growth'],
-    lower: ['Foundation', 'People', 'Self']
+    upper: ['천(건)', '호수(태)', '불(리)', '우뢰(진)', '바람(손)', '물(감)', '산(간)', '때(곤)'],
+    middle: ['번영', '갈등', '조화', '변화', '정체', '성장'],
+    lower: ['기반', '사람', '자신']
 };
 
 const sajuInterpretations = {
-    sky: { nature: 'Active, Creative, Strong', advice: 'Take initiative and lead.' },
-    lake: { nature: 'Joyful, Expressive, Open', advice: 'Communicate and share with others.' },
-    fire: { nature: 'Passionate, Clear, Visible', advice: 'Show your talents but avoid burnout.' },
-    thunder: { nature: 'Arousing, Shocking, Moving', advice: 'Embrace sudden changes bravely.' },
-    wind: { nature: 'Gentle, Penetrating, Flexible', advice: 'Adapt to circumstances smoothly.' },
-    water: { nature: 'Deep, Dangerous, Flowing', advice: 'Be cautious and seek wisdom.' },
-    mountain: { nature: 'Still, Stable, Resting', advice: 'Pause and consolidate your gains.' },
-    earth: { nature: 'Receptive, Yielding, Supportive', advice: 'Support others and stay grounded.' }
+    '천': { nature: '적극적, 창조적, 강함', advice: '주도권을 잡고 이끌어가세요.' },
+    '호수': { nature: '기쁨, 표현력, 개방성', advice: '소통하고 다른 사람과 나누세요.' },
+    '불': { nature: '열정적, 명확함, 가시성', advice: '재능을 보여주되 과로를 피하세요.' },
+    '우뢰': { nature: '각성, 충격, 움직임', advice: '갑작스러운 변화를 용감하게 받아들이세요.' },
+    '바람': { nature: '부드러움, 침투력, 유연성', advice: '상황에 원활하게 적응하세요.' },
+    '물': { nature: '깊음, 위험, 흘름', advice: '조심하고 지혜를 구하세요.' },
+    '산': { nature: '고요함, 안정, 휴식', advice: '멈춰서 얻은 것을 공고히 하세요.' },
+    '때': { nature: '수용적, 순응, 지지', advice: '다른 사람을 지지하고 현실적으로 생각하세요.' }
 };
 
 // ===== CORE FUNCTIONS =====
@@ -165,33 +165,35 @@ function generateSajuResult(year, month, day) {
 
     const hexagramCode = `${upperIdx + 1}${middleIdx + 1}${lowerIdx + 1}`;
     const upperName = sajuElements.upper[upperIdx];
-    const upperKey = upperName.split(' ')[0].toLowerCase();
+
+    // 한글 키 매핑
+    const upperKey = upperName.split('(')[0];
     const interp = sajuInterpretations[upperKey];
 
     const titles = [
-        `The Destiny of ${upperName}`,
-        `Hexagram ${hexagramCode}: ${upperName} over ${sajuElements.middle[middleIdx]}`,
-        `The Path of ${interp.nature}`
+        `${upperName}의 운명`,
+        `괘상 ${hexagramCode}: ${upperName}와 ${sajuElements.middle[middleIdx]}`,
+        `${interp.nature}의 길`
     ];
 
     const totals = [
-        `This year, the energy of the ${upperName} dominates your life. It is a time of ${interp.nature.toLowerCase()} energy. Combined with the influence of ${sajuElements.middle[middleIdx]}, you will experience significant shifts in your personal growth.`,
-        `Like the ${upperName}, your fortune is vast and powerful. The ${sajuElements.middle[middleIdx]} aspect suggests that you must pay attention to your environment. ${interp.advice}`,
-        `A year of ${sajuElements.middle[middleIdx]} defined by the ${upperName}. Your foundation in ${sajuElements.lower[lowerIdx]} will be tested, but the outcome looks promising if you remain true to yourself.`
+        `올해는 ${upperName}의 기운이 당신의 삶을 지배합니다. ${interp.nature}의 에너지가 흐르는 시기입니다. ${sajuElements.middle[middleIdx]}의 영향과 결합하여 개인적 성장에 큰 변화를 경험할 것입니다.`,
+        `${upperName}처럼 당신의 운은 광대하고 강력합니다. ${sajuElements.middle[middleIdx]}의 측면은 주변 환경에 주의를 기울여야 함을 시사합니다. ${interp.advice}`,
+        `${upperName}으로 정의되는 ${sajuElements.middle[middleIdx]}의 해입니다. ${sajuElements.lower[lowerIdx]}에 대한 기반이 시험받겠지만, 자신에게 충실하면 결과는 긍정적일 것입니다.`
     ];
 
     const monthlies = [
-        `Spring brings new beginnings in ${sajuElements.lower[lowerIdx]}. Summer requires patience as the ${upperName} energy peaks. Autumn is the time for harvest, and Winter for reflection.`,
-        `Early year is favorable for ${sajuElements.lower[lowerIdx]}. Mid-year might bring challenges related to ${sajuElements.middle[middleIdx]}. The end of the year promises stability.`,
-        `Focus on ${sajuElements.lower[lowerIdx]} in the first half. The second half will be dominated by the ${upperName}'s influence, bringing ${interp.nature.toLowerCase()} outcomes.`
+        `봄은 ${sajuElements.lower[lowerIdx]}에서 새로운 시작을 가져옵니다. 여름은 ${upperName}의 에너지가 정점에 달하므로 인내가 필요합니다. 가을은 수확의 시기이고 겨울은 성찰의 시기입니다.`,
+        `연초는 ${sajuElements.lower[lowerIdx]}에 유리합니다. 연중에는 ${sajuElements.middle[middleIdx]}와 관련된 도전이 있을 수 있습니다. 연말은 안정을 약속합니다.`,
+        `상반기에는 ${sajuElements.lower[lowerIdx]}에 집중하세요. 하반기는 ${upperName}의 영향이 지배적이며 ${interp.nature}의 결과를 가져올 것입니다.`
     ];
 
     return {
         title: titles[year % 3],
-        hexagram: `Upper: ${upperName} | Middle: ${sajuElements.middle[middleIdx]} | Lower: ${sajuElements.lower[lowerIdx]}`,
+        hexagram: `상: ${upperName} | 중: ${sajuElements.middle[middleIdx]} | 하: ${sajuElements.lower[lowerIdx]}`,
         total: totals[(year + month) % 3],
         monthly: monthlies[(month + day) % 3],
-        advice: `${interp.advice} Focus on improving your ${sajuElements.lower[lowerIdx]} to maximize good fortune.`
+        advice: `${interp.advice} ${sajuElements.lower[lowerIdx]}를 개선하는 데 집중하여 행운을 극대화하세요.`
     };
 }
 
@@ -200,12 +202,12 @@ function analyzeSaju() {
     const date = document.getElementById('sajuDate').value;
 
     if (!name || !date) {
-        alert('Please enter your name and birth date!');
+        alert('이름과 생년월일을 입력해주세요!');
         return;
     }
 
     if (userCredits < 2) {
-        alert('Not enough credits! You need 2 credits.');
+        alert('크레딧이 부족합니다! 2 크레딧이 필요합니다.');
         return;
     }
 
@@ -277,11 +279,11 @@ function checkCompatibility() {
     const gender2 = document.getElementById('person2Gender').value;
 
     if (!name1 || !date1 || !name2 || !date2) {
-        alert('Please fill in all required fields!');
+        alert('모든 필수 항목을 입력해주세요!');
         return;
     }
     if (userCredits < 2) {
-        alert('Not enough credits! You need 2 credits.');
+        alert('크레딧이 부족합니다! 2 크레딧이 필요합니다.');
         return;
     }
 
@@ -353,25 +355,25 @@ function checkCompatibility() {
 
         let description, advice;
         if (overallScore >= 85) {
-            const strengths = ['deep emotional connection', 'natural understanding', 'shared values', 'complementary energies'];
+            const strengths = ['깊은 감정적 유대', '자연스러운 이해', '공유된 가치관', '상호 보완적인 에너지'];
             const strength = strengths[combinedHash % strengths.length];
-            description = `${name1} and ${name2} share an exceptional ${strength}! Your compatibility score of ${overallScore}% indicates outstanding potential. The stars align beautifully for this relationship.`;
-            advice = 'This rare connection deserves nurturing. Continue building on your strong foundation through open communication and mutual support.';
+            description = `${name1}님과 ${name2}님은 뛰어난 ${strength}를 공유합니다! ${overallScore}%의 궁합도는 탁월한 잠재력을 나타냅니다. 별들이 이 관계를 아름답게 정렬시킵니다.`;
+            advice = '이 귀한 인연을 소중히 가꾸세요. 열린 소통과 상호 지지를 통해 강한 기반을 계속 쌓아가세요.';
         } else if (overallScore >= 70) {
-            const aspects = ['communication style', 'life goals', 'emotional wavelength', 'core values'];
+            const aspects = ['소통 방식', '인생 목표', '감정적 파장', '핵심 가치관'];
             const aspect = aspects[combinedHash % aspects.length];
-            description = `${name1} and ${name2} have strong compatibility (${overallScore}%), particularly in ${aspect}. While some challenges may arise, your solid foundation provides excellent potential.`;
-            advice = 'Focus on your natural strengths as a couple. Address differences with patience and understanding.';
+            description = `${name1}님과 ${name2}님은 강한 궁합(${overallScore}%)을 가지고 있으며, 특히 ${aspect}에서 두드러집니다. 일부 어려움이 있을 수 있지만, 탄탄한 기반이 훌륭한 잠재력을 제공합니다.`;
+            advice = '커플로서의 자연스러운 강점에 집중하세요. 차이점은 인내와 이해로 해결하세요.';
         } else if (overallScore >= 55) {
-            const areas = ['mutual respect', 'shared interests', 'emotional support', 'life balance'];
+            const areas = ['상호 존중', '공유된 관심사', '감정적 지지', '삶의 균형'];
             const area = areas[combinedHash % areas.length];
-            description = `${name1} and ${name2} show moderate compatibility at ${overallScore}%. Success will come through ${area} and conscious effort.`;
-            advice = 'Embrace differences as opportunities for growth. Communication and compromise are key.';
+            description = `${name1}님과 ${name2}님은 ${overallScore}%의 적당한 궁합을 보입니다. ${area}와 의식적인 노력을 통해 성공할 수 있습니다.`;
+            advice = '차이를 성장의 기회로 받아들이세요. 소통과 타협이 핵심입니다.';
         } else {
-            const challenges = ['different life rhythms', 'contrasting communication styles', 'varied priorities', 'distinct emotional needs'];
+            const challenges = ['다른 생활 리듬', '대조적인 소통 방식', '다양한 우선순위', '뚜렷한 감정적 욕구'];
             const challenge = challenges[combinedHash % challenges.length];
-            description = `${name1} and ${name2} have ${overallScore}% compatibility, indicating ${challenge}. This requires extra understanding and effort.`;
-            advice = 'Success requires conscious effort and clear communication. Focus on building strong foundations through shared experiences.';
+            description = `${name1}님과 ${name2}님은 ${overallScore}%의 궁합을 가지고 있으며, ${challenge}를 나타냅니다. 이는 추가적인 이해와 노력이 필요합니다.`;
+            advice = '성공을 위해서는 의식적인 노력과 명확한 소통이 필요합니다. 공유된 경험을 통해 강한 기반을 구축하는 데 집중하세요.';
         }
 
         document.getElementById('compatDescription').textContent = description;
@@ -384,27 +386,86 @@ function checkCompatibility() {
 }
 
 function getDailyFortune() {
-    showLoading(() => {
+    const birthDate = document.getElementById('todayBirthDate').value;
+    const name = document.getElementById('todayName').value;
+
+    if (!birthDate) {
+        alert('생년월일을 입력해주세요.');
+        return;
+    }
+
+    showLoading('운세를 계산하는 중...');
+
+    setTimeout(() => {
         const today = new Date();
+        const birth = new Date(birthDate);
         const seed = today.getDate() + today.getMonth() * 31;
+        const birthSeed = birth.getDate() + birth.getMonth() * 31 + birth.getFullYear();
+
         const fortuneIndex = seed % fortuneMessages.length;
         const fortune = fortuneMessages[fortuneIndex];
 
+        // 행운의 숫자 생성
         const luckyNums = [];
         for (let i = 0; i < 6; i++) {
             luckyNums.push(((seed * (i + 1) * 7) % 45) + 1);
         }
 
+        // 오행 계산
+        const elements = ['목(木)', '화(火)', '토(土)', '금(金)', '수(水)'];
+        const elementTraits = ['성장, 창조', '열정, 명예', '안정, 신뢰', '결단력, 정의', '지혜, 유연성'];
+        const userElementIndex = birthSeed % 5;
+        const todayElementIndex = seed % 5;
+
+        // 조화 계산
+        const harmonyTypes = ['상생(相生)', '상극(相剋)', '비화(比和)'];
+        let harmonyIndex = 2; // 기본값: 비화
+        if ((userElementIndex + 1) % 5 === todayElementIndex) {
+            harmonyIndex = 0; // 상생
+        } else if ((userElementIndex + 2) % 5 === todayElementIndex) {
+            harmonyIndex = 1; // 상극
+        }
+
+        // 행운의 색
+        const colors = [
+            { name: '초록색', hex: '#2ecc71' },
+            { name: '빨간색', hex: '#e74c3c' },
+            { name: '노란색', hex: '#f39c12' },
+            { name: '흰색', hex: '#ecf0f1' },
+            { name: '파란색', hex: '#3498db' }
+        ];
+        const luckyColor = colors[todayElementIndex];
+
+        // 최고의 시간
+        const times = ['오전 6-8시 (묘시)', '오전 9-11시 (사시)', '정오 12-2시 (오시)', '오후 3-5시 (신시)', '오후 6-8시 (유시)'];
+        const bestTime = times[(seed + birthSeed) % 5];
+
+        // 결과 표시
         document.getElementById('fortuneEmoji').textContent = fortune.emoji;
-        document.getElementById('fortuneTitle').textContent = fortune.title;
+        document.getElementById('fortuneTitle').textContent = name ? `${name}님의 오늘의 운세` : '오늘의 운세';
+        document.getElementById('fortuneDate').textContent = today.toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' });
         document.getElementById('fortuneMessage').textContent = fortune.message;
         document.getElementById('luckyNumbers').textContent = luckyNums.join(', ');
         document.getElementById('todayAdvice').textContent = fortune.advice;
 
+        // 오행 정보
+        document.getElementById('userElement').textContent = `${elements[userElementIndex]} - ${elementTraits[userElementIndex]}`;
+        document.getElementById('todayElement').textContent = `${elements[todayElementIndex]} - ${elementTraits[todayElementIndex]}`;
+        document.getElementById('harmonyType').textContent = harmonyTypes[harmonyIndex];
+
+        // 행운의 색
+        document.getElementById('luckyColorBox').style.backgroundColor = luckyColor.hex;
+        document.getElementById('luckyColorName').textContent = luckyColor.name;
+
+        // 최고의 시간
+        document.getElementById('bestTime').textContent = bestTime;
+
+        hideLoading();
+
         const resultDiv = document.getElementById('todayResult');
         resultDiv.classList.remove('hidden');
         resultDiv.scrollIntoView({ behavior: 'smooth' });
-    });
+    }, 2000);
 }
 
 function analyzeName() {
