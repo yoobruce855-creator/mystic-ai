@@ -421,6 +421,9 @@ const NamingEngine = {
             const randomBonus = ((surnameHash + nameHash) % 20) - 10; // -10 ~ +10
             compatibilityScore += randomBonus;
 
+            // 100점 만점으로 제한
+            compatibilityScore = Math.min(100, Math.max(0, compatibilityScore));
+
             return {
                 ...item,
                 totalStrokes: totalStrokes,
