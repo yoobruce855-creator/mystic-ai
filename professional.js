@@ -871,13 +871,13 @@ function getDailyFortune() {
         const today = new Date();
 
         // Calculate elements
-        const elements = ['Wood 🌳', 'Fire 🔥', 'Earth 🌍', 'Metal ⚙️', 'Water 💧'];
+        const elements = ['목(木) 🌳', '화(火) 🔥', '토(土) 🌍', '금(金) ⚙️', '수(水) 💧'];
         const userElement = elements[birth.getMonth() % 5];
         const todayElement = elements[today.getMonth() % 5];
 
         // Calculate harmony
         const harmony = (birth.getMonth() + today.getMonth()) % 3;
-        const harmonyTypes = ['Excellent ⭐⭐⭐', 'Good ⭐⭐', 'Fair ⭐'];
+        const harmonyTypes = ['최고 ⭐⭐⭐', '좋음 ⭐⭐', '보통 ⭐'];
 
         // Lucky numbers
         const luckyNums = [];
@@ -887,16 +887,16 @@ function getDailyFortune() {
 
         // Lucky color
         const colors = [
-            { name: 'Golden Yellow', hex: '#FFD700' },
-            { name: 'Royal Purple', hex: '#9B59B6' },
-            { name: 'Emerald Green', hex: '#2ECC71' },
-            { name: 'Sky Blue', hex: '#3498DB' },
-            { name: 'Ruby Red', hex: '#E74C3C' }
+            { name: '황금색', hex: '#FFD700' },
+            { name: '로열 퍼플', hex: '#9B59B6' },
+            { name: '에메랄드 그린', hex: '#2ECC71' },
+            { name: '스카이 블루', hex: '#3498DB' },
+            { name: '루비 레드', hex: '#E74C3C' }
         ];
         const luckyColor = colors[today.getDay()];
 
         // Best time
-        const times = ['Morning (6-9 AM)', 'Noon (11 AM-2 PM)', 'Afternoon (2-5 PM)', 'Evening (6-9 PM)', 'Night (9 PM-12 AM)'];
+        const times = ['오전 (6-9시)', '정오 (11시-2시)', '오후 (2-5시)', '저녁 (6-9시)', '밤 (9시-12시)'];
         const bestTime = times[today.getDay() % 5];
 
         // Fortune message
