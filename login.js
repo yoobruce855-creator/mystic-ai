@@ -1,8 +1,11 @@
-import { GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-import { doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+// login.js 파일 시작 부분
+import { doc, getDoc, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js"; // <--- 이 줄을 추가해야 합니다!
+
 const provider = new GoogleAuthProvider();
 const loginBtn = document.getElementById('google-login-btn');
 const userDisplay = document.getElementById('user-display');
+// ... 이하 코드 계속
 
 // 1. 로그인 버튼 클릭 시 실행될 함수
 loginBtn.addEventListener('click', () => {
@@ -56,4 +59,5 @@ async function checkAndCreateUser(user) {
     }
 
 }
+
 
