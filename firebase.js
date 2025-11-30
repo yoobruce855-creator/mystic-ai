@@ -1,3 +1,25 @@
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyC-rtcBAckCFBjZ6TjWDxgVf5OFzUKBupA",
+  authDomain: "mystic-ai-backend.firebaseapp.com",
+  projectId: "mystic-ai-backend",
+  storageBucket: "mystic-ai-backend.firebasestorage.app",
+  messagingSenderId: "872277725850",
+  appId: "1:872277725850:web:50f613e39f6fb148930523",
+  measurementId: "G-3W14D336EY"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+
 // firebase.js (또는 <script> 태그 내부)
 
 // 1. 필요한 기능(Auth: 로그인, Firestore: DB) 불러오기
@@ -21,4 +43,5 @@ const db = getFirestore(app); // DB 기능을 쓸 준비
 // 이 변수들을 다른 JS 파일에서도 쓸 수 있도록 내보내거나 (export),
 // 전역 객체(window)에 넣어둡니다.
 window.auth = auth;
+
 window.db = db;
