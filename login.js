@@ -1,8 +1,4 @@
-// login.js 파일
 
-// 🚨🚨🚨 이 두 줄은 삭제해야 합니다! (firebase.js에서 이미 전역으로 설정했기 때문) 🚨🚨🚨
-// import { GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-// import { doc, getDoc, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 
 // 1. 필요한 Firebase 객체는 전역 변수(window)에서 가져옵니다.
@@ -73,3 +69,4 @@ async function checkAndCreateUser(user) {
         userDisplay.innerHTML = `${user.displayName}님 (크레딧: ${data.credits}개)`;
     }
 }
+
