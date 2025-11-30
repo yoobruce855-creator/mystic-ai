@@ -1,8 +1,4 @@
 
-#### **JavaScript (로그인 로직)**
-
-```javascript
-// login.js (또는 위 1단계 코드 아래에 이어서 작성)
 
 import { GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 import { doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
@@ -61,4 +57,5 @@ async function checkAndCreateUser(user) {
         console.log(`현재 크레딧: ${data.credits}개`);
         userDisplay.innerHTML = `${user.displayName}님 (크레딧: ${data.credits}개)`;
     }
+
 }
