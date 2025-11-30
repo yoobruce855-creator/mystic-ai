@@ -1,8 +1,5 @@
-
-
 import { GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 import { doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
 const provider = new GoogleAuthProvider();
 const loginBtn = document.getElementById('google-login-btn');
 const userDisplay = document.getElementById('user-display');
@@ -59,3 +56,4 @@ async function checkAndCreateUser(user) {
     }
 
 }
+
